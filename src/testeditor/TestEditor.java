@@ -14,8 +14,8 @@ public class TestEditor {
 		answ.add(new Answer(true,"Москва"));
 		answ.add(new Answer(false,"Санкт-Петербург"));
 
-		Question qw = new Select("Столица России?",answ);
+		Question q = new Select("Столица России?",answ);
 
-		GiftSaver.toFile("Test.txt",qw);
+		GiftSaver.toFile("Test.txt",q);
 	}
 }
