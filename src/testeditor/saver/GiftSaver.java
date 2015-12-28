@@ -6,15 +6,14 @@ import testeditor.question.*;
  * Класс, ответственный за запись вопроса в файл в GIFT-формате
  * Абстрактный потому, что содержит пока что только статические методы;
  */
-public abstract class GiftSaver extends Saver {
+public class GiftSaver extends Saver {
 	/**
 	 * Записывает вопрос в текстовый файл в формате GIFT
 	 * @param filepath - путь к выходному файлу
 	 * @param question - объект вопроса
 	 */
-	GiftSaver(Question question, String filepath) {
-		this.question = question;
-		this.filepath = filepath;
+	public GiftSaver(Question question, String filepath) {
+		super(question, filepath);
 	}
 
 	/**

@@ -19,13 +19,21 @@ abstract public class Question {
 	private String head;
 	protected Saver saver;
 
-	Question(Saver saver, String head, ArrayList<Answer> answers) {
+	Question(String head, ArrayList<Answer> answers) {
 		this.answers = answers;
 		this.head = head;
 		this.saver = saver;
 	}
 
-	abstract void save();
+	@Override
+	public boolean equals(Object obj) {
+		if (this.head.equals(((Question)obj).head)) {
+			return true;
+		}
+		return false;
+	}
+
+	abstract public void save(Saver saver);
 
 	public String getHead() {
 		return this.head;
@@ -38,7 +46,4 @@ abstract public class Question {
 	public ArrayList<Answer> getAnswerList() {
 		return this.answers;
 	}
-
-	//public abstract String getQuestionLine();
-
 }

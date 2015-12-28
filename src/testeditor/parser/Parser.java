@@ -1,6 +1,10 @@
 package testeditor.parser;
 
+import testeditor.question.Question;
+
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * Created by dimitry on 28.12.15.
@@ -8,7 +12,7 @@ import java.util.Map;
  */
 abstract public class Parser {
 
-    public static Map<String, Map<String, Boolean>> parse(String filepath) throws Exception {
+    public static TreeSet<Question> parse(String filepath) throws Exception {
         Parser parser = Parser.getParser(filepath);
         return parser.getQuestions(filepath);
     }
@@ -25,5 +29,5 @@ abstract public class Parser {
         }
     }
 
-    abstract public Map<String, Map<String, Boolean>> getQuestions(String filepath);
+    abstract public TreeSet<Question> getQuestions(String filepath);
 }

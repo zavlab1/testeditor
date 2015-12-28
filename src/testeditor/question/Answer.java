@@ -12,9 +12,9 @@ public class Answer {
 	private boolean right;
 	private String value;
 
-	public Answer(boolean right, String value) {
-		this.right = right;
+	public Answer(String value, boolean right) {
 		this.value = value;
+		this.right = right;
 	}
 
 	/**
@@ -22,6 +22,11 @@ public class Answer {
 	 */
 	public String getValue() {
 		return this.value;
+	}
+
+	public void setValue(String value, boolean right) {
+		this.value = value;
+		this.right = right;
 	}
 
 	public void setValue(String value) {

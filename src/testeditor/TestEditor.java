@@ -5,27 +5,35 @@ import testeditor.saver.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 public class TestEditor {
 	public static void main(String[] args) throws IOException {
 
-		Map<String, Map<String, Boolean>> questions = new TreeMap<>();
+		TreeSet<Question> questions = new TreeSet<>();
 
-		Map<String, Boolean> answers1 = new TreeMap<>();
-		answers1.put("Москва", true);
-		answers1.put("Санкт-Петербург", false);
-		answers1.put("Курск", false);
-		questions.put("Столица нашей Родины?", answers1);
+		ArrayList<Answer> answers1 = new ArrayList<>();
+		answers1.add(new Answer("Москва", true));
+		answers1.add(new Answer("Санкт-Петербург", false));
+		answers1.add(new Answer("Курск", false));
 
-		Map<String, Boolean> answers2 = new TreeMap<>();
-		answers2.put("ФМФ", false);
-		answers2.put("Геофак", false);
-		answers2.put("ИПФ", true);
-		questions.put("Название нашего факультета?", answers2);
+		Question q1 = new Select("Столица нашей Родины?", answers1);
+		questions.remove(q1);
+		questions.add(q1);
 
-		Test test = Test.getInstance(questions);
+		ArrayList<Answer> answers2 = new ArrayList<>();
+		answers2.add(new Answer("ФМФ", false));
+		answers2.add(new Answer("Геофак", false));
+		answers2.add(new Answer("ИПФ", true));
+
+		Question q2 = new Select("Название нашего факультета?", answers2);
+		questions.remove(q2);
+		questions.add(q2);
+
+		Test test = Test.getInstance("Тест №1", questions);
+		for (Question q : questions) {
+			new GiftSaver(q, "Text.txt");
+		}
 	}
 }

@@ -1,30 +1,35 @@
 package testeditor.parser;
 
+import testeditor.question.Answer;
+import testeditor.question.Question;
+import testeditor.question.Select;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате Gift
  */
 public class GiftParser extends Parser {
-    public Map<String, Map<String, Boolean>> getQuestions(String filepath) {
-        Map<String, Map<String, Boolean>> questions = new TreeMap<>();
+    public TreeSet<Question> getQuestions(String filepath) {
+        TreeSet<Question> questions = new TreeSet<>();
 
-        Map<String, Boolean> answers1 = new TreeMap<>();
-        answers1.put("Москва", true);
-        answers1.put("Санкт-Петербург", false);
-        answers1.put("Курск", false);
+        ArrayList<Answer> answers1 = new ArrayList<>();
+        answers1.add(new Answer("Москва", true));
+        answers1.add(new Answer("Санкт-Петербург", false));
+        answers1.add(new Answer("Курск", false));
 
-        questions.put("Столица нашей Родины?", answers1);
+        questions.add(new Select("Столица нашей Родины?", answers1));
 
-        Map<String, Boolean> answers2 = new TreeMap<>();
-        answers2.put("ФМФ", false);
-        answers2.put("Геофак", false);
-        answers2.put("ИПФ", true);
+        ArrayList<Answer> answers2 = new ArrayList<>();
+        answers2.add(new Answer("ФМФ", false));
+        answers2.add(new Answer("Геофак", false));
+        answers2.add(new Answer("ИПФ", true));
 
-        questions.put("Название нашего факультета?", answers2);
+        questions.add(new Select("Название нашего факультета?", answers2));
 
         return questions;
     }
