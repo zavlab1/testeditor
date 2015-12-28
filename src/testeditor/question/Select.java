@@ -1,5 +1,7 @@
 package testeditor.question;
 
+import testeditor.saver.Saver;
+
 import java.util.ArrayList;
 
 /**
@@ -9,8 +11,8 @@ import java.util.ArrayList;
 public class Select extends Question {
 	private final String type = "select";
 
-	public Select(String head, ArrayList<Answer> answers) {
-		super(head, answers);
+	public Select(Saver saver, String head, ArrayList<Answer> answers) {
+		super(saver, head, answers);
 	}
 
 	public String getType(){
@@ -33,5 +35,10 @@ public class Select extends Question {
 			answerLine += (a.isTrue() ? "\t=" : "\t~") + a.getValue() + "\n";
 		}
 		return answerLine.trim()+"\n}";
+	}
+
+	void save() {
+		String answerLine = saver.doLineForSelect();
+		saver.toFile(answerLine);
 	}
 }

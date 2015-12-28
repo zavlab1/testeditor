@@ -16,6 +16,5 @@ public class TestEditor {
 
 		Question q = new Select("Столица России?",answ);
 
-		GiftSaver.toFile("Test.txt",q);
 	}
 }

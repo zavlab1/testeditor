@@ -1,5 +1,7 @@
 package testeditor.question;
 
+import testeditor.saver.Saver;
+
 import java.util.ArrayList;
 
 /**
@@ -8,17 +10,22 @@ import java.util.ArrayList;
  */
 abstract public class Question {
 	/**
+	 * @param saver - объект класса, сохраняющего в заданный формат
 	 * @param answers - списочный массив вариантов ответа к вопросу
 	 * @param head - заголовок вопроса
 	 */
 
 	private ArrayList<Answer> answers;
 	private String head;
+	protected Saver saver;
 
-	Question(String head, ArrayList<Answer> answers) {
+	Question(Saver saver, String head, ArrayList<Answer> answers) {
 		this.answers = answers;
 		this.head = head;
+		this.saver = saver;
 	}
+
+	abstract void save();
 
 	public String getHead() {
 		return this.head;
@@ -31,8 +38,6 @@ abstract public class Question {
 	public ArrayList<Answer> getAnswerList() {
 		return this.answers;
 	}
-
-	public abstract String getType();
 
 	//public abstract String getQuestionLine();
 
