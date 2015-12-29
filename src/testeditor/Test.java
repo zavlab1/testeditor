@@ -3,14 +3,14 @@ package testeditor;
 import testeditor.parser.Parser;
 import testeditor.question.Question;
 
-import java.util.TreeSet;
+import java.util.HashSet;
 
 /**
  * Created by dimitry on 28.12.15.
  * Класс-синглтон для создания и хранения одного единственного объекта теста
  */
 public class Test {
-    TreeSet<Question> questions;
+    HashSet<Question> questions;
 
     private static Test ourInstance = new Test();
 
@@ -18,7 +18,7 @@ public class Test {
         return ourInstance;
     }
 
-    public static Test getInstance(String title, TreeSet<Question> questions) {
+    public static Test getInstance(String title, HashSet<Question> questions) {
         ourInstance.questions = questions;
         return ourInstance;
     }
@@ -32,7 +32,7 @@ public class Test {
         return ourInstance;
     }
 
-    public TreeSet<Question> getQuestions() {
+    public HashSet<Question> getQuestions() {
         return questions;
     }
 

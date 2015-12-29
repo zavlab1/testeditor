@@ -1,5 +1,6 @@
 package testeditor.saver;
 
+import testeditor.Test;
 import testeditor.question.*;
 
 /**
@@ -10,21 +11,21 @@ public class GiftSaver extends Saver {
 	/**
 	 * Записывает вопрос в текстовый файл в формате GIFT
 	 * @param filepath - путь к выходному файлу
-	 * @param question - объект вопроса
+	 * @param test - объект вопроса
 	 */
-	public GiftSaver(Question question, String filepath) {
-		super(question, filepath);
+	public GiftSaver(Test test, String filepath) {
+		super(test, filepath);
 	}
 
 	/**
  	 * @return возвращает строку с вопросом и вариантами ответа
 	 * для вопросов на выброр в формате GIFT
 	 */
-	public String doLineForSelect(){
+	public String doLineForSelect(Question q){
 
-		String answerLine = question.getHead()+"\n{\n";
+		String answerLine = q.getHead()+"\n{\n";
 
-		for (Answer a : question.getAnswerList()) {
+		for (Answer a : q.getAnswerList()) {
 			answerLine += (a.isTrue() ? "\t=" : "\t~") + a.getValue() + "\n";
 		}
 
@@ -35,11 +36,11 @@ public class GiftSaver extends Saver {
 	 * @return возвращает строку с вопросом и вариантами ответа
 	 * для вопросов на порядок в  формате GIFT
 	 */
-	public String doLineForOrder(){
+	public String doLineForOrder(Question q){
 
-		String answerLine = question.getHead()+"\n{\n";
+		String answerLine = q.getHead()+"\n{\n";
 
-		for (Answer a : question.getAnswerList()) {
+		for (Answer a : q.getAnswerList()) {
 			answerLine += " ";
 		}
 

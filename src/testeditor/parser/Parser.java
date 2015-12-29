@@ -2,9 +2,7 @@ package testeditor.parser;
 
 import testeditor.question.Question;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 /**
  * Created by dimitry on 28.12.15.
@@ -12,7 +10,7 @@ import java.util.TreeSet;
  */
 abstract public class Parser {
 
-    public static TreeSet<Question> parse(String filepath) throws Exception {
+    public static HashSet<Question> parse(String filepath) throws Exception {
         Parser parser = Parser.getParser(filepath);
         return parser.getQuestions(filepath);
     }
@@ -29,5 +27,5 @@ abstract public class Parser {
         }
     }
 
-    abstract public TreeSet<Question> getQuestions(String filepath);
+    abstract public HashSet<Question> getQuestions(String filepath);
 }

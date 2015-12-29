@@ -13,11 +13,11 @@ import java.io.PrintWriter;
  */
 abstract public class Saver {
 
-	protected Question question;
+	protected Test test;
 	protected String filepath;
 
-	Saver(Question question, String filepath){
-		this.question = question;
+	Saver(Test test, String filepath){
+		this.test = test;
 		this.filepath = filepath;
 	}
 	/**
@@ -41,16 +41,24 @@ abstract public class Saver {
 		}
 	}
 
-	public Test insertToTest() {
-		Test t = Test.getInstance();
-		t.getQuestions().add(question);
-		return t;
+	public void insertToTest(Question q) {
+		test.getQuestions().remove(q);
+		test.getQuestions().add(q);
 	}
 
-	protected void save() {
-		question.save(this);
+	public void save(Question question) {
+		insertToTest(question);
+		toFile(getText());
 	}
 
-	abstract public String doLineForSelect();
-	abstract public String doLineForOrder();
+	private String getText(){
+		String text = "";
+		for(Question q : test.getQuestions()){
+			text += q.getLine(this) + "\n\n";
+		}
+		return text;
+	}
+
+	abstract public String doLineForSelect(Question q);
+	abstract public String doLineForOrder(Question q);
 }

@@ -9,31 +9,31 @@ import java.util.ArrayList;
  * абстарктный класс "Вопрос"
  */
 abstract public class Question {
-	/**
-	 * @param saver - объект класса, сохраняющего в заданный формат
-	 * @param answers - списочный массив вариантов ответа к вопросу
-	 * @param head - заголовок вопроса
-	 */
 
-	private ArrayList<Answer> answers;
 	private String head;
-	protected Saver saver;
+	private ArrayList<Answer> answers;
 
+	/**
+	 * @param head - заголовок вопроса
+	 * @param answers - списочный массив вариантов ответа к вопросу
+	 */
 	Question(String head, ArrayList<Answer> answers) {
 		this.answers = answers;
 		this.head = head;
-		this.saver = saver;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this.head.equals(((Question)obj).head)) {
-			return true;
-		}
-		return false;
+		if(obj == null) return false;
+		else if (!(obj instanceof Question)) return false;
+		return this.head.equals(((Question)obj).head);
 	}
 
-	abstract public void save(Saver saver);
+	public String toString(){
+		return head;
+	}
+
+	abstract public String getLine(Saver saver);
 
 	public String getHead() {
 		return this.head;
