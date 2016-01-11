@@ -42,7 +42,7 @@ abstract public class Saver {
 	}
 
 	public void insertToTest(Question q) {
-		test.getQuestions().remove(q);//удаляем существующий вопрос с таким же заголовком
+		test.getQuestions().remove(q); //удаляем существующий вопрос с таким же заголовком
 		test.getQuestions().add(q);
 	}
 
