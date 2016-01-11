@@ -8,14 +8,14 @@ import java.util.HashSet;
  * Created by dimitry on 28.12.15.
  * Базовый класс для парсеров различных форматов
  */
-abstract public class Parser {
+public interface Parser {
 
-    public static HashSet<Question> parse(String filepath) throws Exception {
+    static HashSet<Question> parse(String filepath) throws Exception {
         Parser parser = Parser.getParser(filepath);
         return parser.getQuestions(filepath);
     }
 
-    public static Parser getParser(String filepath) throws Exception {
+    static Parser getParser(String filepath) throws Exception {
         String ext = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase();
         switch (ext) {
             case "gift":
@@ -27,5 +27,5 @@ abstract public class Parser {
         }
     }
 
-    abstract public HashSet<Question> getQuestions(String filepath);
+    HashSet<Question> getQuestions(String filepath);
 }

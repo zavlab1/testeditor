@@ -11,7 +11,7 @@ import java.util.HashSet;
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате Gift
  */
-public class GiftParser extends Parser {
+public class GiftParser implements Parser {
     public HashSet<Question> getQuestions(String filepath) {
         HashSet<Question> questions = new HashSet<>();
 
