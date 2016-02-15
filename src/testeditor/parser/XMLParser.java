@@ -1,19 +1,19 @@
 package testeditor.parser;
 
+import testeditor.Test;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 import testeditor.question.Select;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате XML
  */
 public class XMLParser extends Parser {
-    public HashSet<Question> getQuestions(String filepath) {
-        HashSet<Question> questions = new HashSet<>();
+    public Test getTest(String filepath) {
+        Test test = new Test();
 
         ArrayList<Answer> answers1 = new ArrayList<>();
         answers1.add(new Answer("Москва", true));
@@ -21,7 +21,7 @@ public class XMLParser extends Parser {
         answers1.add(new Answer("Курск", false));
 
         Question q1 = new Select("Столица нашей Родины?", answers1);
-        questions.add(q1);
+        test.add(q1);
 
         ArrayList<Answer> answers2 = new ArrayList<>();
         answers2.add(new Answer("ФМФ", false));
@@ -29,8 +29,8 @@ public class XMLParser extends Parser {
         answers2.add(new Answer("ИПФ", true));
 
         Question q2 = new Select("Название нашего факультета?", answers2);
-        questions.add(q2);
+        test.add(q2);
 
-        return questions;
+        return test;
     }
 }

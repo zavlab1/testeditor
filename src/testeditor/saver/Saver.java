@@ -42,8 +42,8 @@ abstract public class Saver {
 	}
 
 	public void insertToTest(Question q) {
-		test.getQuestions().remove(q); //удаляем существующий вопрос с таким же заголовком
-		test.getQuestions().add(q);
+		test.remove(q); //удаляем существующий вопрос с таким же заголовком
+		test.add(q);
 	}
 
 	public void save(Question question) {
@@ -53,7 +53,7 @@ abstract public class Saver {
 
 	private String getText(){
 		String text = "";
-		for(Question q : test.getQuestions()){
+		for(Question q : test){
 			text += q.getLine(this) + "\n\n";
 		}
 		return text;

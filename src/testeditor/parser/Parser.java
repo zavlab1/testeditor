@@ -1,21 +1,23 @@
 package testeditor.parser;
 
+import testeditor.Test;
 import testeditor.question.Question;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 /**
  * Created by dimitry on 28.12.15.
  * Базовый класс для парсеров различных форматов
  */
-public interface Parser {
+abstract public class Parser {
 
-    static HashSet<Question> parse(String filepath) throws Exception {
+    public static Test parse(String filepath) throws Exception {
         Parser parser = Parser.getParser(filepath);
-        return parser.getQuestions(filepath);
+        return parser.getTest(filepath);
     }
 
-    static Parser getParser(String filepath) throws Exception {
+    public static Parser getParser(String filepath) throws Exception  {
         String ext = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase();
         switch (ext) {
             case "gift":
@@ -27,5 +29,5 @@ public interface Parser {
         }
     }
 
-    HashSet<Question> getQuestions(String filepath);
+    abstract public Test getTest(String filepath) throws IOException;
 }
