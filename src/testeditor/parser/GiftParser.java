@@ -8,9 +8,7 @@ import testeditor.question.Select;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,9 +19,8 @@ import java.util.regex.Pattern;
 public class GiftParser extends Parser {
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
-        Scanner in = new Scanner(new File(filepath));
-        List<String> lineList = getLineList(in);
-        List<List<String>> qTexts = getQuestionsTexts(in, lineList);
+        List<String> lineList = getLineList(filepath);
+        List<List<String>> qTexts = getQuestionsTexts(lineList);
         for (List<String> qText : qTexts) {
             Question q = getQuestion(qText);
             test.add(q);
@@ -31,7 +28,8 @@ public class GiftParser extends Parser {
         return test;
     }
 
-    private List<String> getLineList(Scanner in) {
+    private List<String> getLineList(String filepath) throws IOException {
+        Scanner in = new Scanner(new File(filepath));
         List<String> lineList = new ArrayList<>();
         while (in.hasNextLine()) {
             String line = in.nextLine();
@@ -42,16 +40,18 @@ public class GiftParser extends Parser {
         return lineList;
     }
 
-    private List<List<String>> getQuestionsTexts(Scanner in, List<String> lineList) {
+    private List<List<String>> getQuestionsTexts(List<String> lineList) {
         List<List<String>> qTexts = new ArrayList<>();
         for (String line : lineList) {
             if (line.startsWith("::")) {
                 ArrayList<String> qText = new ArrayList<>();
                 qText.add(line);
                 String nextLine = null;
-                while ( in.hasNextLine() &&
-                        !( (nextLine = in.nextLine()).startsWith("::")) ) {
+                ListIterator it = lineList.listIterator();
+                while ( it.hasNext() &&
+                        !( (nextLine = (String)it.next()).startsWith("::")) ) {
                     qText.add(nextLine);
+                    it.previous();
                 }
                 qTexts.add(qText);
             }
@@ -86,9 +86,9 @@ public class GiftParser extends Parser {
         m.find();                                                        // и "}" в конце строки
         String head = m.group(2);                                        //
 
-        if (html = head.startsWith("[html]")) {           // если html-метка стоит
-            head = head.replace("[html]", "");     // убираем html-метку
-            head = head.replaceAll("\\<.*?>", ""); // удаляем все теги
+        if (html = head.startsWith("[html]")) {         // если html-метка стоит
+            head = head.replace("[html]", "");          // убираем html-метку
+            head = head.replaceAll("\\<.*?>", "");      // удаляем все теги
             head = head.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
                                                         //особенность java - приходится удваивать слеши
         }
@@ -99,7 +99,7 @@ public class GiftParser extends Parser {
         List<Answer> answers = new ArrayList<>();
         for (String line : aLines) {
             if (html) {
-                line = line.replaceAll("\\<.*?>", ""); // удаляем все теги
+                line = line.replaceAll("\\<.*?>", "");      // удаляем все теги
                 line = line.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
                                                             //особенность java - приходится удваивать слеши
             }
