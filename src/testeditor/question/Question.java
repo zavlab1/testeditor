@@ -3,6 +3,7 @@ package testeditor.question;
 import testeditor.saver.Saver;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by main on 14.12.15.
@@ -11,13 +12,13 @@ import java.util.ArrayList;
 abstract public class Question {
 
 	private String head;
-	private ArrayList<Answer> answers;
+	private List<Answer> answers;
 
 	/**
 	 * @param head - заголовок вопроса
 	 * @param answers - списочный массив вариантов ответа к вопросу
 	 */
-	Question(String head, ArrayList<Answer> answers) {
+	Question(String head, List<Answer> answers) {
 		this.answers = answers;
 		this.head = head;
 	}
@@ -43,7 +44,7 @@ abstract public class Question {
 		this.head = head;
 	}
 
-	public ArrayList<Answer> getAnswerList() {
+	public List<Answer> getAnswerList() {
 		return this.answers;
 	}
 }
