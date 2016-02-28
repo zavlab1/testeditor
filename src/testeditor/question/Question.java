@@ -20,6 +20,7 @@ abstract public class Question {
 	 */
 	Question(String head, List<Answer> answers) {
 		this.answers = answers;
+		answers.listIterator(); // to reset previously moved iterator
 		this.head = head;
 	}
 

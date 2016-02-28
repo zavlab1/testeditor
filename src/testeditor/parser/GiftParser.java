@@ -1,10 +1,7 @@
 package testeditor.parser;
 
 import testeditor.Test;
-import testeditor.question.Answer;
-import testeditor.question.Order;
-import testeditor.question.Question;
-import testeditor.question.Select;
+import testeditor.question.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,8 +45,8 @@ public class GiftParser extends Parser {
                 qText.add(line);
                 String nextLine = null;
                 ListIterator it = lineList.listIterator();
-                while ( it.hasNext() &&
-                        !( (nextLine = (String)it.next()).startsWith("::")) ) {
+                while (it.hasNext() &&
+                        !((nextLine = (String) it.next()).startsWith("::"))) {
                     qText.add(nextLine);
                     it.previous();
                 }
@@ -60,20 +57,32 @@ public class GiftParser extends Parser {
     }
 
     private Question getQuestion(List<String> qText) {
-        //здесь будет парсер строк вопроса
 
         Boolean html = new Boolean(false); // специально объектом, чтобы мог модифицироваться по ссылке в др. методах
 
-        String head = getHead(qText.get(0), html);                  // Получаем текствопроса
+        String head = getHead(qText.get(0), html);                  // Получаем текст вопроса
 
         List<String> answerLines = qText.subList(1, qText.size());
         List<Answer> answers = getAnswers(answerLines, html);       // Получаем варианты ответа
 
-        String type = getType(answerLines);
-
-        switch (type) {
-            case ("select"): return new Select(head, answers);
-            case ("order"):  return new Order(head, answers);
+        ListIterator li = answers.listIterator();
+        for (Answer a : answers) {
+            String val = a.getValue();
+            if (val.startsWith("=") && val.contains("->")) {
+                if (li.hasNext()) {
+                    String nextVal = answers.get(li.nextIndex()).getValue();
+                    if ( nextVal.startsWith("=") &&
+                         nextVal.contains("->") ) {
+                        return new Conformity(head, answers);                 // вопрос на соответсвтие
+                    }
+                }
+            } else if ( val.startsWith("=") ||
+                        val.startsWith("\\~\\%") ) {
+                return new Select(head, answers);                             // вопрос на выбор
+            } else if ( val.toUpperCase().endsWith("{TRUE}") ||
+                        val.toUpperCase().endsWith("{FALSE}") ) {
+                return new TrueFalse(head, answers);                          // вопрос на Да/Нет
+            }
         }
         return new Select(head, answers);
     }
@@ -90,7 +99,7 @@ public class GiftParser extends Parser {
             head = head.replace("[html]", "");          // убираем html-метку
             head = head.replaceAll("\\<.*?>", "");      // удаляем все теги
             head = head.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
-                                                        //особенность java - приходится удваивать слеши
+            //особенность java - приходится удваивать слеши
         }
         return head;
     }
@@ -101,23 +110,10 @@ public class GiftParser extends Parser {
             if (html) {
                 line = line.replaceAll("\\<.*?>", "");      // удаляем все теги
                 line = line.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
-                                                            //особенность java - приходится удваивать слеши
+                //особенность java - приходится удваивать слеши
             }
             answers.add(new Answer(line, (line.startsWith("=")) || line.startsWith("\\~\\%")));
         }
         return answers;
     }
-
-    private String getType(List<String> aLines) {
-        for (String line : aLines) {
-            if (line.startsWith("=")) {
-                return "select";
-            }
-            else if(line.startsWith("\\~\\%")) {
-                return "multiselect"; // и т.д., и т.п.
-            }
-        }
-        return "select";
-    }
 }
-
