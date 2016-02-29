@@ -29,10 +29,15 @@ abstract public class Saver {
 		File file = new File(filepath);
 
 		try {
+
 			//если файл не существует то создаем его
 			if (!file.exists()) {
+				System.out.println("create");
 				file.createNewFile();
+			} else {
+				System.out.println("exists");
 			}
+
 			PrintWriter out = new PrintWriter(file.getAbsoluteFile());
 			out.println(answersText);
 			out.close();
@@ -42,12 +47,15 @@ abstract public class Saver {
 	}
 
 	public void insertToTest(Question q) {
+		//System.out.println(q);
 		test.remove(q); //удаляем существующий вопрос с таким же заголовком
 		test.add(q);
 	}
 
 	public void save(Question question) {
+		System.out.println("123");
 		insertToTest(question);
+
 		toFile(getText());
 	}
 

@@ -17,6 +17,7 @@ public class GiftParser extends Parser {
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
         List<String> lineList = getLineList(filepath);
+        //System.out.println(lineList);
         List<List<String>> qTexts = getQuestionsTexts(lineList);
         for (List<String> qText : qTexts) {
             Question q = getQuestion(qText);
@@ -30,8 +31,10 @@ public class GiftParser extends Parser {
         List<String> lineList = new ArrayList<>();
         while (in.hasNextLine()) {
             String line = in.nextLine();
-            if (!line.isEmpty()) {
-                lineList.add(line.trim());
+            if (!line.isEmpty() &&
+                !line.startsWith("//") &&
+                !line.startsWith("#")) {
+                    lineList.add(line.trim());
             }
         }
         return lineList;
@@ -39,21 +42,21 @@ public class GiftParser extends Parser {
 
     private List<List<String>> getQuestionsTexts(List<String> lineList) {
         List<List<String>> qTexts = new ArrayList<>();
-        for (String line : lineList) {
+		ListIterator<String> it = lineList.listIterator();
+        while (it.hasNext()) {
+			String line = it.next();
             if (line.startsWith("::")) {
-                ArrayList<String> qText = new ArrayList<>();
+                List<String> qText = new ArrayList<>();
                 qText.add(line);
-                String nextLine = null;
-                ListIterator it = lineList.listIterator();
                 while (it.hasNext() &&
-                        !((nextLine = (String) it.next()).startsWith("::"))) {
-                    qText.add(nextLine);
-                    it.previous();
+                        !(lineList.get(it.nextIndex()).endsWith("}"))) {
+                    qText.add(it.next());
                 }
                 qTexts.add(qText);
             }
         }
-        return qTexts;
+		System.out.println(qTexts);
+		return qTexts;
     }
 
     private Question getQuestion(List<String> qText) {
@@ -64,7 +67,7 @@ public class GiftParser extends Parser {
 
         List<String> answerLines = qText.subList(1, qText.size());
         List<Answer> answers = getAnswers(answerLines, html);       // Получаем варианты ответа
-
+		System.out.println(html);
         ListIterator li = answers.listIterator();
         for (Answer a : answers) {
             String val = a.getValue();
@@ -94,9 +97,8 @@ public class GiftParser extends Parser {
         Matcher m = pattern.matcher(line);                               // убираем всякие "::1.::" в начале
         m.find();                                                        // и "}" в конце строки
         String head = m.group(2);                                        //
-
         if (html = head.startsWith("[html]")) {         // если html-метка стоит
-            head = head.replace("[html]", "");          // убираем html-метку
+			head = head.replace("[html]", "");          // убираем html-метку
             head = head.replaceAll("\\<.*?>", "");      // удаляем все теги
             head = head.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
             //особенность java - приходится удваивать слеши
@@ -105,14 +107,16 @@ public class GiftParser extends Parser {
     }
 
     private List<Answer> getAnswers(List<String> aLines, Boolean html) {
-        List<Answer> answers = new ArrayList<>();
+		List<Answer> answers = new ArrayList<>();
         for (String line : aLines) {
             if (html) {
-                line = line.replaceAll("\\<.*?>", "");      // удаляем все теги
+				System.out.println(line);
+				line = line.replaceAll("<.*&>", "");      // удаляем все теги
                 line = line.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
                 //особенность java - приходится удваивать слеши
+				System.out.println(line);
             }
-            answers.add(new Answer(line, (line.startsWith("=")) || line.startsWith("\\~\\%")));
+            answers.add(new Answer(line.substring(1), (line.startsWith("=")) || line.startsWith("\\~\\%")));
         }
         return answers;
     }
