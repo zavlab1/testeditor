@@ -21,7 +21,7 @@ public class TestEditor {
 		GiftSaver.toFile("Test.txt",qe);
 	}
 }*/
-		Test test =	Test.getTestFromFile("select.gift");
+		Test test =	Test.getTestFromFile("test.gift");
 		//System.out.println(test);
 		Saver s = new GiftSaver(test, "Test1.gift");
 		for (Question q : test) {

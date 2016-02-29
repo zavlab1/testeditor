@@ -3,12 +3,12 @@ package testeditor;
 import testeditor.parser.Parser;
 import testeditor.question.Question;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Created by dimitry on 28.12.15.
  */
-public class Test extends HashSet<Question> {
+public class Test extends TreeSet<Question> {
     /*
     public static Test getInstance(String title, HashSet<Question> questions) {
         ourInstance.questions = questions;

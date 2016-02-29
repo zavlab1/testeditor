@@ -32,10 +32,7 @@ abstract public class Saver {
 
 			//если файл не существует то создаем его
 			if (!file.exists()) {
-				System.out.println("create");
 				file.createNewFile();
-			} else {
-				System.out.println("exists");
 			}
 
 			PrintWriter out = new PrintWriter(file.getAbsoluteFile());
@@ -53,9 +50,7 @@ abstract public class Saver {
 	}
 
 	public void save(Question question) {
-		System.out.println("123");
 		insertToTest(question);
-
 		toFile(getText());
 	}
 
@@ -68,5 +63,7 @@ abstract public class Saver {
 	}
 
 	abstract public String doLineForSelect(Question q);
+	abstract public String doLineForTrueFalse(Question q);
+	abstract public String doLineForConformity(Question q);
 	abstract public String doLineForOrder(Question q);
 }

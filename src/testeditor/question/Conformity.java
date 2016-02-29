@@ -15,6 +15,6 @@ public class Conformity extends Question {
 	}
 
 	public String getLine(Saver saver){
-		return saver.doLineForSelect(this);
+		return saver.doLineForConformity(this);
 	}
 }

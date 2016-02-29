@@ -17,7 +17,6 @@ public class GiftParser extends Parser {
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
         List<String> lineList = getLineList(filepath);
-        //System.out.println(lineList);
         List<List<String>> qTexts = getQuestionsTexts(lineList);
         for (List<String> qText : qTexts) {
             Question q = getQuestion(qText);
@@ -49,28 +48,39 @@ public class GiftParser extends Parser {
                 List<String> qText = new ArrayList<>();
                 qText.add(line);
                 while (it.hasNext() &&
+                        (lineList.get(it.nextIndex()).startsWith("{")) ||
                         !(lineList.get(it.nextIndex()).endsWith("}"))) {
                     qText.add(it.next());
                 }
                 qTexts.add(qText);
             }
         }
-		System.out.println(qTexts);
 		return qTexts;
     }
 
     private Question getQuestion(List<String> qText) {
 
-        Boolean html = new Boolean(false); // специально объектом, чтобы мог модифицироваться по ссылке в др. методах
+        Boolean[] html = new Boolean[] {new Boolean(false)}; // специально объектом, чтобы мог модифицироваться по ссылке в др. методах
 
         String head = getHead(qText.get(0), html);                  // Получаем текст вопроса
 
         List<String> answerLines = qText.subList(1, qText.size());
         List<Answer> answers = getAnswers(answerLines, html);       // Получаем варианты ответа
-		System.out.println(html);
+
+        if ( head.toUpperCase().endsWith("{TRUE}") ||
+             head.toUpperCase().endsWith("{FALSE}") ) {
+                Pattern pattern = Pattern.compile("\\{(.+)\\}$");  //
+                Matcher m = pattern.matcher(head);
+                m.find();
+                answers.add(new Answer(m.group(1), Boolean.parseBoolean("true")));
+                return new TrueFalse(head.replaceAll("\\{.+\\}$", ""), answers);                     // вопрос на Да/Нет
+        }
+
         ListIterator li = answers.listIterator();
-        for (Answer a : answers) {
-            String val = a.getValue();
+        while (li.hasNext()) {
+
+            Answer a = (Answer) li.next();
+            String val = a.getValue();System.out.println(val.substring(1, val.length()-1));
             if (val.startsWith("=") && val.contains("->")) {
                 if (li.hasNext()) {
                     String nextVal = answers.get(li.nextIndex()).getValue();
@@ -82,42 +92,50 @@ public class GiftParser extends Parser {
             } else if ( val.startsWith("=") ||
                         val.startsWith("\\~\\%") ) {
                 return new Select(head, answers);                             // вопрос на выбор
-            } else if ( val.toUpperCase().endsWith("{TRUE}") ||
-                        val.toUpperCase().endsWith("{FALSE}") ) {
+            } else if ( val == "{TRUE}" ||
+                        val == "{FALSE}" ) {
+                System.out.println(val.substring(1, val.length()-1));
+                Pattern pattern = Pattern.compile("\\{(.+)\\}$");
+                Matcher m = pattern.matcher(val);
+                m.find();
+                answers.add(new Answer(m.group(1), Boolean.parseBoolean("true")));
                 return new TrueFalse(head, answers);                          // вопрос на Да/Нет
             }
         }
         return new Select(head, answers);
     }
 
-
-    private String getHead(String line, Boolean html) {
+    private String getHead(String line, Boolean[] html) {
 
         Pattern pattern = Pattern.compile("^::(\\d+)\\.?::(.*?)\\{?$");  //
         Matcher m = pattern.matcher(line);                               // убираем всякие "::1.::" в начале
         m.find();                                                        // и "}" в конце строки
-        String head = m.group(2);                                        //
-        if (html = head.startsWith("[html]")) {         // если html-метка стоит
-			head = head.replace("[html]", "");          // убираем html-метку
-            head = head.replaceAll("\\<.*?>", "");      // удаляем все теги
-            head = head.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
-            //особенность java - приходится удваивать слеши
+        String head = m.group(2);
+        if (html[0] = head.startsWith("[html]")) {
+			head = clean(head);
         }
         return head;
     }
 
-    private List<Answer> getAnswers(List<String> aLines, Boolean html) {
+    private List<Answer> getAnswers(List<String> aLines, Boolean[] html) {
 		List<Answer> answers = new ArrayList<>();
         for (String line : aLines) {
-            if (html) {
-				System.out.println(line);
-				line = line.replaceAll("<.*&>", "");      // удаляем все теги
-                line = line.replaceAll("\\\\(?!\\\\)", ""); //удаляем все одиночные обратные слеши, а из двойных делаем одиночные
-                //особенность java - приходится удваивать слеши
-				System.out.println(line);
+            if (html[0]) {
+                line = clean(line);
             }
             answers.add(new Answer(line.substring(1), (line.startsWith("=")) || line.startsWith("\\~\\%")));
         }
         return answers;
+    }
+    
+    private String clean(String line) {
+        line = line.replace("[html]", "");          // убираем html-метку
+        line = line.replaceAll("\\\\n", "");        // удаляем переносы строк
+        line = line.replaceAll("\\<.*?>", "");      // удаляем все теги
+        line = line.replaceAll("\\\\(?!\\\\)", ""); // удаляем все одиночные обратные слеши, а из двойных делаем одиночные
+        line = line.replaceAll("[\\s]{2,}", " ");   // удаляем лишние пробелы
+        //особенность java - приходится удваивать слеши
+
+        return line;
     }
 }

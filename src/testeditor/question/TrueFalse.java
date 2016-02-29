@@ -15,6 +15,6 @@ public class TrueFalse extends Question {
 	}
 
 	public String getLine(Saver saver){
-		return saver.doLineForSelect(this);
+		return saver.doLineForTrueFalse(this);
 	}
 }

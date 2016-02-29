@@ -9,7 +9,7 @@ import java.util.List;
  * Created by main on 14.12.15.
  * абстарктный класс "Вопрос"
  */
-abstract public class Question {
+abstract public class Question implements Comparable<Question> {
 
 	private String head;
 	private List<Answer> answers;
@@ -29,6 +29,11 @@ abstract public class Question {
 		if(obj == null) return false;
 		else if (!(obj instanceof Question)) return false;
 		return this.head.equals(((Question)obj).head);
+	}
+
+	@Override
+	public int compareTo(Question q) {
+		return (this.head.compareTo(q.getHead()));
 	}
 
 	public String toString(){

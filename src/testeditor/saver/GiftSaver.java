@@ -22,7 +22,6 @@ public class GiftSaver extends Saver {
 	 * для вопросов на выброр в формате GIFT
 	 */
 	public String doLineForSelect(Question q){
-
 		String answerLine = q.getHead()+"\n{\n";
 
 		for (Answer a : q.getAnswerList()) {
@@ -36,15 +35,18 @@ public class GiftSaver extends Saver {
 	 * @return возвращает строку с вопросом и вариантами ответа
 	 * для вопросов на порядок в  формате GIFT
 	 */
-	public String doLineForOrder(Question q){
-
-		String answerLine = q.getHead()+"\n{\n";
-
-		for (Answer a : q.getAnswerList()) {
-			answerLine += " ";
-		}
-
-		return answerLine.trim()+"\n}";
+	public String doLineForTrueFalse(Question q){
+		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0).getValue() + "}\n";
+		return answerLine.trim()+"\n";
 	}
 
+	public String doLineForConformity(Question q){
+		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0) + "}\n";
+		return answerLine.trim()+"\n";
+	}
+
+	public String doLineForOrder(Question q){
+		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0) + "}\n";
+		return answerLine.trim();
+	}
 }
