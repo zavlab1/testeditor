@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class TrueFalse extends Question {
 
-	public TrueFalse(String head, List<Answer> answers) {
-		super(head, answers);
-	}
+    public TrueFalse(int number, String head, List<Answer> answers) {
+        super(number, head, answers);
+    }
 
-	public String getLine(Saver saver){
-		return saver.doLineForTrueFalse(this);
-	}
+    public String getLine(Saver saver){
+        return saver.doLineForTrueFalse(this);
+    }
 }

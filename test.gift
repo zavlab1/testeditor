@@ -1,0 +1,60 @@
+// question: 0  name: Switch category to $course$/По умолчанию для ПИвАЭ
+$CATEGORY: $course$/По умолчанию для ПИвАЭ
+
+
+// question: 4408  name: 10.
+::10.::[html]<p><span style\="font-weight\: normal"><span style\="background\: \#fdfdfd">Установите\n		соответствие между видами информации\n		процессов и реализующими их действиями.</span></span>\n	</p>{
+	=<p>Звуковая<br></p> -> Раскат грома
+	=<p>Зрительная<br></p> -> Косой взгляд
+	=<p>Тактильная<br></p> -> Поглаживание кошки
+	=<p>Обоняние<br></p> -> Запах духов
+	=<p>Вкусовая <br></p> -> Поедание конфет
+}
+
+
+// question: 4409  name: 11
+::11::[html]<p>\n\n\n	\n	\n	\n	Установите\n		соответствие между информационными\n		процессами\: хранение, передача и\n		обработка информации и их примерами.\n	</p>\n<dl><dl><dd>\n		<table cellpadding\="7" cellspacing\="0" width\="570">\n			<colgroup><col width\="262">\n			<col width\="278">\n			</colgroup><tbody></tbody></table></dd></dl></dl>{
+	=<p>Обмен информацией<br></p> -> Разговор по телефону
+	=<p>Обработка информации<br></p> -> Перевод текста
+	=<p>Хранение информации<br></p> -> Записная книжка
+}
+
+
+// question: 4382  name: 2.
+
+
+// question: 4386  name: 3.
+
+
+// question: 4402  name: 6.
+
+
+// question: 4404  name: 7.
+
+
+// question: 4406  name: 8
+::8::[html]<p>\n\n\n	\n	\n	\n	p \{ margin-bottom\: 0.25cm; direction\: ltr; line-height\: 120%; text-align\: left; \}<span style\="background\: \#ffffff">Какие\n		существует  способы представления\n		графической информации?</span></p><p><br>\n\n\n	\n	\n	\n	p \{ margin-bottom\: 0.25cm; direction\: ltr; line-height\: 120%; text-align\: left; \}\n\n\n</p>{
+	=<p>Растровый и векторный<br></p>
+	~<p>Растровый и графический<br></p>
+	~<p>Графический и циклический<br></p>
+}
+
+
+// question: 4407  name: 9
+::9::[html]<p>\n\n\n	\n	\n	\n	p \{ margin-bottom\: 0.25cm; direction\: ltr; line-height\: 120%; text-align\: left; \}<span style\="background\: \#ffffff">Какие\n		изображение разбивается прямоугольной\n		сеткой на элементы?</span>\n		</p>{
+	~<p>Векторы<br></p>
+	=<p>Пиксели<br></p>
+}
+
+
+// question: 4381  name: 1.
+::1.::[html]Вес цифры - основание системы счисления, возведенное в степень, где степень номер позиции цифры в числе<br><p><br></p>
+{TRUE}
+
+
+// question: 4401  name: 4
+::4::[html]<p><b><span style\="background\: \#ffffff">Файл</span></b><span style\="background\: \#ffffff">-\n		наибольшая единица хранения информации,\n		содержащая последовательность байтов\n		и имеющая уникальное имя.</span>\n	</p>{FALSE}
+
+
+// question: 4400  name: 5.
+::5.::[html]<p>\n\n\n	\n	\n	\n	<b><span style\="background\: \#ffffff">Информатика</span></b><span style\="background\: \#ffffff">-</span><span style\="background\: \#ffffff">техническая\n		наука, систематизирующая приемы\n		создания, хранения, обработки и передачи\n		информации средствами вычислительной\n		техники, а также принципы функционирования\n		этих средств и методы управления ими.</span><br>\n	</p>{TRUE}

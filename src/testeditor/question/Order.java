@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Order extends Question {
 
-	public Order(String head, List<Answer> answers) {
-		super(head, answers);
+	public Order(int number, String head, List<Answer> answers) {
+		super(number, head, answers);
 	}
 
 	public String getLine(Saver saver){

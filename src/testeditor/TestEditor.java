@@ -1,12 +1,7 @@
 package testeditor;
 
-import testeditor.parser.Parser;
 import testeditor.question.*;
 import testeditor.saver.*;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 
 public class TestEditor {

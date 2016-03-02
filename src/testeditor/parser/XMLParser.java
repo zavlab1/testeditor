@@ -20,7 +20,7 @@ public class XMLParser extends Parser {
         answers1.add(new Answer("Санкт-Петербург", false));
         answers1.add(new Answer("Курск", false));
 
-        Question q1 = new Select("Столица нашей Родины?", answers1);
+        Question q1 = new Select(1, "Столица нашей Родины?", answers1);
         test.add(q1);
 
         ArrayList<Answer> answers2 = new ArrayList<>();
@@ -28,7 +28,7 @@ public class XMLParser extends Parser {
         answers2.add(new Answer("Геофак", false));
         answers2.add(new Answer("ИПФ", true));
 
-        Question q2 = new Select("Название нашего факультета?", answers2);
+        Question q2 = new Select(2, "Название нашего факультета?", answers2);
         test.add(q2);
 
         return test;

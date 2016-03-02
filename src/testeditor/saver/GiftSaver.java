@@ -8,45 +8,46 @@ import testeditor.question.*;
  * Абстрактный потому, что содержит пока что только статические методы;
  */
 public class GiftSaver extends Saver {
-	/**
-	 * Записывает вопрос в текстовый файл в формате GIFT
-	 * @param filepath - путь к выходному файлу
-	 * @param test - объект вопроса
-	 */
-	public GiftSaver(Test test, String filepath) {
-		super(test, filepath);
-	}
 
-	/**
- 	 * @return возвращает строку с вопросом и вариантами ответа
-	 * для вопросов на выброр в формате GIFT
-	 */
-	public String doLineForSelect(Question q){
-		String answerLine = q.getHead()+"\n{\n";
+    /**
+     * Записывает вопрос в текстовый файл в формате GIFT
+     * @param filepath - путь к выходному файлу
+     * @param test - объект вопроса
+     */
+    public GiftSaver(Test test, String filepath) {
+        super(test, filepath);
+    }
 
-		for (Answer a : q.getAnswerList()) {
-			answerLine += (a.isTrue() ? "\t=" : "\t~") + a.getValue() + "\n";
-		}
+    /**
+     * @return возвращает строку с вопросом и вариантами ответа
+     * для вопросов на выброр в формате GIFT
+     */
+    public String doLineForSelect(Question q){
+        String answerLine = doHeadLine(q);
 
-		return answerLine.trim()+"\n}";
-	}
+        for (Answer a : q.getAnswerList()) {
+            answerLine += (a.isTrue() ? "\t=" : "\t~") + a.getValue() + "\n";
+        }
+        return answerLine.trim()+"\n}";
+    }
 
-	/**
-	 * @return возвращает строку с вопросом и вариантами ответа
-	 * для вопросов на порядок в  формате GIFT
-	 */
-	public String doLineForTrueFalse(Question q){
-		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0).getValue() + "}\n";
-		return answerLine.trim()+"\n";
-	}
+    public String doLineForTrueFalse(Question q){
+        String headLine = doHeadLine(q);
+        String answerLine = headLine.substring(0, headLine.length()-1 ) + q.getAnswerList().get(0).getValue() + "}\n";
+        return answerLine.trim();
+    }
 
-	public String doLineForConformity(Question q){
-		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0) + "}\n";
-		return answerLine.trim()+"\n";
-	}
+    public String doLineForConformity(Question q){
+        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
+        return answerLine.trim();
+    }
 
-	public String doLineForOrder(Question q){
-		String answerLine = q.getHead()+"\n{" + q.getAnswerList().get(0) + "}\n";
-		return answerLine.trim();
-	}
+    public String doLineForOrder(Question q){
+        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
+        return answerLine.trim();
+    }
+
+    private String doHeadLine(Question q){
+        return "::" + q.getNumber() + ".::" + q.getHead() + "\n{\n";
+    }
 }

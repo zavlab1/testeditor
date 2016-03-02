@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Conformity extends Question {
 
-	public Conformity(String head, List<Answer> answers) {
-		super(head, answers);
+	public Conformity(int number, String head, List<Answer> answers) {
+		super(number, head, answers);
 	}
 
 	public String getLine(Saver saver){
