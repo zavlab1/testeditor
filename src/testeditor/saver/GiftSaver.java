@@ -48,8 +48,11 @@ public class GiftSaver extends Saver {
     }
 
     public String doLineForMatching(Question q){
-        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
-        return answerLine.trim();
+        String answerLine = doHeadLine(q);
+        for (Answer a : q.getAnswerList()) {
+            answerLine += "\t=" + a.getValue() + "\n";
+        }
+        return answerLine.trim()+"\n}";
     }
 
     public String doLineForShortAnswer(Question q){
