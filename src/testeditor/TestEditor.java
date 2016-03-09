@@ -6,7 +6,7 @@ import testeditor.saver.*;
 
 public class TestEditor {
     public static void main(String[] args) {
-        Test test =	Test.getTestFromFile("orig_test.gift");
+        Test test =	Test.getTestFromFile("orig_test2.gift");
         Saver s = new GiftSaver(test, "Test1.gift");
         for (Question q : test) {
             s.save(q);

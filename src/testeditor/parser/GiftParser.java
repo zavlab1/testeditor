@@ -22,7 +22,7 @@ public class GiftParser extends Parser {
         List<List<String>> qTexts = getQuestionsTexts(lineList);
         for (List<String> qText : qTexts) {
             Question q = getQuestion(qText);
-            test.add(q);System.out.println(q.getNumber());
+            test.add(q);
         }
         return test;
     }
@@ -40,7 +40,6 @@ public class GiftParser extends Parser {
                 splitByBracesAndAdd(line, lineList, p);
             }
         }
-        System.out.println(lineList);
         return lineList;
     }
 
@@ -92,39 +91,38 @@ public class GiftParser extends Parser {
 
         String[] NumAndHead = getNumberAndHead(qText.get(0), html);              // Получаем текст вопроса
         int num = Integer.parseInt(NumAndHead[0]);
-        System.out.println(num);
         String head = NumAndHead[1];
 
         List<String> answerLines = qText.subList(1, qText.size());
-        List<Answer> answers = getAnswers(answerLines, html);                    // Получаем варианты ответа
-        ListIterator<Answer> li = answers.listIterator();
+        //List<Answer> answers = getAnswers(answerLines, html);                    // Получаем варианты ответа
+        //ListIterator<Answer> li = answers.listIterator();
+        ListIterator<String> li = answerLines.listIterator();
         while (li.hasNext()) {
-            Answer a = li.next();
-            String val = a.getValue();
-
+            String val = li.next();
+            //String val = a.getValue();
             if (val.contains("->")) {
                 if (li.hasNext()) {
-                    String nextVal = answers.get(li.nextIndex()).getValue();
+                    String nextVal = answerLines.get(li.nextIndex());
                     if ( nextVal.startsWith("=") &&
                          nextVal.contains("->") ) {
-                        return new Matching(num, head, answers);                 // вопрос на соответсвтие
+                        return new Matching(num, head, getAnswers(answerLines, html));                 // вопрос на соответсвтие
                     }
                 }
-            } else if (answers.size() == 1 &&
+            } else if (answerLines.size() == 1 &&
                        (val.equals("TRUE") ||
                         val.equals("FALSE")) ) {
-                return new TrueFalse(num, head, answers);                        // вопрос на Да/Нет
+                return new TrueFalse(num, head, getAnswers(answerLines, html));                        // вопрос на Да/Нет
             } else if (val.startsWith("=%") && val.endsWith("#")) {
-                return new ShortAnswer(num, head, answers);
+                return new ShortAnswer(num, head, getAnswers(answerLines, html));
             }
         }
-        return new MultiChoice(num, head, answers);                              // вопрос на выбор
+        return new MultiChoice(num, head, getAnswers(answerLines, html));                              // вопрос на выбор
     }
 
     private String[] getNumberAndHead(String line, Boolean[] html) {
 
         Pattern pattern = Pattern.compile("^::(\\d+)\\.?::(.*?)$");  //
-        Matcher m = pattern.matcher(line);                               // убираем всякие "::1.::" в начале
+        Matcher m = pattern.matcher(line);                           // убираем всякие "::1.::" в начале
         m.find();
         String[] NumAndHead = new String[2];
         NumAndHead[0] = m.group(1);
@@ -136,20 +134,29 @@ public class GiftParser extends Parser {
     }
 
     private List<Answer> getAnswers(List<String> aLines, Boolean[] html) {
-		List<Answer> answers = new ArrayList<>();
+        List<Answer> answers = new ArrayList<>();
         for (String line : aLines) {
             if (html[0]) {
                 line = clean(line);
             }
             if (line.equals("TRUE") || line.equals("FALSE")) {
                 answers.add(new Answer(line, Boolean.parseBoolean(line)?1.0f:0.0f));
+            } else if (line.startsWith("%", 1)) {
+                Pattern pattern = Pattern.compile("^(\\=|\\~)\\%(\\d+)\\%(.+?)\\#?$");
+                Matcher m = pattern.matcher(line);
+                m.find();
+                answers.add(new Answer(m.group(3), Float.parseFloat(m.group(2))/100));
             } else {
-                answers.add(new Answer(line.endsWith("#")?line.substring(1, line.length()-1):line.substring(1), (line.startsWith("=") || line.startsWith("\\~\\%"))?1.0f:0.0f));
+                answers.add(new Answer(
+                                        line.endsWith("#") ? line.substring(1, line.length()-1) : line.substring(1),
+                                        (line.startsWith("=") || line.startsWith("\\~\\%")) ? 1.f : 0.f
+                                      )
+                            );
             }
         }
         return answers;
     }
-    
+
     private String clean(String line) {
         line = line.replace("[html]", "");          // убираем html-метку
         line = line.replaceAll("\\\\n", "");        // удаляем переносы строк

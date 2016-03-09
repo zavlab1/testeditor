@@ -24,7 +24,6 @@ public class GiftSaver extends Saver {
      */
     public String doLineForMultiChoice(Question q){
         String answerLine = doHeadLine(q);
-
         for (Answer a : q.getAnswerList()) {
             if (a.getDegree() == 1.) {
                 answerLine += "\t=";
@@ -54,8 +53,18 @@ public class GiftSaver extends Saver {
     }
 
     public String doLineForShortAnswer(Question q){
-        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "#" + "}\n";
-        return answerLine.trim();
+        String answerLine = doHeadLine(q);
+        for (Answer a : q.getAnswerList()) {
+            if (a.getDegree() >= 0 && a.getDegree() <= 1) {
+                answerLine += "\t=%" + (int)(a.getDegree()*100) + "%";
+            } else {
+                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getNumber() +
+                        ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
+                return "";
+            }
+            answerLine += a.getValue() + "#\n";
+        }
+        return answerLine.trim()+"\n}";
     }
 
     private String doHeadLine(Question q){
