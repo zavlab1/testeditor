@@ -5,38 +5,39 @@ package testeditor.question;
  * Класс, описывающий вариант ответа
  */
 public class Answer {
-	/**
-	 * @param right - указывает на правильность варианта ответа
-	 * @param value - значение варианта ответа
-	 */
-	private boolean right;
-	private String value;
 
-	public Answer(String value, boolean right) {
-		this.value = value;
-		this.right = right;
-	}
+    private float degree;
+    private String value;
 
-	/**
-	 * @return возвращает строку с КОНКРЕТНЫМ вариантом ответа
-	 */
-	public String getValue() {
-		return this.value;
-	}
+    /**
+     * @param degree - указывает на степень правильности варианта ответа (от 0 до 1 с точностью до сотых)
+     * @param value - значение варианта ответа
+     */
+    public Answer(String value, float degree) {
+        this.value = value;
+        this.degree = degree;
+    }
 
-	public void setValue(String value, boolean right) {
-		this.value = value;
-		this.right = right;
-	}
+    /**
+     * @return возвращает строку с КОНКРЕТНЫМ вариантом ответа
+     */
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value, float degree) {
+        this.value = value;
+        this.degree = degree;
+    }
 
-	/**
-	 * @return возвращает правильность варианта
-	 */
-	public boolean isTrue() {
-		return right;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * @return возвращает правильность варианта
+     */
+    public float getDegree() {
+        return degree;
+    }
 }

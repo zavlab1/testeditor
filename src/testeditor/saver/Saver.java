@@ -62,8 +62,8 @@ abstract public class Saver {
 		return text;
 	}
 
-	abstract public String doLineForSelect(Question q);
+	abstract public String doLineForMultiChoice(Question q);
 	abstract public String doLineForTrueFalse(Question q);
-	abstract public String doLineForConformity(Question q);
-	abstract public String doLineForOrder(Question q);
+	abstract public String doLineForMatching(Question q);
+	abstract public String doLineForShortAnswer(Question q);
 }

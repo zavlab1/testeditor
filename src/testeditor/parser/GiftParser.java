@@ -86,15 +86,17 @@ public class GiftParser extends Parser {
 
     private Question getQuestion(List<String> qText) {
 
-        Boolean[] html = new Boolean[] {new Boolean(false)}; // специально объектом, чтобы мог модифицироваться по ссылке в др. методах
+        Boolean[] html = new Boolean[] {new Boolean(false)}; // специально объектом, чтобы мог модифицироваться по
+                                                             // ссылке в др. методах, но т.к. классы-обертки не могут
+                                                             // менять значение, прячем значение в массив (финт ушами)
 
-        String[] NumAndHead = getNumberAndHead(qText.get(0), html);                  // Получаем текст вопроса
+        String[] NumAndHead = getNumberAndHead(qText.get(0), html);              // Получаем текст вопроса
         int num = Integer.parseInt(NumAndHead[0]);
         System.out.println(num);
         String head = NumAndHead[1];
 
         List<String> answerLines = qText.subList(1, qText.size());
-        List<Answer> answers = getAnswers(answerLines, html);       // Получаем варианты ответа
+        List<Answer> answers = getAnswers(answerLines, html);                    // Получаем варианты ответа
         ListIterator<Answer> li = answers.listIterator();
         while (li.hasNext()) {
             Answer a = li.next();
@@ -105,16 +107,16 @@ public class GiftParser extends Parser {
                     String nextVal = answers.get(li.nextIndex()).getValue();
                     if ( nextVal.startsWith("=") &&
                          nextVal.contains("->") ) {
-                        return new Conformity(num, head, answers);                 // вопрос на соответсвтие
+                        return new Matching(num, head, answers);                 // вопрос на соответсвтие
                     }
                 }
             } else if ( answers.size() == 1 &&
                         (val.equals("TRUE") ||
                          val.equals("FALSE")) ) {
-                return new TrueFalse(num, head, answers);                          // вопрос на Да/Нет
+                return new TrueFalse(num, head, answers);                        // вопрос на Да/Нет
             }
         }
-        return new Select(num, head, answers);                                     // вопрос на выбор
+        return new MultiChoice(num, head, answers);                              // вопрос на выбор
     }
 
     private String[] getNumberAndHead(String line, Boolean[] html) {
@@ -138,9 +140,9 @@ public class GiftParser extends Parser {
                 line = clean(line);
             }
             if (line.equals("TRUE") || line.equals("FALSE")) {
-                answers.add(new Answer(line, Boolean.parseBoolean("true")));
+                answers.add(new Answer(line, Boolean.parseBoolean(line)?1.0f:0.0f));
             } else {
-                answers.add(new Answer(line.substring(1), (line.startsWith("=")) || line.startsWith("\\~\\%")));
+                answers.add(new Answer(line.substring(1), (line.startsWith("=") || line.startsWith("\\~\\%"))?1.0f:0.0f));
             }
         }
         return answers;

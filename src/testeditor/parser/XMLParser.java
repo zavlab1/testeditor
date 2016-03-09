@@ -3,33 +3,51 @@ package testeditor.parser;
 import testeditor.Test;
 import testeditor.question.Answer;
 import testeditor.question.Question;
-import testeditor.question.Select;
+import testeditor.question.MultiChoice;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+
+import javax.xml.parsers.*;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате XML
  */
 public class XMLParser extends Parser {
-    public Test getTest(String filepath) {
+        Document doc;
+
+        public Test getTest(String filepath) throws IOException {
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                doc = builder.parse(filepath);
+            }
+
+            catch (Exception e) {
+                throw new IOException("Ошибка открытия XML документа");
+            }
+
         Test test = new Test();
+        int QuestionsCount = doc.getDocumentElement().getChildNodes().getLength();
+        NodeList QuestionNodes = doc.getDocumentElement().getElementsByTagName("Question");
 
-        ArrayList<Answer> answers1 = new ArrayList<>();
-        answers1.add(new Answer("Москва", true));
-        answers1.add(new Answer("Санкт-Петербург", false));
-        answers1.add(new Answer("Курск", false));
+        for(int i = 0; i < QuestionsCount; i++) {
+            Element QuestionElement = (Element)QuestionNodes.item(i);
+            String questionType = QuestionElement.getAttribute("Type");
 
-        Question q1 = new Select(1, "Столица нашей Родины?", answers1);
-        test.add(q1);
+            switch (questionType) {
+                case "MultiChoice":
 
-        ArrayList<Answer> answers2 = new ArrayList<>();
-        answers2.add(new Answer("ФМФ", false));
-        answers2.add(new Answer("Геофак", false));
-        answers2.add(new Answer("ИПФ", true));
-
-        Question q2 = new Select(2, "Название нашего факультета?", answers2);
-        test.add(q2);
+                    break;
+            }
+        }
 
         return test;
     }

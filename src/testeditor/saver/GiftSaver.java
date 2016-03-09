@@ -22,11 +22,22 @@ public class GiftSaver extends Saver {
      * @return возвращает строку с вопросом и вариантами ответа
      * для вопросов на выброр в формате GIFT
      */
-    public String doLineForSelect(Question q){
+    public String doLineForMultiChoice(Question q){
         String answerLine = doHeadLine(q);
 
         for (Answer a : q.getAnswerList()) {
-            answerLine += (a.isTrue() ? "\t=" : "\t~") + a.getValue() + "\n";
+            if (a.getDegree() == 1.) {
+                answerLine += "\t=";
+            } else if (a.getDegree() == 0.) {
+                answerLine += "\t~";
+            } else if (a.getDegree() < 1 && a.getDegree() > 0) {
+                answerLine += "\t~%" + Float.toString(a.getDegree()*100) + "%";
+            } else {
+                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getNumber() +
+                        ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
+                return "";
+            }
+            answerLine += a.getValue() + "\n";
         }
         return answerLine.trim()+"\n}";
     }
@@ -37,12 +48,12 @@ public class GiftSaver extends Saver {
         return answerLine.trim();
     }
 
-    public String doLineForConformity(Question q){
+    public String doLineForMatching(Question q){
         String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
         return answerLine.trim();
     }
 
-    public String doLineForOrder(Question q){
+    public String doLineForShortAnswer(Question q){
         String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
         return answerLine.trim();
     }
