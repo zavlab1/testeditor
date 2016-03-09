@@ -54,7 +54,7 @@ public class GiftSaver extends Saver {
     }
 
     public String doLineForShortAnswer(Question q){
-        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "}\n";
+        String answerLine = doHeadLine(q) + q.getAnswerList().get(0).getValue() + "#" + "}\n";
         return answerLine.trim();
     }
 

@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class ShortAnswer extends Question {
 
-	public ShortAnswer(int number, String head, List<Answer> answers) {
-		super(number, head, answers);
-	}
+    public ShortAnswer(int number, String head, List<Answer> answers) {
+        super(number, head, answers);
+    }
 
-	public String getLine(Saver saver){
-		return saver.doLineForMultiChoice(this);
-	}
+    public String getLine(Saver saver){
+        return saver.doLineForShortAnswer(this);
+    }
 }

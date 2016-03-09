@@ -110,10 +110,12 @@ public class GiftParser extends Parser {
                         return new Matching(num, head, answers);                 // вопрос на соответсвтие
                     }
                 }
-            } else if ( answers.size() == 1 &&
-                        (val.equals("TRUE") ||
-                         val.equals("FALSE")) ) {
+            } else if (answers.size() == 1 &&
+                       (val.equals("TRUE") ||
+                        val.equals("FALSE")) ) {
                 return new TrueFalse(num, head, answers);                        // вопрос на Да/Нет
+            } else if (val.startsWith("=%") && val.endsWith("#")) {
+                return new ShortAnswer(num, head, answers);
             }
         }
         return new MultiChoice(num, head, answers);                              // вопрос на выбор
@@ -142,7 +144,7 @@ public class GiftParser extends Parser {
             if (line.equals("TRUE") || line.equals("FALSE")) {
                 answers.add(new Answer(line, Boolean.parseBoolean(line)?1.0f:0.0f));
             } else {
-                answers.add(new Answer(line.substring(1), (line.startsWith("=") || line.startsWith("\\~\\%"))?1.0f:0.0f));
+                answers.add(new Answer(line.endsWith("#")?line.substring(1, line.length()-1):line.substring(1), (line.startsWith("=") || line.startsWith("\\~\\%"))?1.0f:0.0f));
             }
         }
         return answers;
@@ -155,7 +157,6 @@ public class GiftParser extends Parser {
         line = line.replaceAll("\\\\(?!\\\\)", ""); // удаляем все одиночные обратные слеши, а из двойных делаем одиночные
         line = line.replaceAll("[\\s]{2,}", " ");   // удаляем лишние пробелы
         //особенность java - приходится удваивать слеши
-
         return line;
     }
 }
