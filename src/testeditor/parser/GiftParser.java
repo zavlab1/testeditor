@@ -35,9 +35,23 @@ public class GiftParser extends Parser {
             String line = in.nextLine().trim();
 
             if (!line.isEmpty() &&
-                    !line.startsWith("//") &&
-                    !line.startsWith("#")) {
-                splitByBracesAndAdd(line, lineList, p);
+                !line.startsWith("//")) {
+                    /*
+                     * Ищем символы ~ или =, которые не первые в строке и перед которыми нет
+                     * двойной @ (мы будем использовать @@ в качестве разделителя) или экранирующего слеша
+                     * и вставляем перед ними разделитель
+                     */
+                    Pattern p1 = Pattern.compile("(?<!(^|(@@)|\\\\))(\\~|\\=)");
+                    Matcher m1 = p1.matcher(line);
+                    while (m1.find()) {
+                        line = m1.replaceFirst("@@"+m1.group(3));
+                        m1.reset(line);
+                    }
+                    // разбиваем строку по разделителю
+                    String [] sublines = line.split("@@");
+                    for (int i=0; i<sublines.length; i++) {
+                        splitByBracesAndAdd(sublines[i], lineList, p);
+                    }
             }
         }
         return lineList;
@@ -94,12 +108,11 @@ public class GiftParser extends Parser {
         String head = NumAndHead[1];
 
         List<String> answerLines = qText.subList(1, qText.size());
-        //List<Answer> answers = getAnswers(answerLines, html);                    // Получаем варианты ответа
-        //ListIterator<Answer> li = answers.listIterator();
+
         ListIterator<String> li = answerLines.listIterator();
         while (li.hasNext()) {
             String val = li.next();
-            //String val = a.getValue();
+
             if (val.contains("->")) {
                 if (li.hasNext()) {
                     String nextVal = answerLines.get(li.nextIndex());
@@ -139,8 +152,9 @@ public class GiftParser extends Parser {
             if (html[0]) {
                 line = clean(line);
             }
-            if (line.equals("TRUE") || line.equals("FALSE")) {
-                answers.add(new Answer(line, Boolean.parseBoolean(line)?1.0f:0.0f));
+            if (line.toUpperCase().equals("TRUE") || line.toUpperCase().equals("T")
+                || line.toUpperCase().equals("FALSE") || line.toUpperCase().equals("F")) {
+                answers.add(new Answer(line.toUpperCase(), Boolean.parseBoolean(line)?1.0f:0.0f));
             } else if (line.startsWith("%", 1)) {
                 Pattern pattern = Pattern.compile("^(\\=|\\~)\\%(\\d+)\\%(.+?)\\#?$");
                 Matcher m = pattern.matcher(line);
