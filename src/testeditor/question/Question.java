@@ -11,49 +11,53 @@ import java.util.List;
  */
 abstract public class Question implements Comparable<Question> {
 
-    private String head;
+    private String qText;
     private List<Answer> answers;
-    private int number;
+    private String qName;
 
     /**
-     * @param head - заголовок вопроса
+     * @param qText - заголовок вопроса
      * @param answers - списочный массив вариантов ответа к вопросу
      */
-    Question(int number, String head, List<Answer> answers) {
+    Question(String qName, String qText, List<Answer> answers) {
         this.answers = answers;
         answers.listIterator(); // to reset previously moved iterator
-        this.head = head.trim();
-        this.number = number;
+        this.qText = qText.trim();
+        this.qName = qName;
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj == null) return false;
         else if (!(obj instanceof Question)) return false;
-        return this.head.equals(((Question)obj).head);
+        return this.getQHead().equals(((Question)obj).getQHead());
     }
 
     @Override
     public int compareTo(Question q) {
-        return this.getNumber() > q.getNumber() ? 1 : this.getNumber() < q.getNumber() ? -1 : 0;
+        return this.getQHead().compareTo(q.getQHead());
+    }
+
+    public String getQHead() {
+        return this.getQName() + this.getQText();
     }
 
     public String toString(){
-        return head;
+        return qText;
     }
 
     abstract public String getLine(Saver saver);
 
-    public String getHead() {
-        return this.head;
+    public String getQText() {
+        return this.qText;
     }
 
-    public int getNumber() { return this.number; }
+    public String getQName() { return this.qName; }
 
-    public void setNumber(int number) { this.number = number; }
+    public void setQName(String qName) { this.qName = qName; }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setQText(String qText) {
+        this.qText = qText;
     }
 
     public List<Answer> getAnswerList() {

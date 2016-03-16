@@ -19,11 +19,12 @@ public class GiftParser extends Parser {
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
         List<String> lineList = getLineList(filepath);
-        List<List<String>> qTexts = getQuestionsTexts(lineList);
-        for (List<String> qText : qTexts) {
-            Question q = getQuestion(qText);
+        List<List<String>> qBodies = getQuestionsBodies(lineList);
+        for (List<String> qBody : qBodies) {
+            Question q = getQuestion(qBody);
             test.add(q);
         }
+        System.out.println(test);
         return test;
     }
 
@@ -33,11 +34,24 @@ public class GiftParser extends Parser {
         Pattern p = Pattern.compile("(.*?)((?<!\\\\)\\{|(?<!\\\\)\\})(.*)$");
         while (in.hasNextLine()) {
             String line = in.nextLine().trim();
-
             if (!line.isEmpty() &&
-                    !line.startsWith("//") &&
-                    !line.startsWith("#")) {
-                splitByBracesAndAdd(line, lineList, p);
+                !line.startsWith("//")) {
+                    /*
+                     * Ищем символы ~ или =, которые не первые в строке и перед которыми нет
+                     * двойной @ (мы будем использовать @@ в качестве разделителя) или экранирующего слеша
+                     * и вставляем перед ними разделитель
+                     */
+                    Pattern p1 = Pattern.compile("(?<!(^|(@@)|\\\\))(\\~|\\=)");
+                    Matcher m1 = p1.matcher(line);
+                    while (m1.find()) { //m1.replaceAll() здесь не подойдет, т.к. везде поставит тильду
+                        line = m1.replaceFirst("@@"+m1.group(3));
+                        m1.reset(line);
+                    }
+                    // разбиваем строку по разделителю
+                    String [] sublines = line.split("@@");
+                    for (int i=0; i<sublines.length; i++) {
+                        splitByBracesAndAdd(sublines[i], lineList, p);
+                    }
             }
         }
         return lineList;
@@ -61,76 +75,75 @@ public class GiftParser extends Parser {
         }
     }
 
-    private List<List<String>> getQuestionsTexts(List<String> lineList) {
-        List<List<String>> qTexts = new ArrayList<>();
+    private List<List<String>> getQuestionsBodies(List<String> lineList) {
+        List<List<String>> qBodies = new ArrayList<>();
         ListIterator<String> it = lineList.listIterator();
         while (it.hasNext()) {
             String line = it.next();
             if (line.startsWith("::")) {
-                List<String> qText = new ArrayList<>();
-                qText.add(line);
+                List<String> qBody = new ArrayList<>();
+                qBody.add(line);
                 while (it.hasNext() && !lineList.get(it.nextIndex()).equals("}")) {
                     if (!lineList.get(it.nextIndex()).equals("{")) {
                         //System.out.println(lineList.get(it.nextIndex()));
-                        qText.add(it.next());
+                        qBody.add(it.next());
                     } else {
                         it.next();
                     }
                 }
-                qTexts.add(qText);
+                qBodies.add(qBody);
             }
         }
-        return qTexts;
+        return qBodies;
     }
 
-    private Question getQuestion(List<String> qText) {
+    private Question getQuestion(List<String> qBody) {
 
         Boolean[] html = new Boolean[] {new Boolean(false)}; // специально объектом, чтобы мог модифицироваться по
                                                              // ссылке в др. методах, но т.к. классы-обертки не могут
                                                              // менять значение, прячем значение в массив (финт ушами)
+        // Получаем текст вопроса
+        String[] nameAndQText = getNameAndQText(qBody.get(0), html);
+        String qName = nameAndQText[0];
+        String qText = nameAndQText[1];
 
-        String[] NumAndHead = getNumberAndHead(qText.get(0), html);              // Получаем текст вопроса
-        int num = Integer.parseInt(NumAndHead[0]);
-        String head = NumAndHead[1];
+        List<String> answerLines = qBody.subList(1, qBody.size());
 
-        List<String> answerLines = qText.subList(1, qText.size());
-        //List<Answer> answers = getAnswers(answerLines, html);                    // Получаем варианты ответа
-        //ListIterator<Answer> li = answers.listIterator();
         ListIterator<String> li = answerLines.listIterator();
         while (li.hasNext()) {
             String val = li.next();
-            //String val = a.getValue();
+
             if (val.contains("->")) {
                 if (li.hasNext()) {
                     String nextVal = answerLines.get(li.nextIndex());
                     if ( nextVal.startsWith("=") &&
                          nextVal.contains("->") ) {
-                        return new Matching(num, head, getAnswers(answerLines, html));                 // вопрос на соответсвтие
+                        return new Matching(qName, qText, getAnswers(answerLines, html));                 // вопрос на соответсвтие
                     }
                 }
             } else if (answerLines.size() == 1 &&
                        (val.equals("TRUE") ||
                         val.equals("FALSE")) ) {
-                return new TrueFalse(num, head, getAnswers(answerLines, html));                        // вопрос на Да/Нет
+                return new TrueFalse(qName, qText, getAnswers(answerLines, html));                        // вопрос на Да/Нет
             } else if (val.startsWith("=%") && val.endsWith("#")) {
-                return new ShortAnswer(num, head, getAnswers(answerLines, html));
+                return new ShortAnswer(qName, qText, getAnswers(answerLines, html));
             }
         }
-        return new MultiChoice(num, head, getAnswers(answerLines, html));                              // вопрос на выбор
+        return new MultiChoice(qName, qText, getAnswers(answerLines, html));                              // вопрос на выбор
     }
 
-    private String[] getNumberAndHead(String line, Boolean[] html) {
+    private String[] getNameAndQText(String line, Boolean[] html) {
 
-        Pattern pattern = Pattern.compile("^::(\\d+)\\.?::(.*?)$");  //
+        Pattern pattern = Pattern.compile("^::(.*)\\.?::(.*?)$");  //
         Matcher m = pattern.matcher(line);                           // убираем всякие "::1.::" в начале
         m.find();
-        String[] NumAndHead = new String[2];
-        NumAndHead[0] = m.group(1);
-        NumAndHead[1] = m.group(2);
-        if (html[0] = NumAndHead[1].startsWith("[html]")) {
-            NumAndHead[1] = clean(NumAndHead[1]);
+        String[] nameAndQText = new String[2];
+        nameAndQText[0] = m.group(1);
+        nameAndQText[1] = m.group(2);
+        if (html[0] = nameAndQText[1].startsWith("[html]")) {
+            nameAndQText[1] = clean(nameAndQText[1]);
         }
-        return NumAndHead;
+        return nameAndQText;
     }
 
     private List<Answer> getAnswers(List<String> aLines, Boolean[] html) {
@@ -139,10 +152,11 @@ public class GiftParser extends Parser {
             if (html[0]) {
                 line = clean(line);
             }
-            if (line.equals("TRUE") || line.equals("FALSE")) {
-                answers.add(new Answer(line, Boolean.parseBoolean(line)?1.0f:0.0f));
+            if (line.toUpperCase().equals("TRUE") || line.toUpperCase().equals("T")
+                || line.toUpperCase().equals("FALSE") || line.toUpperCase().equals("F")) {
+                answers.add(new Answer(line.toUpperCase(), Boolean.parseBoolean(line)?1.0f:0.0f));
             } else if (line.startsWith("%", 1)) {
-                Pattern pattern = Pattern.compile("^(\\=|\\~)\\%(\\d+)\\%(.+?)\\#?$");
+                Pattern pattern = Pattern.compile("^(\\=|\\~)\\%(.*)\\%(.+?)\\#?$");
                 Matcher m = pattern.matcher(line);
                 m.find();
                 answers.add(new Answer(m.group(3), Float.parseFloat(m.group(2))/100));

@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class TrueFalse extends Question {
 
-    public TrueFalse(int number, String head, List<Answer> answers) {
-        super(number, head, answers);
+    public TrueFalse(String qName, String qText, List<Answer> answers) {
+        super(qName, qText, answers);
     }
 
     public String getLine(Saver saver){

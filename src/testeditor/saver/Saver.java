@@ -44,7 +44,6 @@ abstract public class Saver {
 	}
 
 	public void insertToTest(Question q) {
-		//System.out.println(q);
 		test.remove(q); //удаляем существующий вопрос с таким же заголовком
 		test.add(q);
 	}
