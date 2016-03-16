@@ -24,7 +24,6 @@ public class GiftParser extends Parser {
             Question q = getQuestion(qBody);
             test.add(q);
         }
-        System.out.println(test);
         return test;
     }
 
