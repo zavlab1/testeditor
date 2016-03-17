@@ -13,56 +13,57 @@ import java.io.PrintWriter;
  */
 abstract public class Saver {
 
-	protected Test test;
-	protected String filepath;
+    protected Test test;
+    protected String filepath;
 
-	Saver(Test test, String filepath){
-		this.test = test;
-		this.filepath = filepath;
-	}
-	/**
-	 * Запись теста в файл
-	 * @param answersText - строка для записи
-	 */
-	public void toFile(String answersText) {
+    Saver(Test test, String filepath){
+        this.test = test;
+        this.filepath = filepath;
+    }
+    /**
+     * Запись теста в файл
+     * @param answersText - строка для записи
+     */
+    public void toFile(String answersText) {
 
-		File file = new File(filepath);
+        File file = new File(filepath);
 
-		try {
+        try {
 
-			//если файл не существует то создаем его
-			if (!file.exists()) {
-				file.createNewFile();
-			}
+            //если файл не существует то создаем его
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 
-			PrintWriter out = new PrintWriter(file.getAbsoluteFile());
-			out.println(answersText);
-			out.close();
-		} catch(IOException e){
-			System.err.println("Не могу записать данные в файл " + filepath);
-		}
-	}
+            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+            out.println(answersText);
+            out.close();
+        } catch(IOException e){
+            System.err.println("Не могу записать данные в файл " + filepath);
+        }
+    }
 
-	public void insertToTest(Question q) {
-		test.remove(q); //удаляем существующий вопрос с таким же заголовком
-		test.add(q);
-	}
+    public void insertToTest(Question q) {
+        test.remove(q); //удаляем существующий вопрос с таким же заголовком
+        test.add(q);
+    }
 
-	public void save(Question question) {
-		insertToTest(question);
-		toFile(getText());
-	}
+    public void save(Question question) {
+        insertToTest(question);
+        toFile(getText());
+    }
 
-	private String getText(){
-		String text = "";
-		for(Question q : test){
-			text += q.getLine(this) + "\n\n";
-		}
-		return text;
-	}
+    private String getText(){
+        String text = "";
+        for(Question q : test){
+            text += q.getLine(this) + "\n\n";
+        }
+        return text;
+    }
 
-	abstract public String doLineForMultiChoice(Question q);
-	abstract public String doLineForTrueFalse(Question q);
-	abstract public String doLineForMatching(Question q);
-	abstract public String doLineForShortAnswer(Question q);
+    abstract public String doLineForMultiChoice(Question q);
+    abstract public String doLineForTrueFalse(Question q);
+    abstract public String doLineForMatching(Question q);
+    abstract public String doLineForShortAnswer(Question q);
+    abstract public String doLineForNumerical(Question q);
 }

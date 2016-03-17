@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
 /**
@@ -16,21 +17,33 @@ import static java.util.Collections.*;
  * Парсер для чтения файлов в формате Gift
  */
 public class GiftParser extends Parser {
+
+    private List <String> boolvals = asList(new String[] {"TRUE", "FALSE", "T", "F"});
+
+
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
         List<String> lineList = getLineList(filepath);
         List<List<String>> qBodies = getQuestionsBodies(lineList);
         for (List<String> qBody : qBodies) {
-            Question q = getQuestion(qBody);
-            test.add(q);
+            try {
+                Question q = getQuestion(qBody);
+                test.add(q);
+            } catch (Exception ex) {
+                System.err.print("Can't parse the question " + qBody.get(0));
+
+            }
+
         }
         return test;
     }
+
 
     private List<String> getLineList(String filepath) throws IOException {
         Scanner in = new Scanner(new File(filepath));
         List<String> lineList = new ArrayList<>();
         Pattern p = Pattern.compile("(.*?)((?<!\\\\)\\{|(?<!\\\\)\\})(.*)$");
+        Pattern p1 = Pattern.compile("(?<!(^|(@@)|\\\\))(\\~|\\=)");
         while (in.hasNextLine()) {
             String line = in.nextLine().trim();
             if (!line.isEmpty() &&
@@ -40,7 +53,6 @@ public class GiftParser extends Parser {
                      * двойной @ (мы будем использовать @@ в качестве разделителя) или экранирующего слеша
                      * и вставляем перед ними разделитель
                      */
-                    Pattern p1 = Pattern.compile("(?<!(^|(@@)|\\\\))(\\~|\\=)");
                     Matcher m1 = p1.matcher(line);
                     while (m1.find()) { //m1.replaceAll() здесь не подойдет, т.к. везде поставит тильду
                         line = m1.replaceFirst("@@"+m1.group(3));
@@ -62,7 +74,7 @@ public class GiftParser extends Parser {
         if (m.find()) {
             for (int i = 1; i <= m.groupCount(); i++) {
                 if (!m.group(i).isEmpty()) {
-                    if (i<3) {
+                    if (i < m.groupCount()) {
                         lineList.add(m.group(i));
                     } else {
                         splitByBracesAndAdd(m.group(i), lineList, p);
@@ -96,7 +108,7 @@ public class GiftParser extends Parser {
         return qBodies;
     }
 
-    private Question getQuestion(List<String> qBody) {
+    private Question getQuestion(List<String> qBody) throws Exception {
 
         Boolean[] html = new Boolean[] {new Boolean(false)}; // специально объектом, чтобы мог модифицироваться по
                                                              // ссылке в др. методах, но т.к. классы-обертки не могут
@@ -111,8 +123,11 @@ public class GiftParser extends Parser {
         ListIterator<String> li = answerLines.listIterator();
         while (li.hasNext()) {
             String val = li.next();
-
-            if (val.contains("->")) {
+            System.out.println(answerLines);
+            System.out.println(val);
+            if (val.equals("#") && li.nextIndex() == 1) {
+                return new Numerical(qName, qText, getAnswers(answerLines, html));                        // числовой вопрос
+            } else if (val.contains("->")) {
                 if (li.hasNext()) {
                     String nextVal = answerLines.get(li.nextIndex());
                     if ( nextVal.startsWith("=") &&
@@ -121,14 +136,19 @@ public class GiftParser extends Parser {
                     }
                 }
             } else if (answerLines.size() == 1 &&
-                       (val.equals("TRUE") ||
-                        val.equals("FALSE")) ) {
+                       boolvals.contains(val.toUpperCase())) {
                 return new TrueFalse(qName, qText, getAnswers(answerLines, html));                        // вопрос на Да/Нет
             } else if (val.startsWith("=%") && val.endsWith("#")) {
                 return new ShortAnswer(qName, qText, getAnswers(answerLines, html));
+            } else if (val.startsWith("~") || val.startsWith("=")) {
+                return new MultiChoice(qName, qText, getAnswers(answerLines, html));                              // вопрос на выбор
+            } else {
+                System.out.println(val);
+                answerLines.remove(val);
+                //li.previous(); протестировать
             }
         }
-        return new MultiChoice(qName, qText, getAnswers(answerLines, html));                              // вопрос на выбор
+        throw(new Exception());
     }
 
     private String[] getNameAndQText(String line, Boolean[] html) {
@@ -147,12 +167,15 @@ public class GiftParser extends Parser {
 
     private List<Answer> getAnswers(List<String> aLines, Boolean[] html) {
         List<Answer> answers = new ArrayList<>();
+
         for (String line : aLines) {
+            if (!"=~".contains(line.substring(0, 1)) &&
+                !boolvals.contains(line.toUpperCase()))
+                continue;
             if (html[0]) {
                 line = clean(line);
             }
-            if (line.toUpperCase().equals("TRUE") || line.toUpperCase().equals("T")
-                || line.toUpperCase().equals("FALSE") || line.toUpperCase().equals("F")) {
+            if (boolvals.contains(line.toUpperCase())) {
                 answers.add(new Answer(line.toUpperCase(), Boolean.parseBoolean(line)?1.0f:0.0f));
             } else if (line.startsWith("%", 1)) {
                 Pattern pattern = Pattern.compile("^(\\=|\\~)\\%(.*)\\%(.+?)\\#?$");
