@@ -26,11 +26,9 @@ public class GiftSaver extends Saver {
         String answerLine = doQHeadLine(q);
 
         for (Answer a : q.getAnswerList()) {
-            System.out.println(a.getDegree());;
             if (a.getDegree() == 1.) {
                 answerLine += "\t=";
             } else if (a.getDegree() == 0.) {
-                System.out.println(123 + a.getDegree());
                 answerLine += "\t~";
             } else if (a.getDegree() < 1 && a.getDegree() > 0) {
                 answerLine += "\t~%" + Float.toString(a.getDegree()*100) + "%";
@@ -46,7 +44,6 @@ public class GiftSaver extends Saver {
 
     public String doLineForTrueFalse(Question q){
         String qTextLine = doQHeadLine(q);
-        System.out.println(q.getAnswerList());
         String answerLine = qTextLine.substring(0, qTextLine.length()-1 ) + q.getAnswerList().get(0).getValue() + "}\n";
         return answerLine.trim();
     }

@@ -123,8 +123,6 @@ public class GiftParser extends Parser {
         ListIterator<String> li = answerLines.listIterator();
         while (li.hasNext()) {
             String val = li.next();
-            System.out.println(answerLines);
-            System.out.println(val);
             if (val.equals("#") && li.nextIndex() == 1) {
                 return new Numerical(qName, qText, getAnswers(answerLines, html));                        // числовой вопрос
             } else if (val.contains("->")) {
@@ -143,7 +141,7 @@ public class GiftParser extends Parser {
             } else if (val.startsWith("~") || val.startsWith("=")) {
                 return new MultiChoice(qName, qText, getAnswers(answerLines, html));                              // вопрос на выбор
             } else {
-                System.out.println(val);
+                //System.out.println(val);
                 answerLines.remove(val);
                 //li.previous(); протестировать
             }
