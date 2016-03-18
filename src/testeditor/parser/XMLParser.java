@@ -2,9 +2,7 @@ package testeditor.parser;
 
 import com.sun.org.apache.xpath.internal.operations.Mult;
 import testeditor.Test;
-import testeditor.question.Answer;
-import testeditor.question.Question;
-import testeditor.question.MultiChoice;
+import testeditor.question.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import testeditor.question.ShortAnswer;
 
 /**
  * Created by dimitry on 28.12.15.
@@ -46,10 +43,16 @@ public class XMLParser extends Parser {
 
             switch (questionType) {
                 case "MultiChoice":
-                    test.add(parseMultiChoice(QuestionElement, i));
+                    test.add(parseMultiChoice(QuestionElement, String.valueOf(i)));
                     break;
                 case "ShortAnswer":
-                    test.add(parseShortAnswer(QuestionElement, i));
+                    test.add(parseShortAnswer(QuestionElement, String.valueOf(i)));
+                    break;
+                case "TrueFalse":
+                    test.add(parseTrueFalse(QuestionElement, String.valueOf(i)));
+                    break;
+                case "Numerical":
+                    test.add(parseNumerical(QuestionElement, String.valueOf(i)));
                     break;
             }
         }
@@ -57,18 +60,32 @@ public class XMLParser extends Parser {
         return test;
     }
 
-    MultiChoice parseMultiChoice(Element questionElement, int number) {
+    MultiChoice parseMultiChoice(Element questionElement, String id) {
         String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new MultiChoice(number, head, answerList);
+        return new MultiChoice(id, head, answerList);
     }
 
-    ShortAnswer parseShortAnswer(Element questionElement, int number) {
+    ShortAnswer parseShortAnswer(Element questionElement, String id) {
         String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new ShortAnswer(number, head, answerList);
+        return new ShortAnswer(id, head, answerList);
+    }
+
+    TrueFalse parseTrueFalse(Element questionElement, String id) {
+        String head = getQuestionHead(questionElement);
+        ArrayList<Answer> answerList = parseAnswerList(questionElement);
+
+        return new TrueFalse(id, head, answerList);
+    }
+
+    Numerical parseNumerical(Element questionElement, String id) {
+        String head = getQuestionHead(questionElement);
+        ArrayList<Answer> answerList = parseAnswerList(questionElement);
+
+        return new Numerical(id, head, answerList);
     }
 
     ArrayList<Answer> parseAnswerList(Element questionElement) {
