@@ -4,8 +4,7 @@ import testeditor.Test;
 import testeditor.question.*;
 
 /**
- * Класс, ответственный за запись вопроса в файл в GIFT-формате
- * Абстрактный потому, что содержит пока что только статические методы;
+ * Класс, ответственный за форматирование вопроса в GIFT-формате
  */
 public class GiftSaver extends Saver {
 
