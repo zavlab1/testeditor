@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Matching extends Question {
 
-	public Matching(int number, String head, List<Answer> answers) {
-		super(number, head, answers);
+	public Matching(String qName, String qText, List<Answer> answers) {
+		super(qName, qText, answers);
 	}
 
 	public String getLine(Saver saver){

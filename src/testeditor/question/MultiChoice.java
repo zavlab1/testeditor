@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class MultiChoice extends Question {
 
-    public MultiChoice(int number, String head, List<Answer> answers) {
-        super(number, head, answers);
+    public MultiChoice(String qName, String qText, List<Answer> answers) {
+        super(qName, qText, answers);
     }
 
     public String getLine(Saver saver){

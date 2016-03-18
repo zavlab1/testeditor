@@ -23,7 +23,8 @@ public class GiftSaver extends Saver {
      * для вопросов на выброр в формате GIFT
      */
     public String doLineForMultiChoice(Question q){
-        String answerLine = doHeadLine(q);
+        String answerLine = doQHeadLine(q);
+
         for (Answer a : q.getAnswerList()) {
             if (a.getDegree() == 1.) {
                 answerLine += "\t=";
@@ -32,7 +33,7 @@ public class GiftSaver extends Saver {
             } else if (a.getDegree() < 1 && a.getDegree() > 0) {
                 answerLine += "\t~%" + Float.toString(a.getDegree()*100) + "%";
             } else {
-                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getNumber() +
+                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
                 return "";
             }
@@ -42,13 +43,13 @@ public class GiftSaver extends Saver {
     }
 
     public String doLineForTrueFalse(Question q){
-        String headLine = doHeadLine(q);
-        String answerLine = headLine.substring(0, headLine.length()-1 ) + q.getAnswerList().get(0).getValue() + "}\n";
+        String qTextLine = doQHeadLine(q);
+        String answerLine = qTextLine.substring(0, qTextLine.length()-1 ) + q.getAnswerList().get(0).getValue() + "}\n";
         return answerLine.trim();
     }
 
     public String doLineForMatching(Question q){
-        String answerLine = doHeadLine(q);
+        String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
             answerLine += "\t=" + a.getValue() + "\n";
         }
@@ -56,12 +57,12 @@ public class GiftSaver extends Saver {
     }
 
     public String doLineForShortAnswer(Question q){
-        String answerLine = doHeadLine(q);
+        String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
-            if (a.getDegree() >= 0 && a.getDegree() <= 1) {
+            if (a.getDegree() > 0 && a.getDegree() <= 1) {
                 answerLine += "\t=%" + (int)(a.getDegree()*100) + "%";
             } else {
-                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getNumber() +
+                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
                 return "";
             }
@@ -70,7 +71,24 @@ public class GiftSaver extends Saver {
         return answerLine.trim()+"\n}";
     }
 
-    private String doHeadLine(Question q){
-        return "::" + q.getNumber() + ".::" + q.getHead() + "\n{\n";
+    public String doLineForNumerical(Question q){
+        String answerLine = doQHeadLine(q).substring(0, doQHeadLine(q).length()-1) + "#\n";
+        for (Answer a : q.getAnswerList()) {
+            if (a.getDegree() == 1.) {
+                answerLine += "\t=";
+            } else if (a.getDegree() > 0 && a.getDegree() < 1) {
+                answerLine += "\t=%" + (int)(a.getDegree()*100) + "%";
+            } else {
+                System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
+                        ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
+                return "";
+            }
+            answerLine += a.getValue() + "\n";
+        }
+        return answerLine.trim()+"\n}";
+    }
+
+    private String doQHeadLine(Question q){
+        return "::" + q.getQName() + ".::" + q.getQText() + "\n{\n";
     }
 }
