@@ -14,13 +14,13 @@ import java.io.IOException;
  * Класс-слушатель для события открытия файла
  */
 public class OpenAction extends AbstractAction {
-    private JTextArea content;
+    private DefaultListModel questionList;
 
     /**
-     * @param content - область, куда выводим данные, пока это просто JTextArea
+     * @param listModel - модель списка для JList, куда добавляем вопросы
      */
-    public OpenAction(JTextArea content){
-        this.content = content;
+    public OpenAction(DefaultListModel listModel){
+        questionList = listModel;
 
         this.putValue(Action.NAME,"Открыть");
         this.putValue(Action.SHORT_DESCRIPTION,"Открыть файл теста");
@@ -28,11 +28,11 @@ public class OpenAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent event){
-        Test test; // Cоздаем объект теста
+        Test test; // Объект теста
         JFileChooser openDialog = new JFileChooser(); // объект диалогового окна
 
         //------- Настраиваем диалоговое окно -------//
-        openDialog.setCurrentDirectory(new File("."));
+        openDialog.setCurrentDirectory(new File(".")); //корневая дирректория по умолчанию
         openDialog.setAcceptAllFileFilterUsed(false); //убираем в фильтрах "All files"
         openDialog.addChoosableFileFilter(new FileNameExtensionFilter("Все поддерживаемые форматы (*.gift, *.xml)","gift","xml"));
         openDialog.addChoosableFileFilter(new FileNameExtensionFilter("GIFT Moodle test (*.gift)","gift"));
@@ -41,16 +41,15 @@ public class OpenAction extends AbstractAction {
         //------- Обрабатываем файл теста -------//
         int result = openDialog.showDialog(null,"Открыть файл");
         if (result == JFileChooser.APPROVE_OPTION){
+            questionList.clear();
             try {
                 test = Parser.parse(openDialog.getSelectedFile().getAbsolutePath());
 
                 for (Question question: test){
-                    content.append(question.getQHead()+"\n");
+                    questionList.addElement(question.getQHead());
                 }
             }
             catch (Exception ex) {ex.printStackTrace();}
-
-
         }
 
 
