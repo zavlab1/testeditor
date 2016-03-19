@@ -14,15 +14,6 @@ import java.io.IOException;
  * Класс-слушатель для события открытия файла
  */
 public class OpenAction extends AbstractAction {
-<<<<<<< HEAD
-    private DefaultListModel<Question> questionList;
-
-    /**
-     * @param listModel - модель списка для JList, куда добавляем вопросы
-     */
-    public OpenAction(DefaultListModel<Question> listModel){
-        questionList = listModel;
-=======
     private JTextArea content;
 
     /**
@@ -30,7 +21,6 @@ public class OpenAction extends AbstractAction {
      */
     public OpenAction(JTextArea content){
         this.content = content;
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
 
         this.putValue(Action.NAME,"Открыть");
         this.putValue(Action.SHORT_DESCRIPTION,"Открыть файл теста");
@@ -38,19 +28,11 @@ public class OpenAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent event){
-<<<<<<< HEAD
-        Test test; // Объект теста
-        JFileChooser openDialog = new JFileChooser(); // объект диалогового окна
-
-        //------- Настраиваем диалоговое окно -------//
-        openDialog.setCurrentDirectory(new File(".")); //корневая дирректория по умолчанию
-=======
         Test test; // Cоздаем объект теста
         JFileChooser openDialog = new JFileChooser(); // объект диалогового окна
 
         //------- Настраиваем диалоговое окно -------//
         openDialog.setCurrentDirectory(new File("."));
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
         openDialog.setAcceptAllFileFilterUsed(false); //убираем в фильтрах "All files"
         openDialog.addChoosableFileFilter(new FileNameExtensionFilter("Все поддерживаемые форматы (*.gift, *.xml)","gift","xml"));
         openDialog.addChoosableFileFilter(new FileNameExtensionFilter("GIFT Moodle test (*.gift)","gift"));
@@ -59,27 +41,16 @@ public class OpenAction extends AbstractAction {
         //------- Обрабатываем файл теста -------//
         int result = openDialog.showDialog(null,"Открыть файл");
         if (result == JFileChooser.APPROVE_OPTION){
-<<<<<<< HEAD
-            questionList.clear();
-=======
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
             try {
                 test = Parser.parse(openDialog.getSelectedFile().getAbsolutePath());
 
                 for (Question question: test){
-<<<<<<< HEAD
-                    questionList.addElement(question);
-                }
-            }
-            catch (Exception ex) {ex.printStackTrace();}
-=======
                     content.append(question.getQHead());
                 }
             }
             catch (Exception ex) {ex.printStackTrace();}
 
 
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
         }
 
 
