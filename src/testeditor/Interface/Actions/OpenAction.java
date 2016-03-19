@@ -45,7 +45,7 @@ public class OpenAction extends AbstractAction {
                 test = Parser.parse(openDialog.getSelectedFile().getAbsolutePath());
 
                 for (Question question: test){
-                    content.append(question.getQHead());
+                    content.append(question.getQHead()+"\n");
                 }
             }
             catch (Exception ex) {ex.printStackTrace();}
