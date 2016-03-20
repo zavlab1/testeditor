@@ -69,7 +69,7 @@ public class GiftParser extends Parser {
         if (aLine.startsWith("#")) {
             List<Answer> aList;
             if (aLinesList.size() == 1) {
-                aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1), 1.f));
+                aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1), 100));
             } else {
                 aList = getMultiAnswers(aLinesList.subList(1, aLinesList.size()));
             }
@@ -77,11 +77,11 @@ public class GiftParser extends Parser {
 
         // если значиение ответа равно одному из обозначений boolean в gift, то это вопрос Верно/Неверно
         } else if (boolvals.contains(aLine.trim().toUpperCase())) {
-            q = new TrueFalse(qName, qText, Arrays.asList(new Answer(aLine, Boolean.parseBoolean(aLine) ? 1.f : 0.f)));
+            q = new TrueFalse(qName, qText, Arrays.asList(new Answer(aLine, Boolean.parseBoolean(aLine) ? 100 : 0)));
 
         // если все элементы начинаются с "=" и содержат "->", то это - вопрос на соответствие
         } else if (getALineStream(aLinesList).allMatch(x -> (x.startsWith("=") && x.contains("->")))) {
-            q = new Matching(qName, qText, getALineStream(aLinesList).map(x -> new Answer(x.substring(1), 1.f)).collect(Collectors.toList()));
+            q = new Matching(qName, qText, getALineStream(aLinesList).map(x -> new Answer(x.substring(1), 100)).collect(Collectors.toList()));
 
         // если все элементы начинаются с "=", то это - вопрос "Короткий ответ"
         } else if (getALineStream(aLinesList).allMatch(x -> (x.startsWith("=")))) {
@@ -107,10 +107,11 @@ public class GiftParser extends Parser {
         Pattern p = Pattern.compile("^(\\=|\\~)(\\%(\\d+)\\%)(.+?)(\\#.*)?$");
         Stream <Answer> stream = getALineStream(lines).map(line -> {
             Matcher m = p.matcher(line);
+            boolean isMatch = m.find();
             return  new Answer (
-                    line.substring(1),
-                    m.find() ? Float.parseFloat(m.group(4)) / 100 :
-                               line.startsWith("~") ? 0.f : 1.f
+                    isMatch ? m.group(4) : line.substring(1),
+                    isMatch ? Integer.parseInt(m.group(3)):
+                               line.startsWith("~") ? 0 : 100
             );
         });
         return stream.collect(Collectors.toList());
