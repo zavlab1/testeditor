@@ -123,7 +123,6 @@ public class GiftParser extends Parser {
         return stream.collect(Collectors.toList());
     }
 
-
     // дробим строки по тильде или равно с сохранением этих символов
     private List<String> split(String line) {
         Pattern p = Pattern.compile("(?<!(^|(" + System.lineSeparator() + ")|\\\\))(\\~|\\=)");
@@ -194,8 +193,4 @@ public class GiftParser extends Parser {
         //если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов
         return lines.stream().filter(x -> x.startsWith("~")).toArray().length > lines.size() - 2;
     }
-
-
-
-
 }
