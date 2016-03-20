@@ -6,14 +6,14 @@ package testeditor.question;
  */
 public class Answer {
 
-    private float degree;
+    private int degree;
     private String value;
 
     /**
      * @param degree - указывает на степень правильности варианта ответа (от 0 до 1 с точностью до сотых)
      * @param value - значение варианта ответа
      */
-    public Answer(String value, float degree) {
+    public Answer(String value, int degree) {
         this.value = value;
         this.degree = degree;
     }
@@ -25,7 +25,7 @@ public class Answer {
         return this.value;
     }
 
-    public void setValue(String value, float degree) {
+    public void setValue(String value, int degree) {
         this.value = value;
         this.degree = degree;
     }
@@ -37,7 +37,7 @@ public class Answer {
     /**
      * @return возвращает правильность варианта
      */
-    public float getDegree() {
+    public int getDegree() {
         return degree;
     }
 }

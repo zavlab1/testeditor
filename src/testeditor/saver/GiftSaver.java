@@ -25,12 +25,12 @@ public class GiftSaver extends Saver {
         String answerLine = doQHeadLine(q);
 
         for (Answer a : q.getAnswerList()) {
-            if (a.getDegree() == 1.) {
+            if (a.getDegree() == 100) {
                 answerLine += "\t=";
-            } else if (a.getDegree() == 0.) {
+            } else if (a.getDegree() == 0) {
                 answerLine += "\t~";
-            } else if (a.getDegree() < 1 && a.getDegree() > 0) {
-                answerLine += "\t~%" + Float.toString(a.getDegree()*100) + "%";
+            } else if (a.getDegree() < 100 && a.getDegree() > 0) {
+                answerLine += "\t~%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
@@ -58,8 +58,8 @@ public class GiftSaver extends Saver {
     public String doLineForShortAnswer(Question q){
         String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
-            if (a.getDegree() > 0 && a.getDegree() <= 1) {
-                answerLine += "\t=%" + (int)(a.getDegree()*100) + "%";
+            if (a.getDegree() > 0 && a.getDegree() <= 100) {
+                answerLine += "\t=%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
@@ -73,10 +73,10 @@ public class GiftSaver extends Saver {
     public String doLineForNumerical(Question q){
         String answerLine = doQHeadLine(q).substring(0, doQHeadLine(q).length()-1) + "#\n";
         for (Answer a : q.getAnswerList()) {
-            if (a.getDegree() == 1.) {
+            if (a.getDegree() == 100) {
                 answerLine += "\t=";
-            } else if (a.getDegree() > 0 && a.getDegree() < 1) {
-                answerLine += "\t=%" + (int)(a.getDegree()*100) + "%";
+            } else if (a.getDegree() > 0 && a.getDegree() < 100) {
+                answerLine += "\t=%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getValue() + "\' for question " + q.getQName() +
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
