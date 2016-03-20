@@ -25,11 +25,19 @@ public class GiftSaver extends Saver {
         String answerLine = doQHeadLine(q);
 
         for (Answer a : q.getAnswerList()) {
+<<<<<<< HEAD
             if (a.getDegree() == Answer.MAX_DEGREE) {
                 answerLine += "\t=";
             } else if (a.getDegree() == Answer.MIN_DEGREE) {
                 answerLine += "\t~";
             } else if (a.getDegree() < Answer.MAX_DEGREE && a.getDegree() > Answer.MIN_DEGREE) {
+=======
+            if (a.getDegree() == 100) {
+                answerLine += "\t=";
+            } else if (a.getDegree() == 0) {
+                answerLine += "\t~";
+            } else if (a.getDegree() < 100 && a.getDegree() > 0) {
+>>>>>>> 836a764... Do degree for answer int type & small fixes
                 answerLine += "\t~%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getAText() + "\' for question " + q.getQName() +
@@ -59,7 +67,11 @@ public class GiftSaver extends Saver {
     public String doLineForShortAnswer(Question q){
         String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
+<<<<<<< HEAD
             if (a.getDegree() > Answer.MIN_DEGREE && a.getDegree() <= Answer.MAX_DEGREE) {
+=======
+            if (a.getDegree() > 0 && a.getDegree() <= 100) {
+>>>>>>> 836a764... Do degree for answer int type & small fixes
                 answerLine += "\t=%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getAText() + "\' for question " + q.getQName() +
@@ -74,9 +86,15 @@ public class GiftSaver extends Saver {
     public String doLineForNumerical(Question q){
         String answerLine = doQHeadLine(q).substring(0, doQHeadLine(q).length()-1) + "#\n";
         for (Answer a : q.getAnswerList()) {
+<<<<<<< HEAD
             if (a.getDegree() == Answer.MAX_DEGREE) {
                 answerLine += "\t=";
             } else if (a.getDegree() > Answer.MIN_DEGREE && a.getDegree() < Answer.MAX_DEGREE) {
+=======
+            if (a.getDegree() == 100) {
+                answerLine += "\t=";
+            } else if (a.getDegree() > 0 && a.getDegree() < 100) {
+>>>>>>> 836a764... Do degree for answer int type & small fixes
                 answerLine += "\t=%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getAText() + "\' for question " + q.getQName() +
