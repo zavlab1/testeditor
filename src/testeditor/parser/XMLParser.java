@@ -96,7 +96,7 @@ public class XMLParser extends Parser {
             Element answerElement = (Element)answerElements.item(i);
 
             String text = answerElement.getElementsByTagName("text").item(0).getNodeValue();
-            float fraction = Float.parseFloat(answerElement.getAttribute("fraction"));
+            int fraction = Integer.parseInt(answerElement.getAttribute("fraction"));
 
             answerList.add(new Answer(text, fraction));
         }
