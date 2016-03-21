@@ -20,8 +20,6 @@ import static java.util.Arrays.*;
  */
 public class GiftParser extends Parser {
 
-    private final List <String> boolvals = asList(new String[] {"TRUE", "FALSE", "T", "F"});
-
     public Test getTest(String filepath) throws IOException {
         Test test = new Test();
         String text = readFile(filepath);
@@ -37,12 +35,13 @@ public class GiftParser extends Parser {
                 String qFormat = (m.group(7) != null) ? m.group(7) : "";
                 String qText = m.group(11).isEmpty() ? m.group(8) : m.group(8) + " _______ " + m.group(11);
                 String aLine = m.group(10);
-
-                Question q = getQuestion(qName, qText, aLine.trim(), qFormat);
                 try {
+                    Question q = getQuestion(qName, qText, aLine.trim(), qFormat);
                     test.add(q);
-                } catch(NullPointerException ex) {
-                    System.err.printf("%s. Невозможно определить тип вопроса \"%s\" \nПропускаем...",
+                } catch (NullPointerException ex) {
+                    System.err.printf("Невозможно определить тип вопроса \"%s\" \nПропускаем...", qText);
+                } catch (Exception ex) {
+                    System.err.printf("%s \"%s.\" \nПропускаем...",
                             ex.getMessage(), qText);
                 }
             }
@@ -59,22 +58,29 @@ public class GiftParser extends Parser {
         return new String(str);
     }
 
-    private Question getQuestion(String qName, String qText, String aLine, String qFormat) {
+    private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception{
+        System.out.println(aLine);
         Question q = null;
+        final List <String> boolvals = asList(new String[] {"TRUE", "FALSE", "T", "F"});
         if (qFormat.equals("html")) {
             qText = clean(qText);
             aLine = clean(aLine);
         }
         List<String> aLinesList = split(aLine, System.lineSeparator());
-
-
+        aLinesList = aLinesList.stream().map(String::trim).filter(x->!x.isEmpty()).collect(Collectors.toList());
+        if (aLinesList.stream().anyMatch(x -> x.startsWith("=") || x.startsWith("~"))) {
+            aLinesList = aLinesList.stream().filter(x -> x.startsWith("=") ||
+                                                         x.startsWith("~") ||
+                                                         x.startsWith("#"))
+                                                        .collect(Collectors.toList());
+        }
         //если строка ответов начинается с "#", значит, создаем числовой вопрос
         if (aLine.startsWith("#")) {
             List<Answer> aList;
             if (aLinesList.size() == 1) {
-                aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1), 100));
+                aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1)));
             } else {
-                aList = getMultiAnswers(aLinesList.subList(1, aLinesList.size()));
+                aList = getMultiAnswers(aLinesList.stream().skip(1).collect(Collectors.toList()));
             }
             q = new Numerical(qName, qText, aList);
 
@@ -83,16 +89,16 @@ public class GiftParser extends Parser {
             q = new TrueFalse(qName, qText, Arrays.asList(new Answer(aLine, Boolean.parseBoolean(aLine) ? 100 : 0)));
 
         // если все элементы начинаются с "=" и содержат "->", то это - вопрос на соответствие
-        } else if (getALineStream(aLinesList).allMatch(x -> (x.startsWith("=") && x.contains("->")))) {
-            q = new Matching(qName, qText, getALineStream(aLinesList).map(x -> new Answer(x.substring(1), 100)).collect(Collectors.toList()));
+        } else if (aLinesList.stream().allMatch(x -> (x.startsWith("=") && x.contains("->")))) {
+            q = new Matching(qName, qText, aLinesList.stream().map(x -> new Answer(x.substring(1))).collect(Collectors.toList()));
 
         // если все элементы начинаются с "=", то это - вопрос "Короткий ответ"
-        } else if (getALineStream(aLinesList).allMatch(x -> (x.startsWith("=")))) {
+        } else if (aLinesList.stream().allMatch(x -> (x.startsWith("=")))) {
             List<Answer> aList = getMultiAnswers(aLinesList);
             q = new ShortAnswer(qName, qText, aList);
 
         // если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов - вопрос на множественный выбор
-        } else if (getALineStream(aLinesList).filter(x -> x.startsWith("~")).toArray().length > aLinesList.size() - 2) {
+        } else if (aLinesList.stream().filter(x -> x.startsWith("~")).toArray().length > aLinesList.size() - 2) {
             List<Answer> aList = getMultiAnswers(aLinesList);
             q = new MultiChoice(qName, qText, aList);
         }
@@ -101,32 +107,30 @@ public class GiftParser extends Parser {
         return q;
     }
 
-    private Stream<String> getALineStream(List<String> aLinesList){
-        return aLinesList.stream().map(String::trim).filter(x->!x.isEmpty());
-    }
-
     //метод для создания списка ответов из тех строк, которые содержат проценты за правильный ответ
-    private List<Answer> getMultiAnswers(List<String> lines) {
+    private List<Answer> getMultiAnswers(List<String> lines) throws Exception {
+        ArrayList<Integer> degrees = new ArrayList<>();
         Pattern p = Pattern.compile("^(\\=|\\~)(\\%(\\d+)\\%)(.+?)(\\#.*)?$");
-        Stream <Answer> stream = getALineStream(lines).map(line -> {
+        Stream <Answer> stream = lines.stream().map(line -> {
             Matcher m = p.matcher(line);
-            boolean isMatch = m.find();
-            return  new Answer (
-                    isMatch ? m.group(4) : line.substring(1),
-                    isMatch ? Integer.parseInt(m.group(3)):
-                               line.startsWith("~") ? 0 : 100
-            );
+            if (m.find()) {
+                Integer degree = Integer.parseInt(m.group(3));
+                if (degree < 0 || degree > 100) {
+                    System.err.printf("Процент %d в строке \"%s\" вне допустимого диапазона", degree, line);
+                }
+                if (m.group(1).equals("~")) {
+                    degrees.add(degree);
+                }
+                return new Answer(m.group(4), degree);
+            } else {
+                return new Answer(line.substring(1), line.startsWith("~") ? 0 : 100);
+            }
         });
-        List<Answer> answers = stream.collect(Collectors.toList());
-        Integer sumDegree = lines.stream().filter(x -> {
-            Matcher m = p.matcher(x);
-            return m.find() ? true : false;
-        }).mapToInt(y -> Integer.parseInt(m.group(4))).sum();
 
-        if (sumDegree > 100 || sumDegree < 0) {System.out.println(sumDegree);
-            throw new NullPointerException("Суммарная оценка вне допустимого диапазона");
+        if (!(degrees.isEmpty()) && degrees.stream().mapToInt(x -> x).sum() != 100) {
+            throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна 100");
         }
-        return answers;
+        return stream.collect(Collectors.toList());
     }
 
     private List<String> split(String line, String separator) {

@@ -57,6 +57,9 @@ public class GiftParser extends Parser {
 
         return new String(str);
     }
+    public Answer(String value) {
+        this(value, 100);
+    }
 
     private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception{
         Question q = null;
