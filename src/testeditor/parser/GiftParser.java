@@ -5,6 +5,7 @@ import testeditor.question.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +27,7 @@ public class GiftParser extends Parser {
         String text = readFile(filepath);
         String nl = System.lineSeparator();
         String[] qBodies = text.split(nl+nl);
+
         Pattern p = Pattern.compile("^((\\/\\/)(.*)$\\s)?(::(.*?)::)?(\\[(.*?)\\])?(.+)((?<!\\\\)\\{(.*?)(?<!\\\\)\\})(.*)$",
                                     Pattern.MULTILINE | Pattern.DOTALL);
         for (String qBody : qBodies) {
@@ -40,7 +42,8 @@ public class GiftParser extends Parser {
                 try {
                     test.add(q);
                 } catch(NullPointerException ex) {
-                    System.err.println("Невозможно определить тип вопроса \"" + qText + "\" \nПропускаем...");
+                    System.err.printf("%s. Невозможно определить тип вопроса \"%s\" \nПропускаем...",
+                            ex.getMessage(), qText);
                 }
             }
         }
@@ -114,7 +117,16 @@ public class GiftParser extends Parser {
                                line.startsWith("~") ? 0 : 100
             );
         });
-        return stream.collect(Collectors.toList());
+        List<Answer> answers = stream.collect(Collectors.toList());
+        Integer sumDegree = lines.stream().filter(x -> {
+            Matcher m = p.matcher(x);
+            return m.find() ? true : false;
+        }).mapToInt(y -> Integer.parseInt(m.group(4))).sum();
+
+        if (sumDegree > 100 || sumDegree < 0) {System.out.println(sumDegree);
+            throw new NullPointerException("Суммарная оценка вне допустимого диапазона");
+        }
+        return answers;
     }
 
     private List<String> split(String line, String separator) {
