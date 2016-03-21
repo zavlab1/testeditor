@@ -17,6 +17,9 @@ public class Answer {
         this.value = value;
         this.degree = degree;
     }
+    public Answer(String value) {
+        this(value, 100);
+    }
 
     /**
      * @return возвращает строку с КОНКРЕТНЫМ вариантом ответа
