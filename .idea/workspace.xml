@@ -25,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TestEditor.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestEditor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/testeditor/TestEditor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.6">
-              <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.4524237">
+              <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -41,19 +41,20 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding>
-                <marker date="1458988186266" expanded="true" signature="3889:3896" placeholder="{...}" />
+                <marker date="1458988738931" expanded="true" signature="3887:3894" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GiftParser.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GiftParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/testeditor/parser/GiftParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.0682225">
-              <caret line="64" column="1" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="73" column="1" selection-start-line="73" selection-start-column="1" selection-end-line="73" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <marker date="1458988738951" expanded="true" signature="6097:6155" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -63,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/orig_test.gift">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+              <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -88,7 +89,7 @@
                 <element signature="imports" expanded="false" />
                 <element signature="e#401#402#0" expanded="false" />
                 <element signature="e#438#439#0" expanded="false" />
-                <element signature="e#3463#3464#0" expanded="false" />
+                <element signature="e#3428#3429#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -103,6 +104,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/testeditor/parser/GiftParser.java" />
+        <option value="$PROJECT_DIR$/src/testeditor/TestEditor.java" />
       </list>
     </option>
   </component>
@@ -361,7 +363,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32990867" sideWeight="0.65868264" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990867" sideWeight="0.34131736" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32990867" sideWeight="0.34131736" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990867" sideWeight="0.8656972" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990867" sideWeight="0.44568008" order="10" side_tool="false" content_ui="tabs" />
@@ -440,7 +442,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -459,6 +461,7 @@
           <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1458988738951" expanded="true" signature="6097:6155" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -479,7 +482,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -524,7 +527,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -561,7 +564,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -598,7 +601,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -635,7 +638,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -672,7 +675,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -709,7 +712,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -781,7 +784,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding>
-            <marker date="1458988186266" expanded="true" signature="3889:3896" placeholder="{...}" />
+            <marker date="1458988738931" expanded="true" signature="3887:3894" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -809,7 +812,7 @@
             <element signature="imports" expanded="false" />
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#3463#3464#0" expanded="false" />
+            <element signature="e#3428#3429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -832,26 +835,27 @@
     <entry file="file://$PROJECT_DIR$/orig_test.gift">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/testeditor/TestEditor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.6">
-          <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/testeditor/parser/GiftParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.0682225">
-          <caret line="64" column="1" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="73" column="1" selection-start-line="73" selection-start-column="1" selection-end-line="73" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1458988738951" expanded="true" signature="6097:6155" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/testeditor/TestEditor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4524237">
+          <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
