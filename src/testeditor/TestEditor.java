@@ -23,7 +23,7 @@ public class TestEditor {
             break; // только для тестирования. Т.к. для сохранения даже одного вопроса файл переписывается полностью,
             // то нет смысла гонять весь цикл.
         }
-     */
+        */
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

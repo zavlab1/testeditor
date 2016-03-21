@@ -91,7 +91,6 @@ public class GiftParser extends Parser {
         aComment = comment;
         this.degree = degree;
     }
-
     public void setAText(String aText) {
         this.aText = aText;
     }
