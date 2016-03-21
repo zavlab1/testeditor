@@ -32,6 +32,5 @@ public class TestEditor {
                 testFrame.setVisible(true);
             }
         });
-
     }
 }
