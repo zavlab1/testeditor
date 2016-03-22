@@ -6,41 +6,50 @@ package testeditor.question;
  */
 public class Answer {
 
+    public static final int MAX_DEGREE = 100;
+    public static final int MIN_DEGREE = 0;
+
     private int degree;
-    private String value;
+    private String aText;
+    private String aComment;
 
     /**
      * @param degree - указывает на степень правильности варианта ответа (от 0 до 1 с точностью до сотых)
-     * @param value - значение варианта ответа
+     * @param text - значение варианта ответа c комментарием (если есть)
      */
-    public Answer(String value, int degree) {
-        this.value = value;
+    public Answer(String text, int degree) {
+        String[] value = text.split("#");
+        this.aText = value[0];
+        this.aComment = value.length == 2 ? value[1] : "";
         this.degree = degree;
     }
-    public Answer(String value) {
-        this(value, 100);
+    public Answer(String text) {
+        this(text, Answer.MAX_DEGREE);
     }
 
     /**
      * @return возвращает строку с КОНКРЕТНЫМ вариантом ответа
      */
-    public String getValue() {
-        return this.value;
+    public String getAText() {
+        return this.aText;
     }
-
-    public void setValue(String value, int degree) {
-        this.value = value;
-        this.degree = degree;
+    public String getAComment() {
+        return this.aComment;
     }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     /**
-     * @return возвращает правильность варианта
+     * @return возвращает правильность варианта в процентах
      */
     public int getDegree() {
         return degree;
+    }
+    public void setValue (String text, int degree) {
+        String[] value = text.split("#");
+        this.aText = value[0];
+        this.aComment = value.length == 2 ? value[1] : "";
+        this.degree = degree;
+    }
+
+    public void setAText(String aText) {
+        this.aText = aText;
     }
 }
