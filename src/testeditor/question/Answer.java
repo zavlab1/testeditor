@@ -57,8 +57,8 @@ public class GiftParser extends Parser {
 
         return new String(str);
     }
-    public Answer(String value) {
-        this(value, 100);
+    public Answer(String text) {
+        this(text, Answer.MAX_DEGREE);
     }
 
     private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception{
@@ -195,5 +195,15 @@ public class GiftParser extends Parser {
     private boolean isMultiChoice(List<String> lines){
         //если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов
         return lines.stream().filter(x -> x.startsWith("~")).toArray().length > lines.size() - 2;
+    }
+    public void setValue (String text, int degree) {
+        String[] value = text.split("#");
+        this.aText = value[0];
+        this.aComment = value.length == 2 ? value[1] : "";
+        this.degree = degree;
+    }
+
+    public void setAText(String aText) {
+        this.aText = aText;
     }
 }
