@@ -36,21 +36,22 @@ public class GiftSaver extends Saver {
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
                 return "";
             }
-            answerLine += a.getAText() + "\n";
+            answerLine += a.getAText() + getComment(a) + "\n";
         }
         return answerLine.trim()+"\n}";
     }
 
     public String doLineForTrueFalse(Question q){
         String qTextLine = doQHeadLine(q);
-        String answerLine = qTextLine.substring(0, qTextLine.length()-1 ) + q.getAnswerList().get(0).getAText() + "}\n";
+        Answer a = q.getAnswerList().get(0);
+        String answerLine = qTextLine.substring(0, qTextLine.length()-1 ) + a.getAText() + getComment(a) + "}\n";
         return answerLine.trim();
     }
 
     public String doLineForMatching(Question q){
         String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
-            answerLine += "\t=" + a.getAText() + "\n";
+            answerLine += "\t=" + a.getAText() + getComment(a) + "\n";
         }
         return answerLine.trim()+"\n}";
     }
@@ -65,7 +66,7 @@ public class GiftSaver extends Saver {
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
                 return "";
             }
-            answerLine += a.getAText() + "#\n";
+            answerLine += a.getAText() + getComment(a) + "\n";
         }
         return answerLine.trim()+"\n}";
     }
@@ -82,12 +83,15 @@ public class GiftSaver extends Saver {
                         ". Degree value " + a.getDegree() + " is incorrect. The question will be skipped.");
                 return "";
             }
-            answerLine += a.getAText() + "\n";
+            answerLine += a.getAText() + getComment(a) + "\n";
         }
         return answerLine.trim()+"\n}";
     }
 
     private String doQHeadLine(Question q){
         return "::" + q.getQName() + ".::" + q.getQText() + "\n{\n";
+    }
+    private String getComment(Answer a) {
+        return a.getAComment().isEmpty() ? "" : ("#" + a.getAComment());
     }
 }
