@@ -20,34 +20,12 @@ import static java.util.Arrays.*;
  */
 public class GiftParser extends Parser {
 
-    public Test getTest(String filepath) throws IOException {
-        Test test = new Test();
-        String text = readFile(filepath);
-        String nl = System.lineSeparator();
-        String[] qBodies = text.split(nl+nl);
+    public static final int MAX_DEGREE = 100;
+    public static final int MIN_DEGREE = 0;
 
-        Pattern p = Pattern.compile("^((\\/\\/)(.*)$\\s)?(::(.*?)::)?(\\[(.*?)\\])?(.+)((?<!\\\\)\\{(.*?)(?<!\\\\)\\})(.*)$",
-                                    Pattern.MULTILINE | Pattern.DOTALL);
-        for (String qBody : qBodies) {
-            Matcher m = p.matcher(qBody.trim());
-            if (m.find()) {
-                String qName = (m.group(5) != null) ? m.group(5) : "";
-                String qFormat = (m.group(7) != null) ? m.group(7) : "";
-                String qText = m.group(11).isEmpty() ? m.group(8) : m.group(8) + " _______ " + m.group(11);
-                String aLine = m.group(10);
-                try {
-                    Question q = getQuestion(qName, qText, aLine.trim(), qFormat);
-                    test.add(q);
-                } catch (NullPointerException ex) {
-                    System.err.printf("Невозможно определить тип вопроса \"%s\" \nПропускаем...", qText);
-                } catch (Exception ex) {
-                    System.err.printf("%s \"%s.\" \nПропускаем...",
-                            ex.getMessage(), qText);
-                }
-            }
-        }
-        return test;
-    }
+    private int degree;
+    private String aText;
+    private String aComment;
 
     /**
      * @param text - значение варианта ответа
@@ -79,7 +57,6 @@ public class GiftParser extends Parser {
     public String getAComment() {
         return this.aComment;
     }
-
     /**
      * @return возвращает правильность варианта в процентах
      */

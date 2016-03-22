@@ -60,7 +60,6 @@ public class GiftParser extends Parser {
 
     private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception {
         Question q = null;
-        final List <String> boolvals = asList(new String[] {"TRUE", "FALSE", "T", "F"});
         if (qFormat.equals("html")) {
             qText = clean(qText);
             aLine = clean(aLine);
@@ -199,4 +198,11 @@ public class GiftParser extends Parser {
         //если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов
         return lines.stream().filter(x -> x.startsWith("~")).toArray().length > lines.size() - 2;
     }
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 87ab7af... Refactoring GiftParser. Add comments to Answer
 }
