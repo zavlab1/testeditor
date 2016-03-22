@@ -198,11 +198,4 @@ public class GiftParser extends Parser {
         //если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов
         return lines.stream().filter(x -> x.startsWith("~")).toArray().length > lines.size() - 2;
     }
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> 87ab7af... Refactoring GiftParser. Add comments to Answer
 }

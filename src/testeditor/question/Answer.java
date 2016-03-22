@@ -57,6 +57,7 @@ public class GiftParser extends Parser {
     public String getAComment() {
         return this.aComment;
     }
+
     /**
      * @return возвращает правильность варианта в процентах
      */
