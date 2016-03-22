@@ -59,23 +59,15 @@ public class GiftParser extends Parser {
     }
 
     private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception{
-        System.out.println(aLine);
         Question q = null;
-        final List <String> boolvals = asList(new String[] {"TRUE", "FALSE", "T", "F"});
         if (qFormat.equals("html")) {
             qText = clean(qText);
             aLine = clean(aLine);
         }
         List<String> aLinesList = split(aLine, System.lineSeparator());
-        aLinesList = aLinesList.stream().map(String::trim).filter(x->!x.isEmpty()).collect(Collectors.toList());
-        if (aLinesList.stream().anyMatch(x -> x.startsWith("=") || x.startsWith("~"))) {
-            aLinesList = aLinesList.stream().filter(x -> x.startsWith("=") ||
-                                                         x.startsWith("~") ||
-                                                         x.startsWith("#"))
-                                                        .collect(Collectors.toList());
-        }
-        //если строка ответов начинается с "#", значит, создаем числовой вопрос
-        if (aLine.startsWith("#")) {
+        aLinesList = prepareList(aLinesList);
+
+        if (isNumerical(aLinesList)) {
             List<Answer> aList;
             if (aLinesList.size() == 1) {
                 aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1)));
@@ -84,25 +76,24 @@ public class GiftParser extends Parser {
             }
             q = new Numerical(qName, qText, aList);
 
-        // если значиение ответа равно одному из обозначений boolean в gift, то это вопрос Верно/Неверно
-        } else if (boolvals.contains(aLine.trim().toUpperCase())) {
-            q = new TrueFalse(qName, qText, Arrays.asList(new Answer(aLine, Boolean.parseBoolean(aLine) ? 100 : 0)));
+        } else if (isTrueFalse(aLinesList)) {
+            q = new TrueFalse(qName, qText, 
+                              Arrays.asList(new Answer(aLine,
+                                                       Boolean.parseBoolean(aLine) ? Answer.MAX_DEGREE
+                                                                                   : Answer.MIN_DEGREE)));
 
-        // если все элементы начинаются с "=" и содержат "->", то это - вопрос на соответствие
-        } else if (aLinesList.stream().allMatch(x -> (x.startsWith("=") && x.contains("->")))) {
-            q = new Matching(qName, qText, aLinesList.stream().map(x -> new Answer(x.substring(1))).collect(Collectors.toList()));
+        } else if (isMatching(aLinesList)) {
+            q = new Matching(qName, qText,
+                             aLinesList.stream().map(x -> new Answer(x.substring(1))).collect(Collectors.toList()));
 
-        // если все элементы начинаются с "=", то это - вопрос "Короткий ответ"
-        } else if (aLinesList.stream().allMatch(x -> (x.startsWith("=")))) {
+        } else if (isShortAnswer(aLinesList)) {
             List<Answer> aList = getMultiAnswers(aLinesList);
             q = new ShortAnswer(qName, qText, aList);
 
-        // если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов - вопрос на множественный выбор
-        } else if (aLinesList.stream().filter(x -> x.startsWith("~")).toArray().length > aLinesList.size() - 2) {
+        } else if (isMultiChoice(aLinesList)) {
             List<Answer> aList = getMultiAnswers(aLinesList);
             q = new MultiChoice(qName, qText, aList);
         }
-
         // если ни один вариант не сработал, будет возвращен null
         return q;
     }
@@ -115,7 +106,7 @@ public class GiftParser extends Parser {
             Matcher m = p.matcher(line);
             if (m.find()) {
                 Integer degree = Integer.parseInt(m.group(3));
-                if (degree < 0 || degree > 100) {
+                if (degree < Answer.MIN_DEGREE || degree > Answer.MAX_DEGREE) {
                     System.err.printf("Процент %d в строке \"%s\" вне допустимого диапазона", degree, line);
                 }
                 if (m.group(1).equals("~")) {
@@ -123,12 +114,12 @@ public class GiftParser extends Parser {
                 }
                 return new Answer(m.group(4), degree);
             } else {
-                return new Answer(line.substring(1), line.startsWith("~") ? 0 : 100);
+                return new Answer(line.substring(1), line.startsWith("~") ? Answer.MIN_DEGREE : Answer.MAX_DEGREE);
             }
         });
 
-        if (!(degrees.isEmpty()) && degrees.stream().mapToInt(x -> x).sum() != 100) {
-            throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна 100");
+        if (!(degrees.isEmpty()) && degrees.stream().mapToInt(x -> x).sum() != Answer.MAX_DEGREE) {
+            throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна " + Answer.MAX_DEGREE);
         }
         return stream.collect(Collectors.toList());
     }
@@ -141,8 +132,7 @@ public class GiftParser extends Parser {
             m.reset(line);
         }
         String[] aLines = line.split(System.lineSeparator());
-        List<String> aLinesList = Arrays.asList(aLines);
-        return aLinesList;
+        return Arrays.asList(aLines);
     }
 
     private String clean(String line) {
@@ -153,4 +143,37 @@ public class GiftParser extends Parser {
         //особенность java - приходится удваивать слеши
         return line;
     }
+    
+    private List<String> prepareList(List<String> list) {
+        list = list.stream().map(String::trim).filter(x->!x.isEmpty()).collect(Collectors.toList());
+        if (list.stream().anyMatch(x -> x.startsWith("=") || x.startsWith("~"))) {
+            list = list.stream().filter(x -> "~=#".contains(x.substring(0, 1))).collect(Collectors.toList());
+        }
+        return list;
+    }
+
+    private boolean isNumerical(List<String> lines) {
+        //если строка ответов начинается с "#"
+        return lines.get(0).startsWith("#");
+    }
+    private boolean isTrueFalse(List<String> lines) {
+        //если значение ответа равно одному из обозначений boolean в gift
+        return lines.size() == 1 && asList("TRUE", "FALSE", "T", "F").contains(lines.get(0).toUpperCase());
+    }
+    private boolean isMatching(List<String> lines) {
+        //если все элементы начинаются с "=" и содержат "->"
+        return lines.stream().allMatch(x -> (x.startsWith("=") && x.contains("->")));
+    }
+    private boolean isShortAnswer(List<String> lines) {
+        //если все элементы начинаются с "=" и не содержат "->"
+        return lines.stream().allMatch(x -> (x.startsWith("=") && !x.contains("->")));
+    }
+    private boolean isMultiChoice(List<String> lines){
+        //если количество элементов, начинающихся с "~", равно или на один меньше, чем общее количество элементов
+        return lines.stream().filter(x -> x.startsWith("~")).toArray().length > lines.size() - 2;
+    }
+
+
+
+
 }
