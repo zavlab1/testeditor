@@ -64,13 +64,13 @@ public class GiftParser extends Parser {
             qText = clean(qText);
             aLine = clean(aLine);
         }
-        List<String> aLinesList = split(aLine, System.lineSeparator());
+        List<String> aLinesList = split(aLine);
         aLinesList = prepareList(aLinesList);
 
         if (isNumerical(aLinesList)) {
             List<Answer> aList;
             if (aLinesList.size() == 1) {
-                aList = Arrays.asList(new Answer(aLinesList.get(0).substring(1)));
+                aList = Arrays.asList(getAnswer(aLinesList.get(0).substring(1)));
             } else {
                 aList = getMultiAnswers(aLinesList.stream().skip(1).collect(Collectors.toList()));
             }
@@ -78,13 +78,13 @@ public class GiftParser extends Parser {
 
         } else if (isTrueFalse(aLinesList)) {
             q = new TrueFalse(qName, qText, 
-                              Arrays.asList(new Answer(aLine,
+                              Arrays.asList(getAnswer(aLine,
                                                        Boolean.parseBoolean(aLine) ? Answer.MAX_DEGREE
                                                                                    : Answer.MIN_DEGREE)));
 
         } else if (isMatching(aLinesList)) {
             q = new Matching(qName, qText,
-                             aLinesList.stream().map(x -> new Answer(x.substring(1))).collect(Collectors.toList()));
+                             aLinesList.stream().map(x -> getAnswer(x.substring(1))).collect(Collectors.toList()));
 
         } else if (isShortAnswer(aLinesList)) {
             List<Answer> aList = getMultiAnswers(aLinesList);
@@ -112,23 +112,24 @@ public class GiftParser extends Parser {
                 if (m.group(1).equals("~")) {
                     degrees.add(degree);
                 }
-                return new Answer(m.group(4), degree);
+                return getAnswer(m.group(4), degree);
             } else {
-                return new Answer(line.substring(1), line.startsWith("~") ? Answer.MIN_DEGREE : Answer.MAX_DEGREE);
+                return getAnswer(line.substring(1), line.startsWith("~") ? Answer.MIN_DEGREE : Answer.MAX_DEGREE);
             }
         });
-
         if (!(degrees.isEmpty()) && degrees.stream().mapToInt(x -> x).sum() != Answer.MAX_DEGREE) {
             throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна " + Answer.MAX_DEGREE);
         }
         return stream.collect(Collectors.toList());
     }
 
-    private List<String> split(String line, String separator) {
-        Pattern p = Pattern.compile("(?<!(^|(" + separator + ")|\\\\))(\\~|\\=)");
+
+    // дробим строки по тильде или равно с сохранением этих символов
+    private List<String> split(String line) {
+        Pattern p = Pattern.compile("(?<!(^|(" + System.lineSeparator() + ")|\\\\))(\\~|\\=)");
         Matcher m = p.matcher(line);
         while (m.find()) { //m1.replaceAll() здесь не подойдет, т.к. везде поставит тильду
-            line = m.replaceFirst(separator + m.group(3));
+            line = m.replaceFirst(System.lineSeparator() + m.group(3));
             m.reset(line);
         }
         String[] aLines = line.split(System.lineSeparator());
@@ -143,22 +144,43 @@ public class GiftParser extends Parser {
         //особенность java - приходится удваивать слеши
         return line;
     }
-    
+
     private List<String> prepareList(List<String> list) {
+        // избавляемся от лишних пробелов и фильтруем пустые строки
         list = list.stream().map(String::trim).filter(x->!x.isEmpty()).collect(Collectors.toList());
+        // если хотя бы один элемент начинается с равно или тильды, то избавляется от тех строк,
+        // которые не начинаются с равно, тильды или решетки
         if (list.stream().anyMatch(x -> x.startsWith("=") || x.startsWith("~"))) {
             list = list.stream().filter(x -> "~=#".contains(x.substring(0, 1))).collect(Collectors.toList());
         }
         return list;
     }
 
+    // дробим строку на текст вопроса и комментарий, после чего делаем Answer
+    private Answer getAnswer(String line) {
+        return getAnswer(line, Answer.MAX_DEGREE);
+    }
+    private Answer getAnswer(String line, int degree) {
+        String[] value = line.split("#");
+        return new Answer(value[0], degree, value.length == 2 ? value[1] : "");
+    }
+
     private boolean isNumerical(List<String> lines) {
-        //если строка ответов начинается с "#"
-        return lines.get(0).startsWith("#");
+        // если первая строка ответов начинается с "#"
+        if (lines.get(0).startsWith("#")) {
+            // если строк больше одной и не все (кроме первой) начинаются с "="
+            if (lines.size() > 1 &&
+                !lines.subList(1, lines.size()).stream().allMatch(x -> x.startsWith("="))) {
+                throw new NullPointerException();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
     private boolean isTrueFalse(List<String> lines) {
         //если значение ответа равно одному из обозначений boolean в gift
-        return lines.size() == 1 && asList("TRUE", "FALSE", "T", "F").contains(lines.get(0).toUpperCase());
+        return lines.size() == 1 && asList("TRUE", "FALSE", "T", "F").contains(lines.get(0).toUpperCase().split("#")[0]);
     }
     private boolean isMatching(List<String> lines) {
         //если все элементы начинаются с "=" и содержат "->"
