@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import testeditor.Interface.Actions.*;
+import testeditor.question.Question;
 
 /**
  * Главное окно
@@ -25,9 +26,12 @@ public class MainFrame extends JFrame {
         this.setIconImage(new ImageIcon("src/testeditor/Interface/img/main.png").getImage());// путь к файлу нужно указывать не относительно текущего пакета, а относительно корня проекта
 
         //------- Создаем и настраиваем компоненты GUI -------//
-        DefaultListModel listModel = new DefaultListModel();// Модель для компонета contentList
-        JList contentList = new JList(listModel); // Output List
-        JScrollPane scrollPane = new JScrollPane(contentList); // полоса прокрутки для списка
+        DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета contentList
+        JList<Question> questionList = new JList(listModel); // Output List
+        questionList.setBackground(Color.GRAY);
+        questionList.setCellRenderer(new ListRenderer());
+
+        JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         this.add(scrollPane);
 
         JPanel controlPanel = new JPanel(); // Панель с кнопками
