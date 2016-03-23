@@ -3,26 +3,20 @@ package testeditor.Interface;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+
 import testeditor.Interface.Actions.*;
-<<<<<<< HEAD
 import testeditor.question.Question;
-=======
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
+
 
 /**
  * Главное окно
  */
 public class MainFrame extends JFrame {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
     private JPanel controlPanel;
     private JButton openButton;
     private JTextArea content; // содержимое теста
     private JMenuBar menuBar; // меню
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
-=======
->>>>>>> fd01b9a... GUI using the JList
 
     public MainFrame(){
         // определяем размер экрана
@@ -39,8 +33,6 @@ public class MainFrame extends JFrame {
         this.setIconImage(new ImageIcon("src/testeditor/Interface/img/main.png").getImage());// путь к файлу нужно указывать не относительно текущего пакета, а относительно корня проекта
 
         //------- Создаем и настраиваем компоненты GUI -------//
-<<<<<<< HEAD
-<<<<<<< HEAD
         DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета contentList
         JList<Question> questionList = new JList(listModel); // Output List
         questionList.setBackground(Color.GRAY);
@@ -62,16 +54,14 @@ public class MainFrame extends JFrame {
 
         JMenuItem openMenu = new JMenuItem(new OpenAction(listModel));
         openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
-=======
         controlPanel = new JPanel();
-=======
         DefaultListModel listModel = new DefaultListModel();// Модель для компонета contentList
         JList contentList = new JList(listModel); // Output List
         JScrollPane scrollPane = new JScrollPane(contentList); // полоса прокрутки для списка
+
         this.add(scrollPane);
 
         JPanel controlPanel = new JPanel(); // Панель с кнопками
->>>>>>> fd01b9a... GUI using the JList
         controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,30,30));
 
         JButton openButton = new JButton(new OpenAction(listModel));
@@ -82,13 +72,8 @@ public class MainFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
 
-<<<<<<< HEAD
-        JMenuItem openMenu = new JMenuItem(new OpenAction(content));
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
-=======
         JMenuItem openMenu = new JMenuItem(new OpenAction(listModel));
         openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
->>>>>>> fd01b9a... GUI using the JList
         fileMenu.add(openMenu);
 
         JMenuItem exitMenu = new JMenuItem("Exit");
@@ -97,19 +82,13 @@ public class MainFrame extends JFrame {
         fileMenu.add(exitMenu);
 
         menuBar.add(fileMenu);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
         this.setJMenuBar(menuBar);
-=======
+
         //-------- Добавляем на форму созданные компоненты GUI -------//
         this.setJMenuBar(menuBar);
         //add(content); - scrollPane является контейнером дя TextArea, поэтому нужно добавлять только его
         this.add(scrollPane);
         this.add(controlPanel,BorderLayout.SOUTH);
->>>>>>> 4e6b005... GUI Beginning (Questions' Heads Output)
-=======
         this.setJMenuBar(menuBar);
->>>>>>> fd01b9a... GUI using the JList
     }
 }

@@ -33,6 +33,6 @@ public class TestEditor {
                 testFrame.setTitle("TestEditor");
                 testFrame.setVisible(true);
             }
-        });*/
+        });
     }
 }
