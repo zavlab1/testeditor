@@ -14,12 +14,12 @@ import java.io.IOException;
  * Класс-слушатель для события открытия файла
  */
 public class OpenAction extends AbstractAction {
-    private DefaultListModel questionList;
+    private DefaultListModel<Question> questionList;
 
     /**
      * @param listModel - модель списка для JList, куда добавляем вопросы
      */
-    public OpenAction(DefaultListModel listModel){
+    public OpenAction(DefaultListModel<Question> listModel){
         questionList = listModel;
 
         this.putValue(Action.NAME,"Открыть");
@@ -46,7 +46,7 @@ public class OpenAction extends AbstractAction {
                 test = Parser.parse(openDialog.getSelectedFile().getAbsolutePath());
 
                 for (Question question: test){
-                    questionList.addElement(question.getQHead());
+                    questionList.addElement(question);
                 }
             }
             catch (Exception ex) {ex.printStackTrace();}
