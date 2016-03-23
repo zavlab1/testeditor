@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 
 import testeditor.Interface.Actions.*;
 import testeditor.question.Question;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3142464... GUI (JList customization)
 
 /**
  * Главное окно
