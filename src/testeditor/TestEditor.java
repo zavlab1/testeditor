@@ -12,13 +12,8 @@ import java.io.PrintStream;
 public class TestEditor {
     public static void main(String[] args) {
 
-<<<<<<< HEAD
         /*
         Test test = Test.getTestFromFile("test.gift");
-
-=======
-        Test test = Test.getTestFromFile("test.gift");
->>>>>>> dea604b... Small fixes and optimization
         Saver s = new GiftSaver(test, "Test1.gift");
         for (Question q : test) {
 
@@ -27,7 +22,7 @@ public class TestEditor {
             break; // только для тестирования. Т.к. для сохранения даже одного вопроса файл переписывается полностью,
             // то нет смысла гонять весь цикл.
         }
-     /*
+     */
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -37,6 +32,6 @@ public class TestEditor {
                 testFrame.setTitle("TestEditor");
                 testFrame.setVisible(true);
             }
-        });*/
+        });
     }
 }
