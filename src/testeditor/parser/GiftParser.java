@@ -58,7 +58,7 @@ public class GiftParser extends Parser {
         return new String(str);
     }
 
-    private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception{
+    private Question getQuestion(String qName, String qText, String aLine, String qFormat) throws Exception {
         Question q = null;
         if (qFormat.equals("html")) {
             qText = clean(qText);
@@ -84,7 +84,8 @@ public class GiftParser extends Parser {
 
         } else if (isMatching(aLinesList)) {
             q = new Matching(qName, qText,
-                             aLinesList.stream().map(x -> getAnswer(x.substring(1))).collect(Collectors.toList()));
+                             aLinesList.stream().map(x -> getAnswer(x.substring(1)))
+                             .collect(Collectors.toList()));
 
         } else if (isShortAnswer(aLinesList)) {
             List<Answer> aList = getMultiAnswers(aLinesList);
@@ -107,18 +108,21 @@ public class GiftParser extends Parser {
             if (m.find()) {
                 Integer degree = Integer.parseInt(m.group(3));
                 if (degree < Answer.MIN_DEGREE || degree > Answer.MAX_DEGREE) {
-                    System.err.printf("Процент %d в строке \"%s\" вне допустимого диапазона", degree, line);
+                    System.err.printf("Процент %d в строке \"%s\" вне допустимого диапазона",
+                                      degree, line);
                 }
                 if (m.group(1).equals("~")) {
                     degrees.add(degree);
                 }
                 return getAnswer(m.group(4), degree);
             } else {
-                return getAnswer(line.substring(1), line.startsWith("~") ? Answer.MIN_DEGREE : Answer.MAX_DEGREE);
+                return getAnswer(line.substring(1), line.startsWith("~") ? Answer.MIN_DEGREE :
+                                                                           Answer.MAX_DEGREE);
             }
         });
         if (!(degrees.isEmpty()) && degrees.stream().mapToInt(x -> x).sum() != Answer.MAX_DEGREE) {
-            throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна " + Answer.MAX_DEGREE);
+            throw new Exception("Сумма процентов за ответы для вопроса множественного выбора не равна "
+                                + Answer.MAX_DEGREE);
         }
         return stream.collect(Collectors.toList());
     }
@@ -151,7 +155,8 @@ public class GiftParser extends Parser {
         // если хотя бы один элемент начинается с равно или тильды, то избавляется от тех строк,
         // которые не начинаются с равно, тильды или решетки
         if (list.stream().anyMatch(x -> x.startsWith("=") || x.startsWith("~"))) {
-            list = list.stream().filter(x -> "~=#".contains(x.substring(0, 1))).collect(Collectors.toList());
+            list = list.stream().filter(x -> "~=#".contains(x.substring(0, 1)))
+                   .collect(Collectors.toList());
         }
         return list;
     }
