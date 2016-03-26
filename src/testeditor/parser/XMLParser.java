@@ -43,7 +43,7 @@ public class XMLParser extends Parser {
 
             switch (questionType) {
                 case "MultiChoice":
-                    test.add(parseMultiChoice(QuestionElement, String.valueOf(i)));
+                    test.add(parseMultiChoice(QuestionElement));
                     break;
                 case "ShortAnswer":
                     test.add(parseShortAnswer(QuestionElement, String.valueOf(i)));
@@ -60,11 +60,12 @@ public class XMLParser extends Parser {
         return test;
     }
 
-    MultiChoice parseMultiChoice(Element questionElement, String id) {
-        String head = getQuestionHead(questionElement);
+    MultiChoice parseMultiChoice(Element questionElement) {
+        String Name = getQuestionName(questionElement);
+        String Head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new MultiChoice(id, head, answerList);
+        return new MultiChoice(Name, Head, answerList);
     }
 
     ShortAnswer parseShortAnswer(Element questionElement, String id) {
@@ -104,8 +105,14 @@ public class XMLParser extends Parser {
         return answerList;
     }
 
-    String getQuestionHead(Element questionElement) {
+    String getQuestionName(Element questionElement) {
         return ((Element)questionElement.getElementsByTagName("name").item(0))
+                .getElementsByTagName("text").item(0)
+                .getNodeValue();
+    }
+
+    String getQuestionHead(Element questionElement) {
+        return ((Element)questionElement.getElementsByTagName("questiontext").item(0))
                 .getElementsByTagName("text").item(0)
                 .getNodeValue();
     }
