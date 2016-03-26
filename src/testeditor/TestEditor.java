@@ -11,7 +11,6 @@ import java.io.PrintStream;
 
 public class TestEditor {
     public static void main(String[] args) {
-
         /*
         Test test = Test.getTestFromFile("test.gift");
 
