@@ -3,23 +3,13 @@ package testeditor.Interface;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
 import testeditor.Interface.Actions.*;
 import testeditor.question.Question;
-<<<<<<< HEAD
-
-=======
->>>>>>> 3142464... GUI (JList customization)
 
 /**
  * Главное окно
  */
 public class MainFrame extends JFrame {
-
-    private JPanel controlPanel;
-    private JButton openButton;
-    private JTextArea content; // содержимое теста
-    private JMenuBar menuBar; // меню
 
     public MainFrame(){
         // определяем размер экрана
@@ -57,26 +47,6 @@ public class MainFrame extends JFrame {
 
         JMenuItem openMenu = new JMenuItem(new OpenAction(listModel));
         openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
-        controlPanel = new JPanel();
-        DefaultListModel listModel = new DefaultListModel();// Модель для компонета contentList
-        JList contentList = new JList(listModel); // Output List
-        JScrollPane scrollPane = new JScrollPane(contentList); // полоса прокрутки для списка
-
-        this.add(scrollPane);
-
-        JPanel controlPanel = new JPanel(); // Панель с кнопками
-        controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,30,30));
-
-        JButton openButton = new JButton(new OpenAction(listModel));
-        controlPanel.add(openButton);
-        this.add(controlPanel,BorderLayout.SOUTH);
-
-        //------- Создаем главное меню -------//
-        JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-
-        JMenuItem openMenu = new JMenuItem(new OpenAction(listModel));
-        openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
         fileMenu.add(openMenu);
 
         JMenuItem exitMenu = new JMenuItem("Exit");
@@ -85,13 +55,7 @@ public class MainFrame extends JFrame {
         fileMenu.add(exitMenu);
 
         menuBar.add(fileMenu);
-        this.setJMenuBar(menuBar);
 
-        //-------- Добавляем на форму созданные компоненты GUI -------//
-        this.setJMenuBar(menuBar);
-        //add(content); - scrollPane является контейнером дя TextArea, поэтому нужно добавлять только его
-        this.add(scrollPane);
-        this.add(controlPanel,BorderLayout.SOUTH);
         this.setJMenuBar(menuBar);
     }
 }
