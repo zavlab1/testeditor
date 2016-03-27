@@ -1,4 +1,4 @@
-package testeditor.parser;
+package testeditor.question;
 
 import testeditor.Test;
 import testeditor.question.*;
@@ -18,7 +18,7 @@ import static java.util.Arrays.*;
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате Gift
  */
-public class GiftParser extends Parser {
+public class Answer {
 
     public static final int MAX_DEGREE = 100;
     public static final int MIN_DEGREE = 0;
