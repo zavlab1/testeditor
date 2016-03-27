@@ -5,7 +5,6 @@ package testeditor.question;
  * Парсер для чтения файлов в формате Gift
  */
 public class Answer {
-
     public static final int MAX_DEGREE = 100;
     public static final int MIN_DEGREE = 0;
 
