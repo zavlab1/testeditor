@@ -1,19 +1,5 @@
 package testeditor.question;
 
-import testeditor.Test;
-import testeditor.question.*;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Arrays.*;
-
 /**
  * Created by dimitry on 28.12.15.
  * Парсер для чтения файлов в формате Gift
