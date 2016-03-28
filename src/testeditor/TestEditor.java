@@ -1,12 +1,9 @@
 package testeditor;
 
-import testeditor.question.*;
-import testeditor.saver.*;
-import testeditor.Interface.*;
+import testeditor.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.PrintStream;
 
 
 public class TestEditor {
@@ -22,6 +19,24 @@ public class TestEditor {
                    // то нет смысла гонять весь цикл.
         }
         */
+
+        try {
+            if (isWindows()) {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            } else if (isMac()) {
+                UIManager.setLookAndFeel("com.apple.mrj.swing.MacLookAndFeel");
+            } else if (isUnix()) {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            }
+        } catch (UnsupportedLookAndFeelException e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+        } catch (InstantiationException e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getClass() + ": " + e.getMessage());
+        }
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -32,6 +47,20 @@ public class TestEditor {
                 testFrame.setVisible(true);
             }
         });
+    }
 
+    public static boolean isWindows(){
+        String os = System.getProperty("os.name").toLowerCase();
+        return (os.indexOf( "win" ) >= 0);
+    }
+
+    public static boolean isMac(){
+        String os = System.getProperty("os.name").toLowerCase();
+        return (os.indexOf( "mac" ) >= 0);
+    }
+
+    public static boolean isUnix (){
+        String os = System.getProperty("os.name").toLowerCase();
+        return (os.indexOf( "nix") >= 0 || os.indexOf( "nux") >= 0);
     }
 }
