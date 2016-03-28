@@ -1,12 +1,9 @@
 package testeditor;
 
-import testeditor.question.*;
-import testeditor.saver.*;
-import testeditor.Interface.*;
+import testeditor.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.PrintStream;
 
 
 public class TestEditor {
