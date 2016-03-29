@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import testeditor.gui.Actions.*;
+import testeditor.gui.panels.ControlPanel;
+import testeditor.gui.panels.EditPanel;
 import testeditor.gui.services.ListRenderer;
 import testeditor.gui.services.VerticalButton;
 import testeditor.question.Question;
@@ -36,25 +38,9 @@ public class MainFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         this.add(scrollPane);
 
-        JPanel controlPanel = new JPanel(); // Панель с кнопками
-        controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT,60,30));
+        this.add(new ControlPanel(listModel),BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
 
-        JButton createButton = new VerticalButton(new CreateAction());//кнопка создать тест
-        controlPanel.add(createButton);
-
-        JButton openButton = new VerticalButton(new OpenAction(listModel));// кнопка открыть тест
-        controlPanel.add(openButton);
-
-        JButton saveAsButton = new VerticalButton(new SaveAction());// кнопка сохранить как
-        controlPanel.add(saveAsButton);
-        this.add(controlPanel,BorderLayout.NORTH);
-
-        JPanel editPanel = new JPanel(); // Панель редактирования списка
-        editPanel.setLayout(new FlowLayout(FlowLayout.LEFT,30,30));
-
-        JButton editButton = new JButton("Редактировать");
-        editPanel.add(editButton);
-        this.add(editPanel, BorderLayout.EAST);
+        this.add(new EditPanel(), BorderLayout.EAST); // Панель редактирования списка
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();
