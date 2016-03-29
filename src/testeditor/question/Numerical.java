@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Numerical extends Question {
 
+    final public String TYPE = "Числовой";
+
     public Numerical(String qName, String qText, List<Answer> answers) {
         super(qName, qText, answers);
     }
