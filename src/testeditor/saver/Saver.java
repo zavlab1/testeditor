@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 
 /**
  * Created by main on 15.12.15.
- * интерфейс, содержащий методы сохранения теста в файл
+ * абстрактный класс, содержащий методы сохранения теста в файл
  */
 abstract public class Saver {
 
