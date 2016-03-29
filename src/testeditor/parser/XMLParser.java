@@ -43,7 +43,7 @@ public class XMLParser extends Parser {
 
             switch (questionType) {
                 case "MultiChoice":
-                    test.add(parseMultiChoice(QuestionElement, String.valueOf(i)));
+                    test.add(parseMultiChoice(QuestionElement));
                     break;
                 case "ShortAnswer":
                     test.add(parseShortAnswer(QuestionElement, String.valueOf(i)));
@@ -60,11 +60,54 @@ public class XMLParser extends Parser {
         return test;
     }
 
-    MultiChoice parseMultiChoice(Element questionElement, String id) {
-        String head = getQuestionHead(questionElement);
+    Matching parseMatching(Element questionElement) {
+        String Name = getQuestionName(questionElement);
+        String Head = getQuestionHead(questionElement);
+        ArrayList<Answer> answerList = new ArrayList<>();
+
+        Matching r = new Matching(Name, Head, answerList);
+
+        NodeList SubQuestions =
+                questionElement.getElementsByTagName("subquestion");
+
+        for(int n = 0; n < SubQuestions.getLength(); n++) {
+            Element SubQuestionElement =
+                    (Element)SubQuestions.item(n);
+            Element SubQuestionTextElement =
+                    (Element)(SubQuestionElement.
+                            getElementsByTagName("text").item(0));
+            String SubQuestionText =
+                    SubQuestionTextElement.getTextContent();
+
+            Element AnswerElement =
+                    (Element)(SubQuestionElement.
+                            getElementsByTagName("answer").item(0));
+            Element AnswerTextElement =
+                    (Element)(AnswerElement.
+                            getElementsByTagName("text").item(0));
+            String AnswerText =
+                    AnswerTextElement.getTextContent();
+
+            Answer a = new Answer(AnswerText, 1.0f); // TODO: заменить на MaxDegree
+            ArrayList<Answer> answerList2 = new ArrayList<>();
+            answerList2.add(a);
+
+            MatchingSubQuestion SubQuestion =
+                    new MatchingSubQuestion("", SubQuestionText,
+                            answerList2);
+
+            r.addSubQuestion(SubQuestion);
+        }
+
+        return r;
+    }
+
+    MultiChoice parseMultiChoice(Element questionElement) {
+        String Name = getQuestionName(questionElement);
+        String Head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new MultiChoice(id, head, answerList);
+        return new MultiChoice(Name, Head, answerList);
     }
 
     ShortAnswer parseShortAnswer(Element questionElement, String id) {
@@ -104,8 +147,14 @@ public class XMLParser extends Parser {
         return answerList;
     }
 
-    String getQuestionHead(Element questionElement) {
+    String getQuestionName(Element questionElement) {
         return ((Element)questionElement.getElementsByTagName("name").item(0))
+                .getElementsByTagName("text").item(0)
+                .getNodeValue();
+    }
+
+    String getQuestionHead(Element questionElement) {
+        return ((Element)questionElement.getElementsByTagName("questiontext").item(0))
                 .getElementsByTagName("text").item(0)
                 .getNodeValue();
     }

@@ -11,9 +11,9 @@ import java.util.List;
  */
 abstract public class Question implements Comparable<Question> {
 
-    private String qText;
+    protected String qText;
     private List<Answer> answers;
-    private String qName;
+    protected String qName;
 
     /**
      * @param qText - заголовок вопроса
