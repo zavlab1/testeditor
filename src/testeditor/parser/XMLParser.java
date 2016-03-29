@@ -88,7 +88,7 @@ public class XMLParser extends Parser {
             String AnswerText =
                     AnswerTextElement.getTextContent();
 
-            Answer a = new Answer(AnswerText, 1.0f); // TODO: заменить на MaxDegree
+            Answer a = new Answer(AnswerText, Answer.MAX_DEGREE);
             ArrayList<Answer> answerList2 = new ArrayList<>();
             answerList2.add(a);
 
@@ -139,7 +139,7 @@ public class XMLParser extends Parser {
             Element answerElement = (Element)answerElements.item(i);
 
             String text = answerElement.getElementsByTagName("text").item(0).getNodeValue();
-            float fraction = Float.parseFloat(answerElement.getAttribute("fraction"));
+            int fraction = Integer.parseInt(answerElement.getAttribute("fraction"));
 
             answerList.add(new Answer(text, fraction));
         }
