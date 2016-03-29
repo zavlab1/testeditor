@@ -60,6 +60,48 @@ public class XMLParser extends Parser {
         return test;
     }
 
+    Matching parseMatching(Element questionElement) {
+        String Name = getQuestionName(questionElement);
+        String Head = getQuestionHead(questionElement);
+        ArrayList<Answer> answerList = new ArrayList<>();
+
+        Matching r = new Matching(Name, Head, answerList);
+
+        NodeList SubQuestions =
+                questionElement.getElementsByTagName("subquestion");
+
+        for(int n = 0; n < SubQuestions.getLength(); n++) {
+            Element SubQuestionElement =
+                    (Element)SubQuestions.item(n);
+            Element SubQuestionTextElement =
+                    (Element)(SubQuestionElement.
+                            getElementsByTagName("text").item(0));
+            String SubQuestionText =
+                    SubQuestionTextElement.getTextContent();
+
+            Element AnswerElement =
+                    (Element)(SubQuestionElement.
+                            getElementsByTagName("answer").item(0));
+            Element AnswerTextElement =
+                    (Element)(AnswerElement.
+                            getElementsByTagName("text").item(0));
+            String AnswerText =
+                    AnswerTextElement.getTextContent();
+
+            Answer a = new Answer(AnswerText, Answer.MAX_DEGREE);
+            ArrayList<Answer> answerList2 = new ArrayList<>();
+            answerList2.add(a);
+
+            MatchingSubQuestion SubQuestion =
+                    new MatchingSubQuestion("", SubQuestionText,
+                            answerList2);
+
+            r.addSubQuestion(SubQuestion);
+        }
+
+        return r;
+    }
+
     MultiChoice parseMultiChoice(Element questionElement) {
         String Name = getQuestionName(questionElement);
         String Head = getQuestionHead(questionElement);
