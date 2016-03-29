@@ -15,7 +15,7 @@ import java.awt.*;
 public class ControlPanel extends JPanel {
     public ControlPanel(DefaultListModel<Question> listModel){
 
-        setLayout(new FlowLayout(FlowLayout.LEFT,60,30));
+        setLayout(new FlowLayout(FlowLayout.LEFT,30,30));
 
         JButton createButton = new VerticalButton(new CreateAction());//кнопка создать тест
         createButton.setEnabled(false);
