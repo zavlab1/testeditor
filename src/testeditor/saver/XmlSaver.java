@@ -42,8 +42,8 @@ public class XmlSaver extends Saver {
             AnswerElement.setAttribute("fraction", String.valueOf(answerList.get(i).getDegree()));
 
             Element AnswerTextElement = doc.createElement("text");
-            CDATASection AnswerTextSection = doc.createCDATASection(answerList.get(i).getValue());
-            AnswerTextElement.appendChild(AnswerTextSection);
+            //CDATASection AnswerTextSection = doc.createCDATASection(answerList.get(i).getValue());
+           // AnswerTextElement.appendChild(AnswerTextSection);
 
             AnswerElement.appendChild(AnswerTextElement);
             QuestionElement.appendChild(AnswerElement);
@@ -66,7 +66,7 @@ public class XmlSaver extends Saver {
             AnswerElement.setAttribute("fraction", (answerList.get(i).getDegree() == 1.0 ? "true" : "false"));
 
             Element AnswerTextElement = doc.createElement("text");
-            AnswerTextElement.setNodeValue(answerList.get(i).getValue());
+            //AnswerTextElement.setNodeValue(answerList.get(i).getValue());
 
             AnswerElement.appendChild(AnswerTextElement);
             QuestionElement.appendChild(AnswerElement);
@@ -98,8 +98,8 @@ public class XmlSaver extends Saver {
                     doc.createElement("answer");
             Element AnswerTextElement =
                     doc.createElement("text");
-            AnswerTextElement.setNodeValue
-                    (q.getAnswerList().get(0).getValue());
+            //AnswerTextElement.setNodeValue
+                    //(q.getAnswerList().get(0).getValue());
             AnswerElement.appendChild(AnswerTextElement);
 
             SubQuestionElement.appendChild(QuestionTextElement);
@@ -124,7 +124,7 @@ public class XmlSaver extends Saver {
             AnswerElement.setAttribute("fraction", String.valueOf(answerList.get(i).getDegree()));
 
             Element AnswerTextElement = doc.createElement("text");
-            AnswerTextElement.setNodeValue(answerList.get(i).getValue());
+            //AnswerTextElement.setNodeValue(answerList.get(i).getValue());
 
             AnswerElement.appendChild(AnswerTextElement);
             QuestionElement.appendChild(AnswerElement);
