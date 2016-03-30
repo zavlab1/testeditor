@@ -19,10 +19,10 @@ public class ControlPanel extends JPanel {
 
         JButton createButton = new VerticalButton(new CreateAction());//кнопка создать тест
         createButton.setEnabled(false);
-        add(createButton,new GBC(0,0,1,1,10,10,1,0).setFill(GridBagConstraints.BOTH).setInsets(20,0,20,20));
+        add(createButton,new GBC(0,0,1,1,10,10,1,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(20,0,20,20));
 
         JButton openButton = new VerticalButton(new OpenAction(listModel));// кнопка открыть тест
-        add(openButton,new GBC(1,0,1,1,10,10,1,0).setFill(GridBagConstraints.BOTH).setInsets(20,0,20,20));
+        add(openButton,new GBC(1,0,1,1,10,10,1,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(20,0,20,20));
 
         JButton saveAsButton = new VerticalButton(new SaveAction());// кнопка сохранить как
         add(saveAsButton,new GBC(2,0,1,1,10,10,1,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(20,0,20,20));
