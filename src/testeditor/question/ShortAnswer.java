@@ -10,10 +10,11 @@ import java.util.List;
  */
 public class ShortAnswer extends Question {
 
-    final public String TYPE = "Короткий ответ";
+    //final public String TYPE = "Короткий ответ";
 
     public ShortAnswer(String qName, String qText, List<Answer> answers) {
         super(qName, qText, answers);
+        setType("Короткий ответ");
     }
 
     public String getLine(Saver saver){

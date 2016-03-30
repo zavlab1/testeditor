@@ -12,6 +12,7 @@ import java.util.List;
 abstract public class Question implements Comparable<Question> {
 
     protected String qText;
+    private String qType;
     private List<Answer> answers;
     protected String qName;
 
@@ -62,5 +63,13 @@ abstract public class Question implements Comparable<Question> {
 
     public List<Answer> getAnswerList() {
         return this.answers;
+    }
+
+    public void setType (String type){
+        qType = type;
+    }
+
+    public String getType(){
+        return qType;
     }
 }
