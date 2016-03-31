@@ -10,7 +10,7 @@ import java.util.List;
 public class MatchingSubQuestion extends Question {
     public MatchingSubQuestion
             (String qName, String qText, List<Answer> answers) {
-        super(qName, qText, answers);
+        super("", qName, qText, answers);
     }
 
     public String getLine(Saver saver){
