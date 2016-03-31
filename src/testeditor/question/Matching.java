@@ -11,14 +11,11 @@ import java.util.List;
  */
 public class Matching extends Question {
 
-    //final public String TYPE = "Соответствие";
-
-    private ArrayList<Question> SubQuestions;
+    private ArrayList<Question> subQuestions;
 
     public Matching(String qName, String qText, List<Answer> answers) {
-        super(qName, qText, answers);
-        SubQuestions = new ArrayList<>();
-        setType("Соответствие");
+        super("Соответствие", qName, qText, answers);
+        subQuestions = new ArrayList<>();
     }
 
     public String getLine(Saver saver){
@@ -26,10 +23,10 @@ public class Matching extends Question {
     }
 
     public void addSubQuestion(Question subQuestion){
-        SubQuestions.add(subQuestion);
+        subQuestions.add(subQuestion);
     }
 
     public ArrayList<Question> getSubQuestions(){
-        return SubQuestions;
+        return subQuestions;
     }
 }

@@ -15,16 +15,18 @@ abstract public class Question implements Comparable<Question> {
     private String qType;
     private List<Answer> answers;
     protected String qName;
+    public final String TYPE;
 
     /**
      * @param qText - заголовок вопроса
      * @param answers - списочный массив вариантов ответа к вопросу
      */
-    Question(String qName, String qText, List<Answer> answers) {
+    Question(String type, String qName, String qText, List<Answer> answers) {
         this.answers = answers;
         answers.listIterator(); // to reset previously moved iterator
         this.qText = qText.trim();
         this.qName = qName;
+        this.TYPE = type;
     }
 
     @Override
@@ -63,13 +65,5 @@ abstract public class Question implements Comparable<Question> {
 
     public List<Answer> getAnswerList() {
         return this.answers;
-    }
-
-    public void setType (String type){
-        qType = type;
-    }
-
-    public String getType(){
-        return qType;
     }
 }

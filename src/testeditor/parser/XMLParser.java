@@ -34,11 +34,11 @@ public class XMLParser extends Parser {
             }
 
         Test test = new Test();
-        int QuestionsCount = doc.getDocumentElement().getChildNodes().getLength();
-        NodeList QuestionNodes = doc.getDocumentElement().getElementsByTagName("Question");
+        int questionsCount = doc.getDocumentElement().getChildNodes().getLength();
+        NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("Question");
 
-        for(int i = 0; i < QuestionsCount; i++) {
-            Element QuestionElement = (Element)QuestionNodes.item(i);
+        for(int i = 0; i < questionsCount; i++) {
+            Element QuestionElement = (Element)questionNodes.item(i);
             String questionType = QuestionElement.getAttribute("Type");
 
             switch (questionType) {
@@ -61,53 +61,53 @@ public class XMLParser extends Parser {
     }
 
     Matching parseMatching(Element questionElement) {
-        String Name = getQuestionName(questionElement);
-        String Head = getQuestionHead(questionElement);
+        String name = getQuestionName(questionElement);
+        String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = new ArrayList<>();
 
-        Matching r = new Matching(Name, Head, answerList);
+        Matching r = new Matching(name, head, answerList);
 
-        NodeList SubQuestions =
+        NodeList subQuestions =
                 questionElement.getElementsByTagName("subquestion");
 
-        for(int n = 0; n < SubQuestions.getLength(); n++) {
-            Element SubQuestionElement =
-                    (Element)SubQuestions.item(n);
-            Element SubQuestionTextElement =
-                    (Element)(SubQuestionElement.
-                            getElementsByTagName("text").item(0));
-            String SubQuestionText =
-                    SubQuestionTextElement.getTextContent();
+        for(int n = 0; n < subQuestions.getLength(); n++) {
+            Element subQuestionElement =
+                    (Element)subQuestions.item(n);
+            Element subQuestionTextElement =
+                    (Element) subQuestionElement.
+                              getElementsByTagName("text").item(0);
+            String subQuestionText =
+                    subQuestionTextElement.getTextContent();
 
-            Element AnswerElement =
-                    (Element)(SubQuestionElement.
-                            getElementsByTagName("answer").item(0));
-            Element AnswerTextElement =
-                    (Element)(AnswerElement.
-                            getElementsByTagName("text").item(0));
+            Element answerElement =
+                    (Element) subQuestionElement.
+                              getElementsByTagName("answer").item(0);
+            Element answerTextElement =
+                    (Element) answerElement.
+                              getElementsByTagName("text").item(0);
             String AnswerText =
-                    AnswerTextElement.getTextContent();
+                    answerTextElement.getTextContent();
 
             Answer a = new Answer(AnswerText, Answer.MAX_DEGREE);
             ArrayList<Answer> answerList2 = new ArrayList<>();
             answerList2.add(a);
 
-            MatchingSubQuestion SubQuestion =
-                    new MatchingSubQuestion("", SubQuestionText,
+            MatchingSubQuestion subQuestion =
+                    new MatchingSubQuestion("", subQuestionText,
                             answerList2);
 
-            r.addSubQuestion(SubQuestion);
+            r.addSubQuestion(subQuestion);
         }
 
         return r;
     }
 
     MultiChoice parseMultiChoice(Element questionElement) {
-        String Name = getQuestionName(questionElement);
-        String Head = getQuestionHead(questionElement);
+        String name = getQuestionName(questionElement);
+        String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new MultiChoice(Name, Head, answerList);
+        return new MultiChoice(name, head, answerList);
     }
 
     ShortAnswer parseShortAnswer(Element questionElement, String id) {
