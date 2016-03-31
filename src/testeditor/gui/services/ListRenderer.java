@@ -1,6 +1,8 @@
 package testeditor.gui.services;
 
 import javax.swing.*;
+
+import sun.plugin.javascript.navig.Anchor;
 import testeditor.question.*;
 
 import java.awt.*;
@@ -11,25 +13,25 @@ import java.awt.*;
 public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
     @Override
     public Component getListCellRendererComponent(JList<? extends Question> list, Question value, int index, boolean isSelected, boolean cellHasFocus) {
-        setLayout(new BorderLayout(20,20));
+        setLayout(new GridBagLayout());
         setBackground(isSelected ? new Color(252,252,252): new Color(230,230,230));
 
         removeAll();
 
         JLabel labelQuestion = new JLabel("<html>" +
-                "<br><b>"+value.getQName()+"</b>" +
+                "<b>"+value.getQName()+"</b>" +
                 "<br>"+value.getQText()+
                 "</html>");
         labelQuestion.setFont(new Font("Serif",Font.PLAIN,12));
-        add(labelQuestion,"West");
+        add(labelQuestion,new GBC(0,0,1,1,0,0,100,0).setFill(GBC.HORIZONTAL).setInsets(10,10,10,20));
 
         JLabel labelType = new JLabel("<html>" +
-                "<br><b>Тип вопроса:</b>" +
-                "<br>"+value.getType()+"</html>");
+                "<b>Тип вопроса:</b>" +
+                "<br>" + value.TYPE + "</html>");
         labelType.setFont(new Font("Serif",Font.PLAIN,12));
-        add(labelType,"East");
+        add(labelType,new GBC(2,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(10,20,10,10));
 
-        add(new JSeparator(),"South");
+       add(new JSeparator(),new GBC(0,1,3,1,0,0,100,0).setFill(GBC.HORIZONTAL));
 
         return this;
     }
