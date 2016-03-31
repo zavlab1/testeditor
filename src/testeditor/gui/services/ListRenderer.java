@@ -2,7 +2,6 @@ package testeditor.gui.services;
 
 import javax.swing.*;
 
-import sun.plugin.javascript.navig.Anchor;
 import testeditor.question.*;
 
 import java.awt.*;
