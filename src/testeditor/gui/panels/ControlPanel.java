@@ -27,8 +27,5 @@ public class ControlPanel extends JPanel {
         JButton saveAsButton = new VerticalButton(new SaveAction());// кнопка сохранить как
         add(saveAsButton);
         saveAsButton.setEnabled(false);
-
-        JPanel emptyPanel = new JPanel(); // пустая панель для сдвига кнопок влево
-        add(emptyPanel);
     }
 }

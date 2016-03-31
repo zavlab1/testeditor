@@ -30,6 +30,9 @@ public class MainFrame extends JFrame {
         this.setIconImage(new ImageIcon("src/testeditor/gui/img/main.png").getImage());// путь к файлу нужно указывать не относительно текущего пакета, а относительно корня проекта
 
         //------- Создаем и настраиваем компоненты GUI -------//
+        this.add(new JPanel(),BorderLayout.WEST); //левый бордер
+        this.add(new JPanel(),BorderLayout.SOUTH);// нижний бордер
+
         DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета contentList
         JList<Question> questionList = new JList(listModel); // Output List
         questionList.setBackground(Color.GRAY);
