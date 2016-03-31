@@ -25,7 +25,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 
         JLabel labelType = new JLabel("<html>" +
                 "<br><b>Тип вопроса:</b>" +
-                "<br>"+value.getType()+"</html>");
+                "<br>" + value.TYPE + "</html>");
         labelType.setFont(new Font("Serif",Font.PLAIN,12));
         add(labelType,"East");
 
