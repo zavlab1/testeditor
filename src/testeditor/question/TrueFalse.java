@@ -10,10 +10,11 @@ import java.util.List;
  */
 public class TrueFalse extends Question {
 
-    final public String TYPE = "Верно/Неверно";
+    //final public String TYPE = "Верно/Неверно";
 
     public TrueFalse(String qName, String qText, List<Answer> answers) {
         super(qName, qText, answers);
+        setType("Верно/Неверно");
     }
 
     public String getLine(Saver saver){
