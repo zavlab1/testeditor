@@ -12,7 +12,6 @@ import java.util.List;
 abstract public class Question implements Comparable<Question> {
 
     protected String qText;
-    private String qType;
     private List<Answer> answers;
     protected String qName;
     public final String TYPE;
