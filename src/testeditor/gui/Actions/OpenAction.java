@@ -1,4 +1,4 @@
-package testeditor.gui.Actions;
+package testeditor.gui.actions;
 
 import testeditor.Test;
 import testeditor.parser.*;

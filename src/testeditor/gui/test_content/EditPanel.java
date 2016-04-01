@@ -1,12 +1,10 @@
-package testeditor.gui.panels;
+package testeditor.gui.test_content;
 
 import testeditor.gui.services.GBC;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Панель управления элементами списка

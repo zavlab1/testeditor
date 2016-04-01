@@ -3,21 +3,23 @@ package testeditor.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.AdjustmentEvent;
 
-import testeditor.gui.Actions.*;
-import testeditor.gui.panels.ControlPanel;
-import testeditor.gui.panels.EditPanel;
-import testeditor.gui.services.ListRenderer;
-import testeditor.gui.services.VerticalButton;
+import testeditor.gui.actions.*;
+import testeditor.gui.question_content.QuestionView;
+import testeditor.gui.services.GBC;
+import testeditor.gui.test_content.TestView;
 import testeditor.question.Question;
 
 /**
  * Главное окно
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends ParentFrame {
+    private TestView testView; // панель со списком вопросов и кнопками управляния ими
+    private QuestionView questionView; // панель с содержимым выбранного вопроса
 
     public MainFrame(){
+        super();
+
         // определяем размер экрана
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
@@ -29,23 +31,18 @@ public class MainFrame extends JFrame {
         //------- Устанавливаем расположение и размер окна -------//
         this.setLocation(width/6,height/6);
         this.setSize(frameWidth,frameHeight);
-        this.setIconImage(new ImageIcon("src/testeditor/gui/img/main.png").getImage());// путь к файлу нужно указывать не относительно текущего пакета, а относительно корня проекта
 
         //------- Создаем и настраиваем компоненты GUI -------//
-        this.add(new JPanel(),BorderLayout.WEST); //левый бордер
-        this.add(new JPanel(),BorderLayout.SOUTH);// нижний бордер
+        DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета JList со списком вопросов
 
-        DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета contentList
-        JList<Question> questionList = new JList(listModel); // Output List
-        questionList.setBackground(Color.GRAY);
-        questionList.setCellRenderer(new ListRenderer());
+        setLayout(new GridBagLayout());
 
-        JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
-        this.add(scrollPane);
+        testView = new TestView(listModel); // добавляем панель с содержимым теста
+        add(testView, new GBC(0,0,1,1,0,0,100,100).setFill(GBC.BOTH));
 
-        this.add(new ControlPanel(listModel),BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
-
-        this.add(new EditPanel(questionList), BorderLayout.EAST); // Панель редактирования списка
+        questionView = new QuestionView(); // добавляем панель с контентом конкретного вопроса
+        questionView.setVisible(false); // делаем изначально ее невидимой
+        add(questionView, new GBC(0,0,1,1,0,0,100,100).setFill(GBC.BOTH));
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();

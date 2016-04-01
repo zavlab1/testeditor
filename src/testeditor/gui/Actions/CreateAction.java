@@ -1,7 +1,6 @@
-package testeditor.gui.Actions;
+package testeditor.gui.actions;
 
 import testeditor.Test;
-import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

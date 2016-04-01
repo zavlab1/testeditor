@@ -1,8 +1,8 @@
-package testeditor.gui.panels;
+package testeditor.gui.test_content;
 
-import testeditor.gui.Actions.CreateAction;
-import testeditor.gui.Actions.OpenAction;
-import testeditor.gui.Actions.SaveAction;
+import testeditor.gui.actions.CreateAction;
+import testeditor.gui.actions.OpenAction;
+import testeditor.gui.actions.SaveAction;
 import testeditor.gui.services.*;
 import testeditor.question.Question;
 
