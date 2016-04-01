@@ -3,6 +3,8 @@ package testeditor.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+
 import testeditor.gui.Actions.*;
 import testeditor.gui.panels.ControlPanel;
 import testeditor.gui.panels.EditPanel;
@@ -43,7 +45,7 @@ public class MainFrame extends JFrame {
 
         this.add(new ControlPanel(listModel),BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
 
-        this.add(new EditPanel(), BorderLayout.EAST); // Панель редактирования списка
+        this.add(new EditPanel(questionList), BorderLayout.EAST); // Панель редактирования списка
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();
