@@ -48,7 +48,7 @@ public class MainFrame extends ParentFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
 
-        JMenuItem openMenu = new JMenuItem(new OpenAction(listModel));
+        JMenuItem openMenu = new JMenuItem(new OpenAction(testView,listModel));
         openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
         fileMenu.add(openMenu);
 

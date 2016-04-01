@@ -13,7 +13,7 @@ import java.awt.*;
  * Панель для управления созданием, открытием и сохранением теста
  */
 public class ControlPanel extends JPanel {
-    public ControlPanel(DefaultListModel<Question> listModel){
+    public ControlPanel(TestView testView, DefaultListModel<Question> listModel){
 
         setLayout(new FlowLayout(FlowLayout.LEFT,20,20));
 
@@ -21,7 +21,7 @@ public class ControlPanel extends JPanel {
         createButton.setEnabled(false);
         add(createButton);
 
-        JButton openButton = new VerticalButton(new OpenAction(listModel));// кнопка открыть тест
+        JButton openButton = new VerticalButton(new OpenAction(testView,listModel));// кнопка открыть тест
         add(openButton);
 
         JButton saveAsButton = new VerticalButton(new SaveAction());// кнопка сохранить как

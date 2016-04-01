@@ -11,6 +11,7 @@ import java.awt.*;
  */
 public class TestView extends JPanel {
     private DefaultListModel<Question> listModel;
+    private JList<Question> questionList;
     private ControlPanel controlPanel; //управление файлом теста
     private EditPanel editPanel; // управление элементами теста
 
@@ -22,17 +23,28 @@ public class TestView extends JPanel {
         this.add(new JPanel(),BorderLayout.WEST); //левый бордер
         this.add(new JPanel(),BorderLayout.SOUTH);// нижний бордер
 
-        JList<Question> questionList = new JList(this.listModel); // Output List
+        questionList = new JList(this.listModel); // Output List
         questionList.setBackground(Color.GRAY);
         questionList.setCellRenderer(new ListRenderer());
 
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         this.add(scrollPane);
 
-        controlPanel = new ControlPanel(this.listModel);
+        controlPanel = new ControlPanel(this,this.listModel);
         this.add(controlPanel,BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
 
-        editPanel = new EditPanel(questionList);
-        this.add(editPanel, BorderLayout.EAST); // Панель редактирования списка
+        addEditPanel();
+    }
+
+    public void addEditPanel(){
+        //if (editPanel==null){
+            editPanel = new EditPanel(questionList);
+            this.add(editPanel, BorderLayout.EAST);
+       // }
+        /*else {
+            this.remove(editPanel);
+            editPanel = new EditPanel(questionList);
+            this.add(editPanel, BorderLayout.EAST);
+        }*/
     }
 }
