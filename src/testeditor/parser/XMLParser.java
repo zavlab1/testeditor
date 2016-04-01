@@ -1,18 +1,14 @@
 package testeditor.parser;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import testeditor.Test;
 import testeditor.question.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import javax.xml.parsers.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -35,31 +31,31 @@ public class XMLParser extends Parser {
 
         Test test = new Test();
         Question q;
-        int QuestionsCount = doc.getDocumentElement().getChildNodes().getLength();
-        NodeList QuestionNodes = doc.getDocumentElement().getElementsByTagName("Question");
+        int questionsCount = doc.getDocumentElement().getChildNodes().getLength();
+        NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("Question");
 
-        for(int i = 0; i < QuestionsCount; i++) {
-            Element QuestionElement = (Element)QuestionNodes.item(i);
-            String questionType = QuestionElement.getAttribute("Type");
+        for(int i = 0; i < questionsCount; i++) {
+            Element questionElement = (Element)questionNodes.item(i);
+            String questionType = questionElement.getAttribute("Type");
 
             switch (questionType) {
                 case "MultiChoice":
-                    q = parseMultiChoice(QuestionElement);
+                    q = parseMultiChoice(questionElement);
                     test.add(q);
 
                     break;
                 case "ShortAnswer":
-                    q = parseShortAnswer(QuestionElement);
+                    q = parseShortAnswer(questionElement);
                     test.add(q);
 
                     break;
                 case "TrueFalse":
-                    q = parseTrueFalse(QuestionElement);
+                    q = parseTrueFalse(questionElement);
                     test.add(q);
 
                     break;
                 case "Numerical":
-                    q = parseNumerical(QuestionElement);
+                    q = parseNumerical(questionElement);
                     test.add(q);
 
                     break;
@@ -70,42 +66,42 @@ public class XMLParser extends Parser {
     }
 
     Matching parseMatching(Element questionElement) {
-        String Name = getTextField("name", questionElement);
-        String Head = getTextField("questiontext", questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
         ArrayList<Answer> answerList = new ArrayList<>();
 
-        Matching r = new Matching(Name, Head, answerList);
+        Matching r = new Matching(name, head, answerList);
 
-        NodeList SubQuestions =
+        NodeList subQuestions =
                 questionElement.getElementsByTagName("subquestion");
 
-        for(int n = 0; n < SubQuestions.getLength(); n++) {
-            Element SubQuestionElement =
-                    (Element)SubQuestions.item(n);
-            Element SubQuestionTextElement =
-                    (Element)(SubQuestionElement.
-                            getElementsByTagName("text").item(0));
-            String SubQuestionText =
-                    SubQuestionTextElement.getTextContent();
+        for(int n = 0; n < subQuestions.getLength(); n++) {
+            Element subQuestionElement =
+                    (Element)subQuestions.item(n);
+            Element subQuestionTextElement =
+                    (Element) subQuestionElement.
+                              getElementsByTagName("text").item(0);
+            String subQuestionText =
+                    subQuestionTextElement.getTextContent();
 
-            Element AnswerElement =
-                    (Element)(SubQuestionElement.
-                            getElementsByTagName("answer").item(0));
-            Element AnswerTextElement =
-                    (Element)(AnswerElement.
-                            getElementsByTagName("text").item(0));
+            Element answerElement =
+                    (Element) subQuestionElement.
+                              getElementsByTagName("answer").item(0);
+            Element answerTextElement =
+                    (Element) answerElement.
+                              getElementsByTagName("text").item(0);
             String AnswerText =
-                    AnswerTextElement.getTextContent();
+                    answerTextElement.getTextContent();
 
             Answer a = new Answer(AnswerText, Answer.MAX_DEGREE);
             ArrayList<Answer> answerList2 = new ArrayList<>();
             answerList2.add(a);
 
-            MatchingSubQuestion SubQuestion =
-                    new MatchingSubQuestion("", SubQuestionText,
+            MatchingSubQuestion subQuestion =
+                    new MatchingSubQuestion("", subQuestionText,
                             answerList2);
 
-            r.addSubQuestion(SubQuestion);
+            r.addSubQuestion(subQuestion);
         }
 
         r = (Matching)fillQuestion(questionElement, r);
@@ -114,29 +110,29 @@ public class XMLParser extends Parser {
     }
 
     private Question fillQuestion(Element questionElement, Question q) {
-        String GeneralFeedback = getTextField("generalfeedback",
+        String generalFeedback = getTextField("generalfeedback",
                 questionElement);
-        String CorrectFeedback = getTextField("correctfeedback",
+        String correctFeedback = getTextField("correctfeedback",
                 questionElement);
-        String PartiallyCorrectFeedback =
+        String partiallyCorrectFeedback =
                 getTextField("partiallycorrectfeedback",
                 questionElement);
         String IncorrectFeedback = getTextField("incorrectfeedback",
                 questionElement);
 
-        q.setFeedback(GeneralFeedback, CorrectFeedback,
-                PartiallyCorrectFeedback, IncorrectFeedback);
+        q.setFeedback(generalFeedback, correctFeedback,
+                partiallyCorrectFeedback, IncorrectFeedback);
 
         return q;
     }
 
     MultiChoice parseMultiChoice(Element questionElement) {
-        String Name = getTextField("name", questionElement);
-        String Head = getTextField("questiontext", questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
 
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        MultiChoice q = new MultiChoice(Name, Head, answerList);
+        MultiChoice q = new MultiChoice(name, head, answerList);
         q = (MultiChoice)fillQuestion(questionElement, q);
 
         return q;
@@ -155,24 +151,24 @@ public class XMLParser extends Parser {
     }
 
     TrueFalse parseTrueFalse(Element questionElement) {
-        String Name = getTextField("name", questionElement);
-        String Head = getTextField("questiontext", questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
 
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        TrueFalse q = new TrueFalse(Name, Head, answerList);
+        TrueFalse q = new TrueFalse(name, head, answerList);
         q = (TrueFalse)fillQuestion(questionElement, q);
 
         return q;
     }
 
     Numerical parseNumerical(Element questionElement) {
-        String Name = getTextField("name", questionElement);
-        String Head = getTextField("questiontext", questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
 
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        Numerical q = new Numerical(Name, Head, answerList);
+        Numerical q = new Numerical(name, head, answerList);
         q = (Numerical)fillQuestion(questionElement, q);
 
         return q;

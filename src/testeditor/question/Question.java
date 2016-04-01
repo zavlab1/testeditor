@@ -14,18 +14,17 @@ abstract public class Question implements Comparable<Question> {
     protected String qText;
     private List<Answer> answers;
     protected String qName;
-    private String GeneralFeedback, CorrectFeedback,
-            PartiallyCorrectFeedback, IncorrectFeedback;
 
     /**
      * @param qText - заголовок вопроса
      * @param answers - списочный массив вариантов ответа к вопросу
      */
-    Question(String qName, String qText, List<Answer> answers) {
+    Question(String type, String qName, String qText, List<Answer> answers) {
         this.answers = answers;
         answers.listIterator(); // to reset previously moved iterator
         this.qText = qText.trim();
         this.qName = qName;
+        this.TYPE = type;
     }
 
     @Override
@@ -38,31 +37,6 @@ abstract public class Question implements Comparable<Question> {
     @Override
     public int compareTo(Question q) {
         return this.getQHead().compareTo(q.getQHead());
-    }
-
-    public void setFeedback(String GeneralFeedback,
-                            String CorrectFeedback,
-                            String PartiallyCorrectFeedback,
-                            String IncorrectFeedback) {
-        this.GeneralFeedback = GeneralFeedback;
-        this.CorrectFeedback = CorrectFeedback;
-        this.PartiallyCorrectFeedback = PartiallyCorrectFeedback;
-        this.IncorrectFeedback = IncorrectFeedback;
-    }
-
-    public String getFeedback(String type) {
-        switch (type) {
-            case "general":
-                return GeneralFeedback;
-            case "correct":
-                return CorrectFeedback;
-            case "partial":
-                return PartiallyCorrectFeedback;
-            case "incorrect":
-                return IncorrectFeedback;
-            default:
-                return "";
-        }
     }
 
     public String getQHead() {

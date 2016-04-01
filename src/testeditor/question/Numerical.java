@@ -11,7 +11,7 @@ import java.util.List;
 public class Numerical extends Question {
 
     public Numerical(String qName, String qText, List<Answer> answers) {
-        super(qName, qText, answers);
+        super("Числовой", qName, qText, answers);
     }
 
     public String getLine(Saver saver){

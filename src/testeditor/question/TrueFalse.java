@@ -11,7 +11,7 @@ import java.util.List;
 public class TrueFalse extends Question {
 
     public TrueFalse(String qName, String qText, List<Answer> answers) {
-        super(qName, qText, answers);
+        super("Верно/Неверно", qName, qText, answers);
     }
 
     public String getLine(Saver saver){

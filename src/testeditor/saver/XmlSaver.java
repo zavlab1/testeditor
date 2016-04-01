@@ -1,18 +1,13 @@
 package testeditor.saver;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 import testeditor.Test;
 
 import javax.xml.parsers.*;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import testeditor.question.*;
@@ -20,7 +15,7 @@ import testeditor.question.*;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+
 
 /**
  * Created by Максим on 21.03.2016.
@@ -36,6 +31,7 @@ public class XmlSaver extends Saver {
         doc = builder.newDocument();
     }
 
+    @Override
     public String doLineForMultiChoice(Question q){
         Element questionElement = doc.createElement("question");
         questionElement.setAttribute("type", "multichoice");
@@ -57,11 +53,10 @@ public class XmlSaver extends Saver {
             questionElement.appendChild(AnswerElement);
         }
 
-        questionElement = fillQuestion(questionElement, q);
-
         return xmlToString(questionElement);
     }
 
+    @Override
     public String doLineForTrueFalse(Question q) {
         Element questionElement = doc.createElement("question");
         questionElement.setAttribute("type", "truefalse");
@@ -82,11 +77,10 @@ public class XmlSaver extends Saver {
             questionElement.appendChild(AnswerElement);
         }
 
-        questionElement = fillQuestion(questionElement, q);
-
         return xmlToString(questionElement);
     }
 
+    @Override
     public String doLineForMatching(Question q) {
         Element questionElement = doc.createElement("question");
         questionElement.setAttribute("type", "matching");
@@ -119,11 +113,10 @@ public class XmlSaver extends Saver {
             questionElement.appendChild(SubquestionElement);
         }
 
-        questionElement = fillQuestion(questionElement, q);
-
         return xmlToString(questionElement);
     }
 
+    @Override
     public String doLineForShortAnswer(Question q){
         Element questionElement = doc.createElement("question");
         questionElement.setAttribute("type", "shortanswer");
@@ -144,35 +137,12 @@ public class XmlSaver extends Saver {
             questionElement.appendChild(AnswerElement);
         }
 
-        questionElement = fillQuestion(questionElement, q);
-
         return xmlToString(questionElement);
     }
 
-    private Element fillQuestion(Element questionElement,
-                                 Question q) {
-        questionElement = setTextField(questionElement,
-                "generalfeedback", q.getFeedback("general"));
-        questionElement = setTextField(questionElement,
-                "correctfeedback", q.getFeedback("correct"));
-        questionElement = setTextField(questionElement,
-                "partiallycorrectfeedback", q.getFeedback("partial"));
-        questionElement = setTextField(questionElement,
-                "incorrectfeedback", q.getFeedback("incorrect"));
-
-        return questionElement;
-    }
-
+    @Override
     public String doLineForNumerical(Question q){
         throw new NotImplementedException();
-    }
-
-    @Override public void toFile(String answersText) {
-        //String text = "<quiz>";
-        //text += answersText;
-        //text += "</quiz>";
-
-        super.toFile(answersText);
     }
 
     String xmlToString(Element questionElement) {

@@ -3,6 +3,8 @@ package testeditor.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+
 import testeditor.gui.Actions.*;
 import testeditor.gui.panels.ControlPanel;
 import testeditor.gui.panels.EditPanel;
@@ -30,6 +32,9 @@ public class MainFrame extends JFrame {
         this.setIconImage(new ImageIcon("src/testeditor/gui/img/main.png").getImage());// путь к файлу нужно указывать не относительно текущего пакета, а относительно корня проекта
 
         //------- Создаем и настраиваем компоненты GUI -------//
+        this.add(new JPanel(),BorderLayout.WEST); //левый бордер
+        this.add(new JPanel(),BorderLayout.SOUTH);// нижний бордер
+
         DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета contentList
         JList<Question> questionList = new JList(listModel); // Output List
         questionList.setBackground(Color.GRAY);
@@ -40,7 +45,7 @@ public class MainFrame extends JFrame {
 
         this.add(new ControlPanel(listModel),BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
 
-        this.add(new EditPanel(), BorderLayout.EAST); // Панель редактирования списка
+        this.add(new EditPanel(questionList), BorderLayout.EAST); // Панель редактирования списка
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();

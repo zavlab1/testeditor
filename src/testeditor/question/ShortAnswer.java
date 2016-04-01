@@ -11,7 +11,7 @@ import java.util.List;
 public class ShortAnswer extends Question {
 
     public ShortAnswer(String qName, String qText, List<Answer> answers) {
-        super(qName, qText, answers);
+        super("Короткий ответ", qName, qText, answers);
     }
 
     public String getLine(Saver saver){

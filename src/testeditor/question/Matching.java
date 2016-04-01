@@ -10,22 +10,23 @@ import java.util.List;
  * Класс, описывающий вопрос с выбором одного или нескольких вариантов ответа
  */
 public class Matching extends Question {
-	private ArrayList<Question> SubQuestions;
 
-	public Matching(String qName, String qText, List<Answer> answers) {
-		super(qName, qText, answers);
-		SubQuestions = new ArrayList<>();
-	}
+    private ArrayList<Question> subQuestions;
 
-	public String getLine(Saver saver){
-		return saver.doLineForMatching(this);
-	}
+    public Matching(String qName, String qText, List<Answer> answers) {
+        super("Соответствие", qName, qText, answers);
+        subQuestions = new ArrayList<>();
+    }
 
-	public void addSubQuestion(Question subQuestion){
-		SubQuestions.add(subQuestion);
-	}
+    public String getLine(Saver saver){
+        return saver.doLineForMatching(this);
+    }
 
-	public ArrayList<Question> getSubQuestions(){
-		return SubQuestions;
-	}
+    public void addSubQuestion(Question subQuestion){
+        subQuestions.add(subQuestion);
+    }
+
+    public ArrayList<Question> getSubQuestions(){
+        return subQuestions;
+    }
 }
