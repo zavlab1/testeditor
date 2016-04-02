@@ -20,8 +20,8 @@ public class TestView extends JPanel {
 
         //------- Создаем и настраиваем компоненты GUI -------//
         setLayout(new BorderLayout());
-        this.add(new JPanel(),BorderLayout.WEST); //левый бордер
-        this.add(new JPanel(),BorderLayout.SOUTH);// нижний бордер
+        this.add(new JPanel(), BorderLayout.WEST); //левый бордер
+        this.add(new JPanel(), BorderLayout.SOUTH);// нижний бордер
 
         questionList = new JList(this.listModel); // Output List
         questionList.setBackground(Color.GRAY);
@@ -30,8 +30,8 @@ public class TestView extends JPanel {
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         this.add(scrollPane);
 
-        controlPanel = new ControlPanel(this,this.listModel);
-        this.add(controlPanel,BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
+        controlPanel = new ControlPanel(this, this.listModel);
+        this.add(controlPanel, BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
 
         addEditPanel();
     }
