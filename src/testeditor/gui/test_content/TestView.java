@@ -32,19 +32,12 @@ public class TestView extends JPanel {
 
         controlPanel = new ControlPanel(this, this.listModel);
         this.add(controlPanel, BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
-
-        addEditPanel();
     }
 
     public void addEditPanel(){
-        //if (editPanel==null){
+        if (editPanel!=null) remove(editPanel);
             editPanel = new EditPanel(questionList);
             this.add(editPanel, BorderLayout.EAST);
-       // }
-        /*else {
-            this.remove(editPanel);
-            editPanel = new EditPanel(questionList);
-            this.add(editPanel, BorderLayout.EAST);
-        }*/
+            this.updateUI();
     }
 }

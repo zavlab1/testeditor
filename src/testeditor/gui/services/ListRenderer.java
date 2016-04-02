@@ -1,7 +1,6 @@
 package testeditor.gui.services;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 
 import testeditor.question.*;
 

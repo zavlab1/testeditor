@@ -20,7 +20,7 @@ public class OpenAction extends AbstractAction {
     /**
      * @param listModel - модель списка для JList, куда добавляем вопросы
      */
-    public OpenAction(TestView testView, DefaultListModel<Question> listModel){
+    public OpenAction( TestView testView, DefaultListModel<Question> listModel){
         this.testView = testView;
         questionList = listModel;
 
@@ -52,6 +52,7 @@ public class OpenAction extends AbstractAction {
                 }
             }
             catch (Exception ex) {ex.printStackTrace();}
+            testView.addEditPanel();
         }
 
 
