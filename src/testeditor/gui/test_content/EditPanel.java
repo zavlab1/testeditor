@@ -1,5 +1,6 @@
 package testeditor.gui.test_content;
 
+import testeditor.gui.listeners.EditButtonListener;
 import testeditor.gui.services.GBC;
 
 import javax.swing.*;
@@ -17,9 +18,10 @@ public class EditPanel extends JPanel {
 
         JButton editButton = new JButton("Редактировать");
         add(editButton, new GBC(0,0,2,1,10,10,0,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(10,20,0,20));
+        editButton.addMouseListener(new EditButtonListener(list));
 
         JButton createButton = new JButton("Создать");
-       add(createButton,new GBC(0,1,2,1,10,10,0,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(10,20,0,20));
+        add(createButton,new GBC(0,1,2,1,10,10,0,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(10,20,0,20));
 
         JButton deleteButton = new JButton("Удалить");
         add(deleteButton,new GBC(0,2,2,1,10,10,0,0).setFill(GridBagConstraints.HORIZONTAL).setInsets(10,20,0,20));

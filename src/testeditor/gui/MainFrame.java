@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+import testeditor.gui.QuestionFrames.ParentFrame;
 import testeditor.gui.actions.*;
 import testeditor.gui.question_content.QuestionView;
 import testeditor.gui.services.GBC;
@@ -18,19 +19,6 @@ public class MainFrame extends ParentFrame {
     private QuestionView questionView; // панель с содержимым выбранного вопроса
 
     public MainFrame() {
-        super();
-
-        // определяем размер экрана
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension screenSize = kit.getScreenSize();
-        int width = screenSize.width;
-        int height = screenSize.height;;
-        int frameWidth = (int)(width/1.5); //размер окна
-        int frameHeight = (int)(height/1.5);//по умолчанию
-
-        //------- Устанавливаем расположение и размер окна -------//
-        this.setLocation(width/6, height/6);
-        this.setSize(frameWidth, frameHeight);
 
         //------- Создаем и настраиваем компоненты GUI -------//
         DefaultListModel<Question> listModel = new DefaultListModel<>();// Модель для компонета JList со списком вопросов

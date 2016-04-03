@@ -20,7 +20,7 @@ import static java.util.Arrays.*;
 public class GiftParser extends Parser {
 
     public Test getTest(String filepath) throws IOException {
-        Test test = new Test();
+        Test test = Test.createTest();
         String text = readFile(filepath);
         String nl = System.lineSeparator();
         String[] qBodies = text.split(nl+nl);

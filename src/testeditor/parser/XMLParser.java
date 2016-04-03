@@ -1,14 +1,18 @@
 package testeditor.parser;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import testeditor.Test;
 import testeditor.question.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import javax.xml.parsers.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -29,7 +33,7 @@ public class XMLParser extends Parser {
                 throw new IOException("Ошибка открытия XML документа");
             }
 
-        Test test = new Test();
+        Test test = Test.createTest();
         Question q;
         int questionsCount = doc.getDocumentElement().getChildNodes().getLength();
         NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("Question");
@@ -104,26 +108,7 @@ public class XMLParser extends Parser {
             r.addSubQuestion(subQuestion);
         }
 
-        r = (Matching)fillQuestion(questionElement, r);
-
         return r;
-    }
-
-    private Question fillQuestion(Element questionElement, Question q) {
-        String generalFeedback = getTextField("generalfeedback",
-                questionElement);
-        String correctFeedback = getTextField("correctfeedback",
-                questionElement);
-        String partiallyCorrectFeedback =
-                getTextField("partiallycorrectfeedback",
-                questionElement);
-        String IncorrectFeedback = getTextField("incorrectfeedback",
-                questionElement);
-
-        q.setFeedback(generalFeedback, correctFeedback,
-                partiallyCorrectFeedback, IncorrectFeedback);
-
-        return q;
     }
 
     MultiChoice parseMultiChoice(Element questionElement) {
@@ -132,50 +117,32 @@ public class XMLParser extends Parser {
 
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        MultiChoice q = new MultiChoice(name, head, answerList);
-        q = (MultiChoice)fillQuestion(questionElement, q);
-
-        return q;
+        return new MultiChoice(name, head, answerList);
     }
 
-    ShortAnswer parseShortAnswer(Element questionElement) {
-        String Name = getTextField("name", questionElement);
-        String Head = getTextField("questiontext", questionElement);
-
+    ShortAnswer parseShortAnswer(Element questionElement, String id) {
+        String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        ShortAnswer q = new ShortAnswer(Name, Head, answerList);
-        q = (ShortAnswer)fillQuestion(questionElement, q);
-
-        return q;
+        return new ShortAnswer(id, head, answerList);
     }
 
-    TrueFalse parseTrueFalse(Element questionElement) {
-        String name = getTextField("name", questionElement);
-        String head = getTextField("questiontext", questionElement);
-
+    TrueFalse parseTrueFalse(Element questionElement, String id) {
+        String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        TrueFalse q = new TrueFalse(name, head, answerList);
-        q = (TrueFalse)fillQuestion(questionElement, q);
-
-        return q;
+        return new TrueFalse(id, head, answerList);
     }
 
-    Numerical parseNumerical(Element questionElement) {
-        String name = getTextField("name", questionElement);
-        String head = getTextField("questiontext", questionElement);
-
+    Numerical parseNumerical(Element questionElement, String id) {
+        String head = getQuestionHead(questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        Numerical q = new Numerical(name, head, answerList);
-        q = (Numerical)fillQuestion(questionElement, q);
-
-        return q;
+        return new Numerical(id, head, answerList);
     }
 
     ArrayList<Answer> parseAnswerList(Element questionElement) {
-        ArrayList<Answer> answerList = new ArrayList<Answer>();
+        ArrayList<Answer> answerList = new ArrayList<>();
         NodeList answerElements = questionElement.getElementsByTagName("Answer");
 
         for(int i = 0; i < answerElements.getLength(); i++) {

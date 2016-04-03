@@ -14,9 +14,9 @@ public class Test extends TreeSet<Question> {
         ourInstance.questions = questions;
         return ourInstance;
     }*/
-
+    private static Test t = null;
     public static Test getTestFromFile(String filepath) {
-        Test t = null;
+
         try {
             t = Parser.parse(filepath);
         } catch (Exception e) {
@@ -25,6 +25,18 @@ public class Test extends TreeSet<Question> {
         return t;
     }
 
-    public Test() {
+    public static Test getTest () {
+
+        t = (t != null) ? t : new Test();
+        System.out.println(t);
+        return t;
+    }
+
+    public static Test createTest() {
+        t = new Test();
+        return t;
+    }
+
+    private Test() {
     }
 }

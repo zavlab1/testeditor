@@ -1,8 +1,8 @@
 package testeditor.question;
 
+import testeditor.gui.QuestionFrames.QuestionFrame;
 import testeditor.saver.Saver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,8 +47,6 @@ abstract public class Question implements Comparable<Question> {
         return qText;
     }
 
-    abstract public String getLine(Saver saver);
-
     public String getQText() {
         return this.qText;
     }
@@ -64,4 +62,8 @@ abstract public class Question implements Comparable<Question> {
     public List<Answer> getAnswerList() {
         return this.answers;
     }
+
+    abstract public String getLine(Saver saver);
+
+    abstract public QuestionFrame getFrame();
 }
