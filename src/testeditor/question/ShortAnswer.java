@@ -1,5 +1,7 @@
 package testeditor.question;
 
+import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.QuestionFrames.ShortAnswerFrame;
 import testeditor.saver.Saver;
 
 import java.util.List;
@@ -10,11 +12,17 @@ import java.util.List;
  */
 public class ShortAnswer extends Question {
 
+    private QuestionFrame frame = null;
+
     public ShortAnswer(String qName, String qText, List<Answer> answers) {
         super("Короткий ответ", qName, qText, answers);
     }
 
     public String getLine(Saver saver){
         return saver.doLineForShortAnswer(this);
+    }
+
+    public QuestionFrame getFrame() {
+        return (frame == null) ? new ShortAnswerFrame() : frame;
     }
 }

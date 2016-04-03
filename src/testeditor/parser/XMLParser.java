@@ -33,7 +33,7 @@ public class XMLParser extends Parser {
                 throw new IOException("Ошибка открытия XML документа");
             }
 
-        Test test = new Test();
+        Test test = Test.createTest();
         int questionsCount = doc.getDocumentElement().getChildNodes().getLength();
         NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("Question");
 
@@ -132,7 +132,7 @@ public class XMLParser extends Parser {
     }
 
     ArrayList<Answer> parseAnswerList(Element questionElement) {
-        ArrayList<Answer> answerList = new ArrayList<Answer>();
+        ArrayList<Answer> answerList = new ArrayList<>();
         NodeList answerElements = questionElement.getElementsByTagName("Answer");
 
         for(int i = 0; i < answerElements.getLength(); i++) {
