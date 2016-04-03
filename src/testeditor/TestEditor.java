@@ -43,7 +43,6 @@ public class TestEditor {
                 JFrame testFrame = new MainFrame();
 
                 testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                testFrame.setTitle("TestEditor");
                 testFrame.setVisible(true);
             }
         });

@@ -1,6 +1,7 @@
-package testeditor.gui.Actions;
+package testeditor.gui.actions;
 
 import testeditor.Test;
+import testeditor.gui.test_content.TestView;
 import testeditor.parser.*;
 import testeditor.question.*;
 
@@ -14,11 +15,13 @@ import java.io.File;
  */
 public class OpenAction extends AbstractAction {
     private DefaultListModel<Question> questionList;
+    private TestView testView;
 
     /**
      * @param listModel - модель списка для JList, куда добавляем вопросы
      */
-    public OpenAction(DefaultListModel<Question> listModel){
+    public OpenAction( TestView testView, DefaultListModel<Question> listModel){
+        this.testView = testView;
         questionList = listModel;
 
         this.putValue(Action.NAME,"Открыть");
@@ -47,9 +50,9 @@ public class OpenAction extends AbstractAction {
                 for (Question question: test){
                     questionList.addElement(question);
                 }
-
             }
             catch (Exception ex) {ex.printStackTrace();}
+            testView.addEditPanel();
         }
 
 

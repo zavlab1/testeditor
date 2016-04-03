@@ -1,8 +1,6 @@
-package testeditor.gui.Actions;
+package testeditor.gui.actions;
 
 import testeditor.Test;
-import testeditor.parser.Parser;
-import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,12 +10,12 @@ import java.io.File;
 /**
  * Класс-слушатель для события открытия файла
  */
-public class SaveAction extends AbstractAction {
+public class CreateAction extends AbstractAction {
 
-    public SaveAction(){
+    public CreateAction(){
 
-        this.putValue(Action.NAME,"Сохранить как");
-        this.putValue(Action.SHORT_DESCRIPTION,"Сохранить тест");
+        this.putValue(Action.NAME,"Создать");
+        this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
         this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/open.png"));
     }
 
