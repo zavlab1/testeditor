@@ -17,34 +17,33 @@ abstract public class QuestionFrame extends ParentFrame {
     protected ArrayList<JTextComponent> fields = new ArrayList();
 
     public QuestionFrame(Question q) {
-        setSize((int)(INITIAL_WIDTH/1.5), INITIAL_HEIGHT);
+        setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setVisible(true);
-        setLayout(new BorderLayout(30,30));
-
+        setLayout(new BorderLayout(30, 30));
 
         JPanel north = new JPanel();
         north.setLayout(new GridBagLayout());
 
-        JLabel labelName = new JLabel("Имя вопроса:");
-        north.add(labelName, new GBC(0,0,1,1,10,10,0,0).setFill(GBC.HORIZONTAL).setInsets(10,0,0,0));
+        JLabel labelName = new JLabel("Название:");
+        north.add(labelName, new GBC(0, 0, 1, 1, 10, 10, 0, 0).setFill(GBC.HORIZONTAL).setInsets(10, 0, 0, 0));
 
         JTextArea nameTextArea = new JTextArea(q.getQName());
         fields.add(nameTextArea);
-        north.add(nameTextArea, new GBC(1,0,1,1,0,0,100,0).setFill(GBC.HORIZONTAL).setInsets(10,0,0,0));
+        north.add(nameTextArea, new GBC(1, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL).setInsets(10, 0, 0, 0));
 
         JLabel labelQuestion = new JLabel("Вопрос:");
 
-        north.add(labelQuestion, new GBC(0,1,1,1,10,10,0,0).setFill(GBC.HORIZONTAL));
+        north.add(labelQuestion, new GBC(0, 1, 1, 1, 10, 10, 0, 0).setFill(GBC.HORIZONTAL));
 
         JTextArea qTextArea = new JTextArea(q.getQText());
         fields.add(qTextArea);
-        north.add( qTextArea, new GBC(1,1,1,1,0,0,100,0).setFill(GBC.HORIZONTAL));
+        north.add( qTextArea, new GBC(1, 1, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
 
         add(north,BorderLayout.NORTH);
 
         JPanel savePanel = new JPanel();
-        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT,30,30));
+        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 30));
 
         JButton saveButton = new JButton("Сохранить");
         savePanel.add(saveButton);
