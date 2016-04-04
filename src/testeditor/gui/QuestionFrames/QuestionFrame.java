@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
+import static javax.swing.GroupLayout.Alignment.*;
 
 /**
  * Created by dimitry on 03.04.16.
@@ -23,31 +24,53 @@ abstract public class QuestionFrame extends ParentFrame {
         setLayout(new BorderLayout(30, 30));
 
         JPanel north = new JPanel();
-        north.setLayout(new GridBagLayout());
+        GroupLayout northLayout = new GroupLayout(north);
+        north.setLayout(northLayout);
+        northLayout.setAutoCreateContainerGaps(true);
+        northLayout.setAutoCreateGaps(true);
 
         JLabel labelName = new JLabel("Название:");
-        north.add(labelName, new GBC(0, 0, 1, 1, 10, 10, 0, 0).setFill(GBC.HORIZONTAL).setInsets(10, 0, 0, 0));
-
-        JTextArea nameTextArea = new JTextArea(q.getQName());
-        fields.add(nameTextArea);
-        north.add(nameTextArea, new GBC(1, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL).setInsets(10, 0, 0, 0));
-
         JLabel labelQuestion = new JLabel("Вопрос:");
-
-        north.add(labelQuestion, new GBC(0, 1, 1, 1, 10, 10, 0, 0).setFill(GBC.HORIZONTAL));
-
+        JTextArea nameTextArea = new JTextArea(q.getQName());
         JTextArea qTextArea = new JTextArea(q.getQText());
+        fields.add(nameTextArea);
         fields.add(qTextArea);
-        north.add( qTextArea, new GBC(1, 1, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
+
+        northLayout.setHorizontalGroup(northLayout.createSequentialGroup()
+                .addGroup(northLayout.createParallelGroup(LEADING)
+                        .addComponent(labelName)
+                        .addComponent(labelQuestion))
+                .addGroup(northLayout.createParallelGroup(LEADING)
+                        .addComponent(nameTextArea)
+                        .addComponent(qTextArea))
+        );
+
+        northLayout.linkSize(SwingConstants.HORIZONTAL, labelName, labelQuestion);
+
+        northLayout.setVerticalGroup(northLayout.createSequentialGroup()
+                .addGroup(northLayout.createParallelGroup(BASELINE)
+                        .addComponent(labelName)
+                        .addComponent(nameTextArea))
+                .addGroup(northLayout.createParallelGroup(LEADING)
+                        .addComponent(labelQuestion)
+                        .addComponent(qTextArea))
+        );
 
         add(north,BorderLayout.NORTH);
 
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridLayout(2,0,0,12));
+
         JPanel savePanel = new JPanel();
-        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 30));
+        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 
         JButton saveButton = new JButton("Сохранить");
         savePanel.add(saveButton);
+        southPanel.add(savePanel);
 
-        add(savePanel,BorderLayout.SOUTH);
+        JLabel warnings = new JLabel("Системные сообщения");
+        southPanel.add(warnings);
+
+        add(southPanel,BorderLayout.SOUTH);
     }
 }
