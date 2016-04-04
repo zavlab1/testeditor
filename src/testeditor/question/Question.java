@@ -15,6 +15,8 @@ abstract public class Question implements Comparable<Question> {
     private List<Answer> answers;
     protected String qName;
     public final String TYPE;
+    private float defaultGrade;
+    private float penalty;
 
     /**
      * @param qText - заголовок вопроса
@@ -67,4 +69,12 @@ abstract public class Question implements Comparable<Question> {
     abstract public String getLine(Saver saver);
 
     abstract public QuestionFrame getFrame();
+
+    public float getDefaultGrade() { return defaultGrade; }
+
+    public void setDefaultGrade(float defaultGrade) { this.defaultGrade = defaultGrade; }
+
+    public float getPenalty() { return penalty; }
+
+    public void setPenalty(float penalty) { this.penalty = penalty; }
 }

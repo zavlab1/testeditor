@@ -1,6 +1,7 @@
 package testeditor.parser;
 
 import com.sun.org.apache.xpath.internal.operations.Mult;
+import com.sun.org.apache.xpath.internal.operations.Number;
 import testeditor.Test;
 import testeditor.question.*;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.xml.parsers.*;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,25 +36,34 @@ public class XMLParser extends Parser {
             }
 
         Test test = Test.createTest();
-        int questionsCount = doc.getDocumentElement().getChildNodes().getLength();
-        NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("Question");
+        Question q;
+        int questionsCount = doc.getDocumentElement().getElementsByTagName("question").getLength();
+        NodeList questionNodes = doc.getDocumentElement().getElementsByTagName("question");
 
         for(int i = 0; i < questionsCount; i++) {
-            Element QuestionElement = (Element)questionNodes.item(i);
-            String questionType = QuestionElement.getAttribute("Type");
+            Element questionElement = (Element)questionNodes.item(i);
+            String questionType = questionElement.getAttribute("type");
 
             switch (questionType) {
-                case "MultiChoice":
-                    test.add(parseMultiChoice(QuestionElement));
+                case "multichoice":
+                    q = parseMultiChoice(questionElement);
+                    test.add(q);
+
                     break;
-                case "ShortAnswer":
-                    test.add(parseShortAnswer(QuestionElement, String.valueOf(i)));
+                case "shortanswer":
+                    q = parseShortAnswer(questionElement);
+                    test.add(q);
+
                     break;
-                case "TrueFalse":
-                    test.add(parseTrueFalse(QuestionElement, String.valueOf(i)));
+                case "truefalse":
+                    q = parseTrueFalse(questionElement);
+                    test.add(q);
+
                     break;
-                case "Numerical":
-                    test.add(parseNumerical(QuestionElement, String.valueOf(i)));
+                case "numerical":
+                    q = parseNumerical(questionElement);
+                    test.add(q);
+
                     break;
             }
         }
@@ -61,11 +72,12 @@ public class XMLParser extends Parser {
     }
 
     Matching parseMatching(Element questionElement) {
-        String name = getQuestionName(questionElement);
-        String head = getQuestionHead(questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
         ArrayList<Answer> answerList = new ArrayList<>();
 
         Matching r = new Matching(name, head, answerList);
+        r = (Matching)prepareQuestion(r, questionElement);
 
         NodeList subQuestions =
                 questionElement.getElementsByTagName("subquestion");
@@ -103,37 +115,67 @@ public class XMLParser extends Parser {
     }
 
     MultiChoice parseMultiChoice(Element questionElement) {
-        String name = getQuestionName(questionElement);
-        String head = getQuestionHead(questionElement);
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
+
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new MultiChoice(name, head, answerList);
+        MultiChoice q = new MultiChoice(name, head, answerList);
+        q = (MultiChoice)prepareQuestion(q, questionElement);
+
+        return q;
     }
 
-    ShortAnswer parseShortAnswer(Element questionElement, String id) {
-        String head = getQuestionHead(questionElement);
+    ShortAnswer parseShortAnswer(Element questionElement) {
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new ShortAnswer(id, head, answerList);
+        ShortAnswer q = new ShortAnswer(name, head, answerList);
+        q = (ShortAnswer)prepareQuestion(q, questionElement);
+
+        return q;
     }
 
-    TrueFalse parseTrueFalse(Element questionElement, String id) {
-        String head = getQuestionHead(questionElement);
+    TrueFalse parseTrueFalse(Element questionElement) {
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new TrueFalse(id, head, answerList);
+        TrueFalse q = new TrueFalse(name, head, answerList);
+        q = (TrueFalse)prepareQuestion(q, questionElement);
+
+        return q;
     }
 
-    Numerical parseNumerical(Element questionElement, String id) {
-        String head = getQuestionHead(questionElement);
+    Numerical parseNumerical(Element questionElement) {
+        String name = getTextField("name", questionElement);
+        String head = getTextField("questiontext", questionElement);
         ArrayList<Answer> answerList = parseAnswerList(questionElement);
 
-        return new Numerical(id, head, answerList);
+        Numerical q = new Numerical(name, head, answerList);
+        q = (Numerical)prepareQuestion(q, questionElement);
+
+        return q;
+    }
+
+    Question prepareQuestion(Question q, Element questionElement) {
+        float defaultGrade = Float.parseFloat(getField("defaultgrade", questionElement));
+        float penalty = Float.parseFloat(getField("penalty", questionElement));
+
+        q.setDefaultGrade(defaultGrade);
+        q.setPenalty(penalty);
+
+        return q;
     }
 
     ArrayList<Answer> parseAnswerList(Element questionElement) {
         ArrayList<Answer> answerList = new ArrayList<>();
         NodeList answerElements = questionElement.getElementsByTagName("Answer");
+
+        String correctFeedback = getTextField("correctfeedback", questionElement);
+        String partiallyCorrectFeedback = getTextField("partiallycorrectfeedback", questionElement);
+        String incorrectFeedback = getTextField("incorrectfeedback", questionElement);
 
         for(int i = 0; i < answerElements.getLength(); i++) {
             Element answerElement = (Element)answerElements.item(i);
@@ -141,21 +183,32 @@ public class XMLParser extends Parser {
             String text = answerElement.getElementsByTagName("text").item(0).getNodeValue();
             int fraction = Integer.parseInt(answerElement.getAttribute("fraction"));
 
-            answerList.add(new Answer(text, fraction));
+            String comment;
+
+            if (fraction == Answer.MIN_DEGREE) comment = incorrectFeedback;
+            else if (fraction == Answer.MAX_DEGREE) comment = correctFeedback;
+            else comment = partiallyCorrectFeedback;
+
+            answerList.add(new Answer(text, fraction, comment));
         }
 
         return answerList;
     }
 
-    String getQuestionName(Element questionElement) {
-        return ((Element)questionElement.getElementsByTagName("name").item(0))
-                .getElementsByTagName("text").item(0)
-                .getNodeValue();
+    private String getTextField(String elementName, Element questionElement) {
+        Element fieldElement = (Element)questionElement.getElementsByTagName(elementName).item(0);
+        if(fieldElement == null) return "";
+
+        Node textElement = fieldElement.getElementsByTagName("text").item(0);
+        if(textElement == null) return "";
+
+        return textElement.getTextContent();
     }
 
-    String getQuestionHead(Element questionElement) {
-        return ((Element)questionElement.getElementsByTagName("questiontext").item(0))
-                .getElementsByTagName("text").item(0)
-                .getNodeValue();
+    private String getField(String elementName, Element questionElement) {
+        Element fieldElement = (Element)questionElement.getElementsByTagName(elementName).item(0);
+        if(fieldElement == null) return "";
+
+        return  fieldElement.getTextContent();
     }
 }
