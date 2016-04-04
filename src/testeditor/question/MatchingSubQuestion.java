@@ -23,6 +23,6 @@ public class MatchingSubQuestion extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new MatchingFrame() : frame;
+        return (frame == null) ? new MatchingFrame(this) : frame;
     }
 }

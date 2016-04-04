@@ -50,8 +50,12 @@ public class OpenAction extends AbstractAction {
                 for (Question question: test){
                     questionList.addElement(question);
                 }
+                testView.getQuestionList().setSelectedIndex(0);
+
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            catch (Exception ex) {ex.printStackTrace();}
             testView.addEditPanel();
         }
 

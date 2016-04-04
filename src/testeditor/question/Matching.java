@@ -20,7 +20,6 @@ public class Matching extends Question {
     public Matching(String qName, String qText, List<Answer> answers) {
         super("Соответствие", qName, qText, answers);
         subQuestions = new ArrayList<>();
-        String a = this.TYPE;
     }
 
     public String getLine(Saver saver){
@@ -36,6 +35,6 @@ public class Matching extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new MatchingFrame() : frame;
+        return (frame == null) ? new MatchingFrame(this) : frame;
     }
 }

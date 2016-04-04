@@ -23,6 +23,6 @@ public class ShortAnswer extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new ShortAnswerFrame() : frame;
+        return (frame == null) ? new ShortAnswerFrame(this) : frame;
     }
 }

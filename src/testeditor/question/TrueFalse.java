@@ -23,6 +23,6 @@ public class TrueFalse extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new TrueFalseFrame() : frame;
+        return (frame == null) ? new TrueFalseFrame(this) : frame;
     }
 }

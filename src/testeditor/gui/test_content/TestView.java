@@ -5,6 +5,8 @@ import testeditor.question.Question;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
@@ -39,5 +41,9 @@ public class TestView extends JPanel {
             editPanel = new EditPanel(questionList);
             this.add(editPanel, BorderLayout.EAST);
             this.updateUI();
+    }
+
+    public JList<Question> getQuestionList() {
+        return questionList;
     }
 }

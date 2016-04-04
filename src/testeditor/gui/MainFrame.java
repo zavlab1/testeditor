@@ -4,9 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import testeditor.gui.QuestionFrames.ParentFrame;
 import testeditor.gui.actions.*;
-import testeditor.gui.question_content.QuestionView;
 import testeditor.gui.services.GBC;
 import testeditor.gui.test_content.TestView;
 import testeditor.question.Question;
@@ -16,7 +14,6 @@ import testeditor.question.Question;
  */
 public class MainFrame extends ParentFrame {
     private TestView testView; // панель со списком вопросов и кнопками управляния ими
-    private QuestionView questionView; // панель с содержимым выбранного вопроса
 
     public MainFrame() {
 
@@ -27,10 +24,6 @@ public class MainFrame extends ParentFrame {
 
         testView = new TestView(listModel); // добавляем панель с содержимым теста
         add(testView, new GBC(0, 0, 1, 1, 0, 0, 100, 100).setFill(GBC.BOTH));
-
-        questionView = new QuestionView(); // добавляем панель с контентом конкретного вопроса
-        questionView.setVisible(false); // делаем изначально ее невидимой
-        add(questionView, new GBC(0, 0, 1, 1, 0, 0, 100, 100).setFill(GBC.BOTH));
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();

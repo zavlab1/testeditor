@@ -23,6 +23,6 @@ public class MultiChoice extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new MultiChoiceFrame() : frame;
+        return (frame == null) ? new MultiChoiceFrame(this) : frame;
     }
 }

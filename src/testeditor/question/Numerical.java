@@ -23,6 +23,6 @@ public class Numerical extends Question {
     }
 
     public QuestionFrame getFrame() {
-        return (frame == null) ? new NumericalFrame() : frame;
+        return (frame == null) ? new NumericalFrame(this) : frame;
     }
 }

@@ -13,6 +13,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
     @Override
     public Component getListCellRendererComponent(JList<? extends Question> list, Question value, int index, boolean isSelected, boolean cellHasFocus) {
         setLayout(new GridBagLayout());
+
         setBackground(isSelected ? new Color(252, 252, 252): new Color(230, 230, 230));
 
         removeAll();
