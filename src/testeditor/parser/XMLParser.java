@@ -171,7 +171,7 @@ public class XMLParser extends Parser {
 
     ArrayList<Answer> parseAnswerList(Element questionElement) {
         ArrayList<Answer> answerList = new ArrayList<>();
-        NodeList answerElements = questionElement.getElementsByTagName("Answer");
+        NodeList answerElements = questionElement.getElementsByTagName("answer");
 
         String correctFeedback = getTextField("correctfeedback", questionElement);
         String partiallyCorrectFeedback = getTextField("partiallycorrectfeedback", questionElement);
@@ -180,7 +180,7 @@ public class XMLParser extends Parser {
         for(int i = 0; i < answerElements.getLength(); i++) {
             Element answerElement = (Element)answerElements.item(i);
 
-            String text = answerElement.getElementsByTagName("text").item(0).getNodeValue();
+            String text = answerElement.getElementsByTagName("text").item(0).getTextContent();
             int fraction = Integer.parseInt(answerElement.getAttribute("fraction"));
 
             String comment;
