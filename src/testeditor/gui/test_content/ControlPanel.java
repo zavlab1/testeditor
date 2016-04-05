@@ -15,10 +15,10 @@ import java.awt.*;
 public class ControlPanel extends JPanel {
     public ControlPanel(TestView testView, DefaultListModel<Question> listModel){
 
-        setLayout(new FlowLayout(FlowLayout.LEFT,20,20));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
 
         JButton createButton = new VerticalButton(new CreateAction());//кнопка создать тест
-        createButton.setEnabled(false);
+        createButton.setEnabled(true);
         add(createButton);
 
         JButton openButton = new VerticalButton(new OpenAction(testView,listModel));// кнопка открыть тест
@@ -26,6 +26,6 @@ public class ControlPanel extends JPanel {
 
         JButton saveAsButton = new VerticalButton(new SaveAction());// кнопка сохранить как
         add(saveAsButton);
-        saveAsButton.setEnabled(false);
+        saveAsButton.setEnabled(true);
     }
 }

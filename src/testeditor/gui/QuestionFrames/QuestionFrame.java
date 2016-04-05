@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import static javax.swing.GroupLayout.Alignment.*;
 
@@ -64,12 +66,14 @@ abstract public class QuestionFrame extends ParentFrame {
 
         add(north, BorderLayout.NORTH);
 
-        answerPanel.setLayout(new BorderLayout(10,10));
+        answerPanel.setLayout(new BorderLayout(10, 10));
+
         aScrollPane = new JScrollPane(answerPanel);
+        aScrollPane.setViewportBorder(null);
         aScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-       // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+        // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
         //    public void adjustmentValueChanged(AdjustmentEvent e) {
-         //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
+        //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
         Border aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
         aScrollPane.setBorder(aScrollPaneBorder);
         add(aScrollPane);
@@ -77,8 +81,13 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel savePanel = new JPanel();
         savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
-        JButton saveButton = new JButton("Сохранить");
+        JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
         JButton cancelButton = new JButton("Отмена");
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                QuestionFrame.this.setVisible(false);
+            }
+        });
         savePanel.add(saveButton);
         savePanel.add(cancelButton);
 

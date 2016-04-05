@@ -26,7 +26,7 @@ public class OpenAction extends AbstractAction {
 
         this.putValue(Action.NAME,"Открыть");
         this.putValue(Action.SHORT_DESCRIPTION,"Открыть файл теста");
-        this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/open.png"));
+        this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.directoryIcon"));
     }
 
     public void actionPerformed(ActionEvent event){

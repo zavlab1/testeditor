@@ -16,7 +16,7 @@ public class SaveAction extends AbstractAction {
 
         this.putValue(Action.NAME,"Сохранить как");
         this.putValue(Action.SHORT_DESCRIPTION,"Сохранить тест");
-        this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/open.png"));
+        this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/save.png"));
     }
 
     public void actionPerformed(ActionEvent event){

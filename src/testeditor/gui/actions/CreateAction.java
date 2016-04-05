@@ -16,7 +16,7 @@ public class CreateAction extends AbstractAction {
 
         this.putValue(Action.NAME,"Создать");
         this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
-        this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/open.png"));
+        this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.fileIcon"));
     }
 
     public void actionPerformed(ActionEvent event){
