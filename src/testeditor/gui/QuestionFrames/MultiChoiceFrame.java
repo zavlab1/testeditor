@@ -37,8 +37,8 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         JPanel addButtonPanel = new JPanel(new FlowLayout());
         addButtonPanel.add(addButton);
-        addButton.addActionListener((ActionEvent e)->{
-            addAnswer(aCount+1, "New");
+        addButton.addActionListener((ActionEvent e) -> {
+            addAnswer(aCount+1, "");
             answers.updateUI();
             aCount++;
             aScrollPane.setViewportView(answerPanel);

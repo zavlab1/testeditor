@@ -7,16 +7,14 @@ import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.GroupLayout.Alignment.*;
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+import static javax.swing.GroupLayout.Alignment.LEADING;
 
 /**
  * Created by dimitry on 03.04.16.
@@ -41,10 +39,12 @@ abstract public class QuestionFrame extends ParentFrame {
         north.setLayout(northLayout);
         northLayout.setAutoCreateContainerGaps(true);
         northLayout.setAutoCreateGaps(true);
+        TitledBorder northBorder = BorderFactory.createTitledBorder("Тип вопроса: " + q.TYPE);
+        northBorder.setTitleJustification(TitledBorder.CENTER);
+        north.setBorder(northBorder);
 
         labelName = new QLabel("<html><b>Название:</b></html>");
         labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
-        QLabel labelType = new QLabel("<html><b>Тип вопроса: </b>" + q.TYPE + "</html>");
         QTextArea nameTextArea = new QTextArea(q.getQName());
         QTextArea qTextArea = new QTextArea(q.getQText());
         fields.add(nameTextArea);
@@ -53,8 +53,7 @@ abstract public class QuestionFrame extends ParentFrame {
         northLayout.setHorizontalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(LEADING)
                         .addComponent(labelName)
-                        .addComponent(labelQuestion)
-                        .addComponent(labelType))
+                        .addComponent(labelQuestion))
                 .addGroup(northLayout.createParallelGroup(LEADING)
                         .addComponent(nameTextArea)
                         .addComponent(qTextArea))
@@ -66,10 +65,9 @@ abstract public class QuestionFrame extends ParentFrame {
                 .addGroup(northLayout.createParallelGroup(BASELINE)
                         .addComponent(labelName)
                         .addComponent(nameTextArea))
-                .addGroup(northLayout.createParallelGroup(LEADING)
+                .addGroup(northLayout.createParallelGroup(BASELINE)
                         .addComponent(labelQuestion)
                         .addComponent(qTextArea))
-                .addComponent(labelType)
         );
 
         add(north, BorderLayout.NORTH);
@@ -82,7 +80,8 @@ abstract public class QuestionFrame extends ParentFrame {
         // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
         //    public void adjustmentValueChanged(AdjustmentEvent e) {
         //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
-        Border aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
+        TitledBorder aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
+        aScrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
         aScrollPane.setBorder(aScrollPaneBorder);
         add(aScrollPane);
 
@@ -90,6 +89,8 @@ abstract public class QuestionFrame extends ParentFrame {
         savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
         JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
+        saveButton.addActionListener(e -> saveQuestion());
+
         JButton cancelButton = new JButton("Отмена");
         cancelButton.addActionListener(e -> QuestionFrame.this.setVisible(false));
 

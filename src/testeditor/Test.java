@@ -12,6 +12,7 @@ import java.util.TreeSet;
 public class Test extends TreeSet<Question> {
 
     private static Test t = null;
+
     public static Test getTestFromFile(String filepath) {
         try {
             t = Parser.parse(filepath);
