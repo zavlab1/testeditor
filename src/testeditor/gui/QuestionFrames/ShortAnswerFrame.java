@@ -1,11 +1,14 @@
 package testeditor.gui.QuestionFrames;
 
 import testeditor.gui.services.GBC;
+import testeditor.gui.services.QLabel;
+import testeditor.gui.services.QTextArea;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
-import java.awt.GridBagLayout;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,23 +16,24 @@ import java.util.List;
  * Created by dimitry on 03.04.16.
  */
 public class ShortAnswerFrame extends QuestionFrame {
+    private List<Answer> answerList;
+
     public ShortAnswerFrame(Question q) {
         super(q);
 
         answerPanel.setLayout(new GridBagLayout());
+        answerPanel.setBorder(new TitledBorder("Правильный ответ: "));
 
-        List<Answer> answerList = q.getAnswerList();
+        answerList = q.getAnswerList();
 
-        JLabel labelQuestion = new JLabel("Правильный ответ:");
-
-        answerPanel.add(labelQuestion, new GBC(0, 0, 1, 1, 10, 10, 0, 0).setFill(GBC.HORIZONTAL));
-
-        JTextArea answerText = new JTextArea(answerList.get(0).getAText());
+        JTextArea answerText = new QTextArea(answerList.get(0).getAText());
+        answerText.setLineWrap(true);
         answerText.setWrapStyleWord(true);
         fields.add(answerText);
-        answerPanel.add(answerText, new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL));
+        answerPanel.add(answerText,new GBC(0,0,1,1,0,0,100,0).setFill(GBC.HORIZONTAL).setInsets(10,10,10,10));
 
         add(answerPanel);
+        setSize(this.INITIAL_WIDTH,(int)(this.INITIAL_HEIGHT/1.5));
     }
 
     protected List<Answer> collectAnswers() {
