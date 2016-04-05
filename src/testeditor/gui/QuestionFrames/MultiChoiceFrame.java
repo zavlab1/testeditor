@@ -9,6 +9,7 @@ import testeditor.question.Question;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,5 +58,10 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         answers.add(delButton, new GBC(2, pos+1, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(5, 10, 5, 5));
+    }
+
+    protected List<Answer> collectAnswers() {
+        List<Answer> aList = new ArrayList<>();
+        return aList;
     }
 }

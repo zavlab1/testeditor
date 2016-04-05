@@ -1,5 +1,6 @@
 package testeditor.question;
 
+import testeditor.Test;
 import testeditor.gui.QuestionFrames.QuestionFrame;
 import testeditor.saver.Saver;
 
@@ -62,9 +63,7 @@ abstract public class Question implements Comparable<Question> {
         this.qText = qText;
     }
 
-    public List<Answer> getAnswerList() {
-        return this.answers;
-    }
+    public List<Answer> getAnswerList() { return this.answers; }
 
     abstract public String getLine(Saver saver);
 
@@ -77,4 +76,13 @@ abstract public class Question implements Comparable<Question> {
     public float getPenalty() { return penalty; }
 
     public void setPenalty(float penalty) { this.penalty = penalty; }
+
+    public void setAnswers(List<Answer> aList) {
+        this.answers = aList;
+    }
+
+    public void save() {
+        Test.getTest().remove(this); //удаляем существующий вопрос с таким же заголовком
+        Test.getTest().add(this);
+    }
 }

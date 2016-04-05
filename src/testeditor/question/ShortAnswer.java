@@ -4,6 +4,7 @@ import testeditor.gui.QuestionFrames.QuestionFrame;
 import testeditor.gui.QuestionFrames.ShortAnswerFrame;
 import testeditor.saver.Saver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,5 +25,10 @@ public class ShortAnswer extends Question {
 
     public QuestionFrame getFrame() {
         return (frame == null) ? new ShortAnswerFrame(this) : frame;
+    }
+
+    protected List<Answer> collectAnswers() {
+        List<Answer> aList = new ArrayList<>();
+        return aList;
     }
 }

@@ -3,15 +3,19 @@ package testeditor.gui.QuestionFrames;
 import testeditor.gui.ParentFrame;
 import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
+import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+
 import static javax.swing.GroupLayout.Alignment.*;
 
 /**
@@ -19,10 +23,14 @@ import static javax.swing.GroupLayout.Alignment.*;
  */
 abstract public class QuestionFrame extends ParentFrame {
     protected JPanel answerPanel  = new JPanel();
-    protected ArrayList<JTextComponent> fields = new ArrayList();
+    protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
+    protected Question q;
+    private QLabel labelName;
+    private QLabel labelQuestion;
 
     public QuestionFrame(Question q) {
+        this.q = q;
         setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setVisible(true);
@@ -34,8 +42,8 @@ abstract public class QuestionFrame extends ParentFrame {
         northLayout.setAutoCreateContainerGaps(true);
         northLayout.setAutoCreateGaps(true);
 
-        QLabel labelName = new QLabel("<html><b>Название:</b></html>");
-        QLabel labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
+        labelName = new QLabel("<html><b>Название:</b></html>");
+        labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
         QLabel labelType = new QLabel("<html><b>Тип вопроса: </b>" + q.TYPE + "</html>");
         QTextArea nameTextArea = new QTextArea(q.getQName());
         QTextArea qTextArea = new QTextArea(q.getQText());
@@ -83,11 +91,8 @@ abstract public class QuestionFrame extends ParentFrame {
 
         JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
         JButton cancelButton = new JButton("Отмена");
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                QuestionFrame.this.setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> QuestionFrame.this.setVisible(false));
+
         savePanel.add(saveButton);
         savePanel.add(cancelButton);
 
@@ -104,4 +109,13 @@ abstract public class QuestionFrame extends ParentFrame {
 
         add(bottomPanel, BorderLayout.SOUTH);
     }
+
+    public void saveQuestion() {
+        q.setQName(labelName.getText());
+        q.setQText(labelQuestion.getText());
+        q.setAnswers(collectAnswers());
+        q.save();
+    }
+
+    abstract protected List<Answer> collectAnswers();
 }

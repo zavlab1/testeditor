@@ -6,6 +6,7 @@ import testeditor.question.Question;
 
 import javax.swing.*;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,5 +28,10 @@ public class TrueFalseFrame extends QuestionFrame {
         answerPanel.add(b, new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL));
 
         add(answerPanel);
+    }
+
+    protected List<Answer> collectAnswers() {
+        List<Answer> aList = new ArrayList<>();
+        return aList;
     }
 }

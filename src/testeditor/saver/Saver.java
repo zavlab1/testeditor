@@ -43,13 +43,7 @@ abstract public class Saver {
         }
     }
 
-    public void insertToTest(Question q) {
-        test.remove(q); //удаляем существующий вопрос с таким же заголовком
-        test.add(q);
-    }
-
     public void save(Question question) {
-        insertToTest(question);
         toFile(getText());
     }
 
