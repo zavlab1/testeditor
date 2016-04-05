@@ -22,13 +22,9 @@ public class MultiChoiceFrame extends QuestionFrame {
     public MultiChoiceFrame(Question q) {
         super(q);
         answers.setLayout(new GridBagLayout());
-        answers.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
         aList = q.getAnswerList();
         aCount = aList.size();
-
-        QLabel aLabel = new QLabel("<html><b>Варианты ответа:</b></html>");
-        answers.add(aLabel, new GBC(0, 0, 2, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 0, 10, 10));
 
         for(int i=0; i<aCount; i++) {
             addAnswer(i, aList.get(i).getAText());

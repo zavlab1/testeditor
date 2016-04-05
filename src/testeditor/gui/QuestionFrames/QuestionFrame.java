@@ -6,6 +6,7 @@ import testeditor.gui.services.QTextArea;
 import testeditor.question.Question;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ abstract public class QuestionFrame extends ParentFrame {
                 .addComponent(labelType)
         );
 
-        add(north,BorderLayout.NORTH);
+        add(north, BorderLayout.NORTH);
 
         answerPanel.setLayout(new BorderLayout(10,10));
         aScrollPane = new JScrollPane(answerPanel);
@@ -69,6 +70,8 @@ abstract public class QuestionFrame extends ParentFrame {
        // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
         //    public void adjustmentValueChanged(AdjustmentEvent e) {
          //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
+        Border aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
+        aScrollPane.setBorder(aScrollPaneBorder);
         add(aScrollPane);
 
         JPanel savePanel = new JPanel();
