@@ -26,28 +26,29 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 
         add(new JSeparator(JSeparator.VERTICAL), new GBC(1,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
 
-        JLabel labelQuestion = new JLabel("<html>" +
+        JLabel labelQuestion = new JLabel("<html><p>" +
                                               "<b>" + value.getQName() + "</b>" +
                                               "<br>" + value.getQText() +
-                                          "</html>");
+                                          "</p><br></html>");
 
         labelQuestion.setFont(new Font("Sans-Serif", Font.PLAIN, 12));
-        add(labelQuestion, new GBC(2, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL)
-                                                             .setInsets(10, 10, 10, 10));
+        add(labelQuestion, new GBC(2, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.BOTH)
+                                                             .setInsets(10, 5, 10, 10));
 
         JLabel labelType = new JLabel("<html>" +
                                           "<p align='right'>" +
                                                 "<b>Тип вопроса:</b>" +
                                                 "<br>" + value.TYPE +
                                           "</p>" +
-                                      "</html>" );
+                                      "<br></html>" );
 
         labelType.setFont(new Font("Sans-Serif", Font.PLAIN, 12));
 
-        add(labelType, new GBC(3, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL)
-                                                      .setInsets(10, 20, 10, 10));
+        add(labelType, new GBC(3, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.BOTH)
+                                                      .setInsets(10, 20, 10, 5));
 
         add(new JSeparator(), new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
+
 
         return this;
     }

@@ -28,8 +28,10 @@ public class TestView extends JPanel {
         questionList = new JList(this.listModel); // Output List
         questionList.setBackground(Color.GRAY);
         questionList.setCellRenderer(new ListRenderer());
+        questionList.setFixedCellWidth(questionList.getWidth());
 
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane);
 
         controlPanel = new ControlPanel(this, this.listModel);
