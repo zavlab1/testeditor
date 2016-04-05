@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.net.URL;
 
 /**
  * Класс-слушатель для события открытия файла
@@ -16,7 +17,8 @@ public class SaveAction extends AbstractAction {
 
         this.putValue(Action.NAME,"Сохранить как");
         this.putValue(Action.SHORT_DESCRIPTION,"Сохранить тест");
-        this.putValue(Action.SMALL_ICON, new ImageIcon("src/testeditor/gui/img/save.png"));
+        URL imageURL = getClass().getResource("/testeditor/gui/img/save.png");
+        this.putValue(Action.SMALL_ICON, new ImageIcon(imageURL));
     }
 
     public void actionPerformed(ActionEvent event){

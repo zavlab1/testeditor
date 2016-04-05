@@ -24,8 +24,8 @@ abstract public class QuestionFrame extends ParentFrame {
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
     protected Question q;
-    private QLabel labelName;
-    private QLabel labelQuestion;
+    private QTextArea nameTextArea;
+    private QTextArea qTextArea;
 
     public QuestionFrame(Question q) {
         this.q = q;
@@ -43,10 +43,10 @@ abstract public class QuestionFrame extends ParentFrame {
         northBorder.setTitleJustification(TitledBorder.CENTER);
         north.setBorder(northBorder);
 
-        labelName = new QLabel("<html><b>Название:</b></html>");
-        labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
-        QTextArea nameTextArea = new QTextArea(q.getQName());
-        QTextArea qTextArea = new QTextArea(q.getQText());
+        QLabel labelName = new QLabel("<html><b>Название:</b></html>");
+        QLabel labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
+        nameTextArea = new QTextArea(q.getQName());
+        qTextArea = new QTextArea(q.getQText());
         fields.add(nameTextArea);
         fields.add(qTextArea);
 
@@ -112,8 +112,8 @@ abstract public class QuestionFrame extends ParentFrame {
     }
 
     public void saveQuestion() {
-        q.setQName(labelName.getText());
-        q.setQText(labelQuestion.getText());
+        q.setQName(nameTextArea.getText());
+        q.setQText(qTextArea.getText());
         q.setAnswers(collectAnswers());
         q.save();
     }
