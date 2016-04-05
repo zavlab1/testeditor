@@ -2,11 +2,17 @@ package testeditor.gui.QuestionFrames;
 
 import testeditor.gui.ParentFrame;
 import testeditor.gui.services.GBC;
+import testeditor.gui.services.QLabel;
+import testeditor.gui.services.QTextArea;
 import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import static javax.swing.GroupLayout.Alignment.*;
 
@@ -14,8 +20,9 @@ import static javax.swing.GroupLayout.Alignment.*;
  * Created by dimitry on 03.04.16.
  */
 abstract public class QuestionFrame extends ParentFrame {
-    protected JPanel answers  = new JPanel();
+    protected JPanel answerPanel  = new JPanel();
     protected ArrayList<JTextComponent> fields = new ArrayList();
+    protected JScrollPane aScrollPane;
 
     public QuestionFrame(Question q) {
         setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
@@ -29,17 +36,19 @@ abstract public class QuestionFrame extends ParentFrame {
         northLayout.setAutoCreateContainerGaps(true);
         northLayout.setAutoCreateGaps(true);
 
-        JLabel labelName = new JLabel("Название:");
-        JLabel labelQuestion = new JLabel("Вопрос:");
-        JTextArea nameTextArea = new JTextArea(q.getQName());
-        JTextArea qTextArea = new JTextArea(q.getQText());
+        QLabel labelName = new QLabel("<html><b>Название:</b></html>");
+        QLabel labelName = new QLabel("<html><b>Вопрос:</b></html>");
+        QLabel labelType = new QLabel("<html><b>Тип вопроса: </b>" + q.TYPE + "</html>");
+        QTextArea nameTextArea = new QTextArea(q.getQName());
+        QTextArea qTextArea = new QTextArea(q.getQText());
         fields.add(nameTextArea);
         fields.add(qTextArea);
 
         northLayout.setHorizontalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(LEADING)
                         .addComponent(labelName)
-                        .addComponent(labelQuestion))
+                        .addComponent(labelQuestion)
+                        .addComponent(labelType))
                 .addGroup(northLayout.createParallelGroup(LEADING)
                         .addComponent(nameTextArea)
                         .addComponent(qTextArea))
@@ -54,23 +63,38 @@ abstract public class QuestionFrame extends ParentFrame {
                 .addGroup(northLayout.createParallelGroup(LEADING)
                         .addComponent(labelQuestion)
                         .addComponent(qTextArea))
+                .addComponent(labelType)
         );
 
         add(north,BorderLayout.NORTH);
 
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new GridLayout(2,0,0,12));
+        answerPanel.setLayout(new BorderLayout(10,10));
+        aScrollPane = new JScrollPane(answerPanel);
+        aScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+       // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+        //    public void adjustmentValueChanged(AdjustmentEvent e) {
+         //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
+        add(aScrollPane);
 
         JPanel savePanel = new JPanel();
-        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
         JButton saveButton = new JButton("Сохранить");
+        JButton cancelButton = new JButton("Отмена");
         savePanel.add(saveButton);
-        southPanel.add(savePanel);
+        savePanel.add(cancelButton);
 
-        JLabel warnings = new JLabel("Системные сообщения");
-        southPanel.add(warnings);
+        JPanel hintPanel = new JPanel();
+        hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
-        add(southPanel,BorderLayout.SOUTH);
+        JLabel hintLabel = new JLabel("Подсказка");
+        hintPanel.add(hintLabel);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(savePanel, BorderLayout.NORTH);
+        bottomPanel.add(hintPanel, BorderLayout.SOUTH);
+
+        add(bottomPanel, BorderLayout.SOUTH);
     }
 }
