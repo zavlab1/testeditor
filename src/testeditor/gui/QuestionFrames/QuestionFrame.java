@@ -1,7 +1,6 @@
 package testeditor.gui.QuestionFrames;
 
 import testeditor.gui.ParentFrame;
-import testeditor.gui.services.GBC;
 import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
 import testeditor.question.Question;
@@ -9,10 +8,6 @@ import testeditor.question.Question;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import static javax.swing.GroupLayout.Alignment.*;
 
@@ -37,7 +32,7 @@ abstract public class QuestionFrame extends ParentFrame {
         northLayout.setAutoCreateGaps(true);
 
         QLabel labelName = new QLabel("<html><b>Название:</b></html>");
-        QLabel labelName = new QLabel("<html><b>Вопрос:</b></html>");
+        QLabel labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
         QLabel labelType = new QLabel("<html><b>Тип вопроса: </b>" + q.TYPE + "</html>");
         QTextArea nameTextArea = new QTextArea(q.getQName());
         QTextArea qTextArea = new QTextArea(q.getQText());

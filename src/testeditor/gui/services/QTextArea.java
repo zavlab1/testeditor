@@ -13,8 +13,8 @@ public class QTextArea extends JTextArea {
         super(s);
 
         setFont(new Font("Sans-Serif", Font.PLAIN, 12));
-        Border border = BorderFactory.createLineBorder(Color.GRAY,1,true);
-        setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(5,5,5,5)));
+        Border border = BorderFactory.createLineBorder(Color.GRAY, 1, true);
+        setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         setLineWrap(true);
         setWrapStyleWord(true);
