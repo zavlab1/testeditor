@@ -9,6 +9,7 @@ import testeditor.question.Question;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,11 +58,30 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(answerText, new GBC(1, pos+1, 1, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
 
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
+        delButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = answers.getComponentZOrder(delButton);
+                answers.remove(index);
+                answers.remove(index-1);
+                answers.remove(index-2);
+                answers.updateUI();
+            }
+        });
         answers.add(delButton, new GBC(2, pos+1, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(5, 10, 5, 5));
-    }
+	}
 
     protected List<Answer> collectAnswers() {
         List<Answer> aList = new ArrayList<>();
+		Answer answer;
+		QTextArea tempTextArea;
+
+		for (int i = 1; i < answers.getComponentCount(); i+=3){
+			tempTextArea = (QTextArea)answers.getComponent(i);
+			answer = new Answer(tempTextArea.getText());
+			aList.add(answer);
+		}
+
         return aList;
     }
 }

@@ -100,7 +100,7 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel hintPanel = new JPanel();
         hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
-        JLabel hintLabel = new JLabel("Подсказка");
+        JLabel hintLabel = new JLabel("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа");
         hintPanel.add(hintLabel);
 
         JPanel bottomPanel = new JPanel();
