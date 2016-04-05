@@ -15,7 +15,7 @@ public class EditAction extends AbstractAction {
     public EditAction (JList qList){
         list = qList;
 
-        this.putValue(Action.NAME,"Редактировать");
+        this.putValue(Action.NAME,"<html><b><font color='#A52A2A' size=+1>&#9998;&nbsp;&nbsp;&nbsp;</font></b>Редактировать</html>");
         this.putValue(Action.SHORT_DESCRIPTION,"Открыть редактор вопроса");
     }
 

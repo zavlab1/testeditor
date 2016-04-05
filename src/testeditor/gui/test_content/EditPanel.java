@@ -1,6 +1,7 @@
 package testeditor.gui.test_content;
 
 import testeditor.gui.actions.EditAction;
+import testeditor.gui.services.EditPanelButton;
 import testeditor.gui.services.GBC;
 
 import javax.swing.*;
@@ -16,31 +17,31 @@ public class EditPanel extends JPanel {
 
         setLayout(new GridBagLayout());
 
-        JButton editButton = new JButton(new EditAction(list));
+        JButton editButton = new EditPanelButton(new EditAction(list));
         add(editButton, new GBC(0, 0, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                          .setInsets(10, 20, 0, 20));
 
-        JButton createButton = new JButton("Создать");
+        JButton createButton = new EditPanelButton("<html><font color='green' size=+1><b>&#10010;&nbsp;&nbsp;&nbsp;</b></font>Создать</html>");
         add(createButton,new GBC(0, 1, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 
-        JButton deleteButton = new JButton("Удалить");
+        JButton deleteButton = new EditPanelButton("<html><font color='red' size=+1><b>&#10006;&nbsp;&nbsp;&nbsp;</b></font>Удалить</html>");
         add(deleteButton, new GBC(0, 2, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                            .setInsets(10, 20, 0, 20));
 
-        JButton beginButton = new JButton("В начало");
+        JButton beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало</html>");
         add(beginButton, new GBC(0, 3, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 
-        JButton upButton = new JButton("Вверх");
+        JButton upButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8657;&nbsp;&nbsp;&nbsp;</b></font>Вверх</html>");
         add(upButton, new GBC(0, 4, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                        .setInsets(10, 20, 0, 20));
 
-        JButton downButton = new JButton("Вниз");
+        JButton downButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8659;&nbsp;&nbsp;&nbsp;</b></font>Вниз</html>");
         add(downButton,new GBC(0, 5, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                         .setInsets(10, 20, 0, 20));
 
-        JButton endButton = new JButton("В конец");
+        JButton endButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец</html>");
         add(endButton, new GBC(0, 6, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                         .setInsets(10, 20, 0, 20));
 
