@@ -5,6 +5,8 @@ import testeditor.question.Question;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by main on 04.04.16.
@@ -22,6 +24,13 @@ public class EditAction extends AbstractAction {
     public void actionPerformed(ActionEvent event){
         int index = list.getSelectedIndex();
         Question q = (Question) Test.getTest().toArray()[index];
-        q.getFrame().setVisible(true);
+        JFrame qFrame = q.getFrame();
+        qFrame.addWindowListener(new WindowAdapter() {
+                                     @Override
+                                     public void windowClosed(WindowEvent event) {
+                                         list.repaint();
+                                     }
+                                 });
+        qFrame.setVisible(true);
     }
 }

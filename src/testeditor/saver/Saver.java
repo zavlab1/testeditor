@@ -13,11 +13,9 @@ import java.io.PrintWriter;
  */
 abstract public class Saver {
 
-    protected Test test;
     protected String filepath;
 
-    Saver(Test test, String filepath){
-        this.test = test;
+    Saver(String filepath){
         this.filepath = filepath;
     }
     /**
@@ -43,13 +41,13 @@ abstract public class Saver {
         }
     }
 
-    public void save(Question question) {
+    public void save() {
         toFile(getText());
     }
 
     private String getText(){
         String text = "";
-        for(Question q : test){
+        for(Question q : Test.getTest()){
             text += q.getLine(this) + "\n\n";
         }
         return text;

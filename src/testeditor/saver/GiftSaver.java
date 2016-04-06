@@ -11,10 +11,9 @@ public class GiftSaver extends Saver {
     /**
      * Записывает вопрос в текстовый файл в формате GIFT
      * @param filepath - путь к выходному файлу
-     * @param test - объект вопроса
      */
-    public GiftSaver(Test test, String filepath) {
-        super(test, filepath);
+    public GiftSaver(String filepath) {
+        super(filepath);
     }
 
     /**
@@ -89,7 +88,7 @@ public class GiftSaver extends Saver {
     }
 
     private String doQHeadLine(Question q){
-        return "::" + q.getQName() + ".::" + q.getQText() + "\n{\n";
+        return "::" + q.getQName() + "::" + q.getQText() + "\n{\n";
     }
     private String getComment(Answer a) {
         return a.getAComment().isEmpty() ? "" : ("#" + a.getAComment());

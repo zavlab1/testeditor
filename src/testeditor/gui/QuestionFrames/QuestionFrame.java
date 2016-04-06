@@ -89,10 +89,10 @@ abstract public class QuestionFrame extends ParentFrame {
         savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
         JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
-        saveButton.addActionListener(e -> saveQuestion());
+        saveButton.addActionListener(e -> { saveQuestion(); this.dispose(); });
 
         JButton cancelButton = new JButton("Отмена");
-        cancelButton.addActionListener(e -> QuestionFrame.this.setVisible(false));
+        cancelButton.addActionListener(e -> this.setVisible(false));
 
         savePanel.add(saveButton);
         savePanel.add(cancelButton);

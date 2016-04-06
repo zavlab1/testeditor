@@ -24,8 +24,8 @@ import java.util.List;
 public class XmlSaver extends Saver {
     Document doc;
 
-    public XmlSaver(Test test, String filepath) throws Exception {
-        super(test, filepath);
+    public XmlSaver(String filepath) throws Exception {
+        super(filepath);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

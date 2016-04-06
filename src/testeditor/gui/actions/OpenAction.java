@@ -45,7 +45,7 @@ public class OpenAction extends AbstractAction {
         if (result == JFileChooser.APPROVE_OPTION){
             questionList.clear();
             try {
-                test = Parser.parse(openDialog.getSelectedFile().getAbsolutePath());
+                test = Test.getTestFromFile(openDialog.getSelectedFile().getAbsolutePath());
 
                 for (Question question: test){
                     questionList.addElement(question);

@@ -1,6 +1,12 @@
 package testeditor.gui.actions;
 
 import testeditor.Test;
+import testeditor.parser.GiftParser;
+import testeditor.parser.Parser;
+import testeditor.question.Question;
+import testeditor.saver.GiftSaver;
+import testeditor.saver.Saver;
+import testeditor.saver.XmlSaver;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,15 +29,32 @@ public class SaveAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent event){
         Test test; // Объект теста
-        JFileChooser openDialog = new JFileChooser(); // объект диалогового окна
+        JFileChooser saveDialog = new JFileChooser(); // объект диалогового окна
 
         //------- Настраиваем диалоговое окно -------//
-        openDialog.setCurrentDirectory(new File(".")); //корневая дирректория по умолчанию
-        openDialog.setAcceptAllFileFilterUsed(false); //убираем в фильтрах "All files"
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("Все поддерживаемые форматы (*.gift, *.xml)","gift","xml"));
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("GIFT Moodle test (*.gift)","gift"));
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("XML Moodle test (*.xml)","xml"));
+        saveDialog.setCurrentDirectory(new File(".")); //корневая дирректория по умолчанию
+        saveDialog.setAcceptAllFileFilterUsed(false); //убираем в фильтрах "All files"
+        saveDialog.addChoosableFileFilter(new FileNameExtensionFilter("Все поддерживаемые форматы (*.gift, *.xml)","gift","xml"));
+        saveDialog.addChoosableFileFilter(new FileNameExtensionFilter("GIFT Moodle test (*.gift)","gift"));
+        saveDialog.addChoosableFileFilter(new FileNameExtensionFilter("XML Moodle test (*.xml)","xml"));
 
         //------- Обрабатываем файл теста -------//
+        int result = saveDialog.showSaveDialog(null);;
+        if (result == JFileChooser.APPROVE_OPTION){
+            try {
+                String path = saveDialog.getSelectedFile().getAbsolutePath();
+                if (path.toLowerCase().endsWith(".gift")) {
+                    Saver s = new GiftSaver(path);
+                    s.save();
+                } else if (path.toLowerCase().endsWith(".xml")) {
+                    Saver s = new XmlSaver(path);
+                    s.save();
+                } else {
+                    throw new Exception("Выбранное разрешение не соответствует поддерживаемым форматам файлов");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
