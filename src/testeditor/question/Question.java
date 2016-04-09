@@ -85,10 +85,4 @@ abstract public class Question implements Comparable<Question> {
     public void setAnswers(List<Answer> aList) {
         this.answers = aList;
     }
-
-    public void save() {
-        System.out.println(123);
-        Test.getTest().remove(this); //удаляем существующий вопрос с таким же заголовком
-        Test.getTest().add(this);
-    }
 }

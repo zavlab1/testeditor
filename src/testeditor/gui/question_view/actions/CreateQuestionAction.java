@@ -16,6 +16,7 @@ import java.io.File;
 public class CreateQuestionAction extends AbstractAction {
 
     private JList list;
+    private Question q = null;
 
     public CreateQuestionAction(JList qList) {
         list = qList;
@@ -48,7 +49,7 @@ public class CreateQuestionAction extends AbstractAction {
                 "Выбор");
 
         if ((s != null) && (s.length() > 0)) {
-            Question q = null;
+
             switch (s) {
                 case "Выбор":
                     q = new MultiChoice();
@@ -71,7 +72,8 @@ public class CreateQuestionAction extends AbstractAction {
             qFrame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent event) {
-                    list.repaint();
+                    DefaultListModel<Question> listModel = (DefaultListModel<Question>) list.getModel();
+                    listModel.addElement(CreateQuestionAction.this.q);
                 }
             });
             qFrame.setVisible(true);
