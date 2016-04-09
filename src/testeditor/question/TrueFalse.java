@@ -4,6 +4,7 @@ import testeditor.gui.question_view.QuestionFrame;
 import testeditor.gui.question_view.TrueFalseFrame;
 import testeditor.saver.Saver;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,10 +13,11 @@ import java.util.List;
  */
 public class TrueFalse extends Question {
 
-    private QuestionFrame frame = null;
-
     public TrueFalse(String qName, String qText, List<Answer> answers) {
         super("Верно/Неверно", qName, qText, answers);
+    }
+    public TrueFalse() {
+        this("", "", Arrays.asList(new Answer("")));
     }
 
     public String getLine(Saver saver){

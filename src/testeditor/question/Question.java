@@ -22,7 +22,7 @@ abstract public class Question implements Comparable<Question> {
     public final String TYPE;
     private float defaultGrade;
     private float penalty;
-    protected QuestionFrame frame;
+    protected QuestionFrame frame = null;
 
     /**
      * @param qText - заголовок вопроса
@@ -34,14 +34,6 @@ abstract public class Question implements Comparable<Question> {
         this.qText = qText.trim();
         this.qName = qName;
         this.TYPE = type;
-        this.frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent event) {
-                Component component = (Component) event.getSource();
-                JFrame f = (JFrame) SwingUtilities.getRoot(component);
-                f.repaint();
-            }
-        });
     }
 
     @Override
@@ -95,6 +87,7 @@ abstract public class Question implements Comparable<Question> {
     }
 
     public void save() {
+        System.out.println(123);
         Test.getTest().remove(this); //удаляем существующий вопрос с таким же заголовком
         Test.getTest().add(this);
     }

@@ -22,7 +22,7 @@ public class EditPanel extends JPanel {
         add(editButton, new GBC(0, 0, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                          .setInsets(10, 20, 0, 20));
 
-        JButton createButton = new EditPanelButton(new CreateQuestionAction(list)));
+        JButton createButton = new EditPanelButton(new CreateQuestionAction(list));
         add(createButton,new GBC(0, 1, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 
@@ -50,14 +50,14 @@ public class EditPanel extends JPanel {
         add(spinLabel, new GBC(0, 7, 1, 1, 0, 0, 0, 100).setAnchor(GridBagConstraints.PAGE_END)
                                                         .setInsets(10, 10, 20, 20));
 
-        JSpinner listSpinner = new JSpinner(new SpinnerNumberModel(1, 1, max, 1));
-        listSpinner.addChangeListener((ChangeEvent event) -> {
+        /*JSpinner listSpinner = new JSpinner(new SpinnerNumberModel(1, 1, max, 1));
+        /listSpinner.addChangeListener((ChangeEvent event) -> {
             list.setSelectedIndex(((int)listSpinner.getValue())-1);//выделяем выбранный элемент
             list.ensureIndexIsVisible(list.getSelectedIndex());//делаем выделенный элемент видимым
         });
 
         add(listSpinner, new GBC(1, 7, 1, 1, 0, 0, 0, 100).setAnchor(GridBagConstraints.PAGE_END)
                                                           .setInsets(10, 20, 20, 0)
-                                                          .setFill(GridBagConstraints.HORIZONTAL));
+                                                          .setFill(GridBagConstraints.HORIZONTAL));*/
     }
 }

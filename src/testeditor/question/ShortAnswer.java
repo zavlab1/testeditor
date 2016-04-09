@@ -5,6 +5,7 @@ import testeditor.gui.question_view.ShortAnswerFrame;
 import testeditor.saver.Saver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,10 +14,11 @@ import java.util.List;
  */
 public class ShortAnswer extends Question {
 
-    private QuestionFrame frame = null;
-
     public ShortAnswer(String qName, String qText, List<Answer> answers) {
         super("Короткий ответ", qName, qText, answers);
+    }
+    public ShortAnswer() {
+        this("", "", Arrays.asList(new Answer("")));
     }
 
     public String getLine(Saver saver){

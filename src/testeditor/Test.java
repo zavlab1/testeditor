@@ -3,13 +3,15 @@ package testeditor;
 import testeditor.parser.Parser;
 import testeditor.question.Question;
 
+import javax.swing.event.ChangeListener;
+import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
 /**
  * Created by dimitry on 28.12.15.
  * Singleton class for test question storage
  */
-public class Test extends TreeSet<Question> {
+public class Test extends LinkedHashSet<Question> {
 
     private static Test t = null;
 

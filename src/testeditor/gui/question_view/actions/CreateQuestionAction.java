@@ -6,6 +6,8 @@ import testeditor.question.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 /**
@@ -15,7 +17,7 @@ public class CreateQuestionAction extends AbstractAction {
 
     private JList list;
 
-    public CreateQuestionAction(JList qList){
+    public CreateQuestionAction(JList qList) {
         list = qList;
         this.putValue (Action.NAME, "<html>" +
                                         "<font color='green' size=+1>" +
@@ -25,10 +27,9 @@ public class CreateQuestionAction extends AbstractAction {
                                     "</html>"
                        );
         this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
-        this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.fileIcon"));
     }
 
-    public void actionPerformed(ActionEvent event){
+    public void actionPerformed(ActionEvent event) {
         Test test = Test.getTest();
         Object[] types = {
                               "Выбор",
@@ -47,7 +48,7 @@ public class CreateQuestionAction extends AbstractAction {
                 "Выбор");
 
         if ((s != null) && (s.length() > 0)) {
-            Question q;
+            Question q = null;
             switch (s) {
                 case "Выбор":
                     q = new MultiChoice();
@@ -66,8 +67,14 @@ public class CreateQuestionAction extends AbstractAction {
                     break;
             }
             test.add(q);
-            JFrame frame = q.getFrame();
-            frame.setVisible(true);
+            JFrame qFrame = q.getFrame();
+            qFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent event) {
+                    list.repaint();
+                }
+            });
+            qFrame.setVisible(true);
         }
     }
 }
