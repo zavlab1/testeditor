@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import testeditor.gui.actions.*;
 import testeditor.gui.services.GBC;
-import testeditor.gui.test_content.TestView;
+import testeditor.gui.test_view.TestView;
+import testeditor.gui.test_view.actions.OpenTestAction;
 import testeditor.question.Question;
 
 /**
@@ -29,7 +29,7 @@ public class MainFrame extends ParentFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
 
-        JMenuItem openMenu = new JMenuItem(new OpenAction(testView, listModel));
+        JMenuItem openMenu = new JMenuItem(new OpenTestAction(testView, listModel));
         openMenu.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));// оперативные клавиши
         fileMenu.add(openMenu);
 

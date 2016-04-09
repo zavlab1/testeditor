@@ -1,12 +1,10 @@
-package testeditor.gui.test_content;
+package testeditor.gui.test_view;
 
 import testeditor.gui.services.ListRenderer;
 import testeditor.question.Question;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * Панель, отображающая общий вид теста и кнопки управления его содержимым

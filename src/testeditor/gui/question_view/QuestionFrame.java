@@ -1,4 +1,4 @@
-package testeditor.gui.QuestionFrames;
+package testeditor.gui.question_view;
 
 import testeditor.gui.ParentFrame;
 import testeditor.gui.services.QLabel;

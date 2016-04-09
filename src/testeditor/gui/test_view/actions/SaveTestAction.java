@@ -1,4 +1,4 @@
-package testeditor.gui.actions;
+package testeditor.gui.test_view.actions;
 
 import testeditor.Test;
 import testeditor.parser.GiftParser;
@@ -17,9 +17,9 @@ import java.net.URL;
 /**
  * Класс-слушатель для события открытия файла
  */
-public class SaveAction extends AbstractAction {
+public class SaveTestAction extends AbstractAction {
 
-    public SaveAction(){
+    public SaveTestAction(){
 
         this.putValue(Action.NAME,"Сохранить как");
         this.putValue(Action.SHORT_DESCRIPTION,"Сохранить тест");

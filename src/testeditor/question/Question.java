@@ -1,9 +1,13 @@
 package testeditor.question;
 
 import testeditor.Test;
-import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.question_view.QuestionFrame;
 import testeditor.saver.Saver;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 /**
@@ -18,6 +22,7 @@ abstract public class Question implements Comparable<Question> {
     public final String TYPE;
     private float defaultGrade;
     private float penalty;
+    protected QuestionFrame frame;
 
     /**
      * @param qText - заголовок вопроса
@@ -29,6 +34,14 @@ abstract public class Question implements Comparable<Question> {
         this.qText = qText.trim();
         this.qName = qName;
         this.TYPE = type;
+        this.frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent event) {
+                Component component = (Component) event.getSource();
+                JFrame f = (JFrame) SwingUtilities.getRoot(component);
+                f.repaint();
+            }
+        });
     }
 
     @Override

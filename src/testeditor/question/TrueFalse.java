@@ -1,7 +1,7 @@
 package testeditor.question;
 
-import testeditor.gui.QuestionFrames.QuestionFrame;
-import testeditor.gui.QuestionFrames.TrueFalseFrame;
+import testeditor.gui.question_view.QuestionFrame;
+import testeditor.gui.question_view.TrueFalseFrame;
 import testeditor.saver.Saver;
 
 import java.util.List;

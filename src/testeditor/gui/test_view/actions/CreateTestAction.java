@@ -1,4 +1,4 @@
-package testeditor.gui.actions;
+package testeditor.gui.test_view.actions;
 
 import testeditor.Test;
 
@@ -10,10 +10,9 @@ import java.io.File;
 /**
  * Класс-слушатель для события открытия файла
  */
-public class CreateAction extends AbstractAction {
+public class CreateTestAction extends AbstractAction {
 
-    public CreateAction(){
-
+    public CreateTestAction(){
         this.putValue(Action.NAME,"Создать");
         this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
         this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.fileIcon"));

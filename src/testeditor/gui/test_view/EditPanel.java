@@ -1,6 +1,7 @@
-package testeditor.gui.test_content;
+package testeditor.gui.test_view;
 
-import testeditor.gui.actions.EditAction;
+import testeditor.gui.question_view.actions.CreateQuestionAction;
+import testeditor.gui.question_view.actions.EditQuestionAction;
 import testeditor.gui.services.EditPanelButton;
 import testeditor.gui.services.GBC;
 
@@ -17,11 +18,11 @@ public class EditPanel extends JPanel {
 
         setLayout(new GridBagLayout());
 
-        JButton editButton = new EditPanelButton(new EditAction(list));
+        JButton editButton = new EditPanelButton(new EditQuestionAction(list));
         add(editButton, new GBC(0, 0, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                          .setInsets(10, 20, 0, 20));
 
-        JButton createButton = new EditPanelButton("<html><font color='green' size=+1><b>&#10010;&nbsp;&nbsp;&nbsp;</b></font>Создать</html>");
+        JButton createButton = new EditPanelButton(new CreateQuestionAction(list)));
         add(createButton,new GBC(0, 1, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 

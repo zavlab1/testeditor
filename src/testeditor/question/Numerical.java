@@ -1,7 +1,7 @@
 package testeditor.question;
 
-import testeditor.gui.QuestionFrames.NumericalFrame;
-import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.question_view.NumericalFrame;
+import testeditor.gui.question_view.QuestionFrame;
 import testeditor.saver.Saver;
 
 import java.util.List;
@@ -11,8 +11,6 @@ import java.util.List;
  * Класс, описывающий вопрос с выбором одного или нескольких вариантов ответа
  */
 public class Numerical extends Question {
-
-    private QuestionFrame frame = null;
 
     public Numerical(String qName, String qText, List<Answer> answers) {
         super("Числовой", qName, qText, answers);

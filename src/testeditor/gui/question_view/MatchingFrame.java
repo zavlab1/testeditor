@@ -1,4 +1,4 @@
-package testeditor.gui.QuestionFrames;
+package testeditor.gui.question_view;
 
 import testeditor.question.Answer;
 import testeditor.question.Question;
