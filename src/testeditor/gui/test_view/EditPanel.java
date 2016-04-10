@@ -2,6 +2,7 @@ package testeditor.gui.test_view;
 
 import testeditor.gui.question_view.actions.CreateQuestionAction;
 import testeditor.gui.question_view.actions.EditQuestionAction;
+import testeditor.gui.question_view.actions.RemoveQuestionAction;
 import testeditor.gui.services.EditPanelButton;
 import testeditor.gui.services.GBC;
 
@@ -26,7 +27,7 @@ public class EditPanel extends JPanel {
         add(createButton,new GBC(0, 1, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 
-        JButton deleteButton = new EditPanelButton("<html><font color='red' size=+1><b>&#10006;&nbsp;&nbsp;&nbsp;</b></font>Удалить</html>");
+        JButton deleteButton = new EditPanelButton(new RemoveQuestionAction(list));
         add(deleteButton, new GBC(0, 2, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                            .setInsets(10, 20, 0, 20));
 

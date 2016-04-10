@@ -89,7 +89,7 @@ abstract public class QuestionFrame extends ParentFrame {
         JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
         saveButton.addActionListener(e -> saveQuestion());
 
-        JButton cancelButton = new JButton("Отмена");
+        JButton cancelButton = new JButton("Отмена", UIManager.getIcon("FileChooser.cancelIcon"));
         cancelButton.addActionListener(e -> this.setVisible(false));
 
         savePanel.add(saveButton);

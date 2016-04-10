@@ -12,12 +12,13 @@ import java.util.TreeSet;
  * Singleton class for test question storage
  */
 public class Test extends LinkedHashSet<Question> {
-
+    private static String filePath = "";
     private static Test t = null;
 
     public static Test getTestFromFile(String filepath) {
         try {
             t = Parser.parse(filepath);
+            filePath = filepath;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -35,5 +36,9 @@ public class Test extends LinkedHashSet<Question> {
     }
 
     private Test() {
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }
