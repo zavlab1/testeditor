@@ -1,4 +1,4 @@
-package testeditor.gui.actions;
+package testeditor.gui.question_view.actions;
 
 import testeditor.Test;
 import testeditor.question.Question;
@@ -11,10 +11,10 @@ import java.awt.event.WindowEvent;
 /**
  * Created by main on 04.04.16.
  */
-public class EditAction extends AbstractAction {
+public class EditQuestionAction extends AbstractAction {
     private JList list;
 
-    public EditAction (JList qList){
+    public EditQuestionAction(JList qList){
         list = qList;
 
         this.putValue(Action.NAME,"<html><b><font color='#A52A2A' size=+1>&#9998;&nbsp;&nbsp;&nbsp;</font></b>Редактировать</html>");

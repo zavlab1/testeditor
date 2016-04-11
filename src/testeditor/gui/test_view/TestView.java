@@ -1,23 +1,22 @@
-package testeditor.gui.test_content;
+package testeditor.gui.test_view;
 
 import testeditor.gui.services.ListRenderer;
+import testeditor.gui.services.QListModel;
 import testeditor.question.Question;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
  */
 public class TestView extends JPanel {
-    private DefaultListModel<Question> listModel;
+    private QListModel<Question> listModel;
     private JList<Question> questionList;
     private ControlPanel controlPanel; //управление файлом теста
     private EditPanel editPanel; // управление элементами теста
 
-    public TestView(DefaultListModel<Question> listModel){
+    public TestView(QListModel<Question> listModel){
         this.listModel = listModel;
 
         //------- Создаем и настраиваем компоненты GUI -------//
@@ -25,7 +24,7 @@ public class TestView extends JPanel {
         this.add(new JPanel(), BorderLayout.WEST); //левый бордер
         this.add(new JPanel(), BorderLayout.SOUTH);// нижний бордер
 
-        questionList = new JList(this.listModel); // Output List
+        questionList = new JList<>(this.listModel); // Output List
         questionList.setBackground(Color.GRAY);
         questionList.setCellRenderer(new ListRenderer());
         questionList.setFixedCellWidth(questionList.getWidth());
@@ -34,7 +33,7 @@ public class TestView extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane);
 
-        controlPanel = new ControlPanel(this, this.listModel);
+        controlPanel = new ControlPanel(questionList);
         this.add(controlPanel, BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
     }
 

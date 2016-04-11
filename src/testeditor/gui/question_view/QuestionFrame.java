@@ -1,4 +1,4 @@
-package testeditor.gui.QuestionFrames;
+package testeditor.gui.question_view;
 
 import testeditor.gui.ParentFrame;
 import testeditor.gui.services.QLabel;
@@ -77,9 +77,7 @@ abstract public class QuestionFrame extends ParentFrame {
         aScrollPane = new JScrollPane(answerPanel);
         aScrollPane.setViewportBorder(null);
         aScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        // aScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-        //    public void adjustmentValueChanged(AdjustmentEvent e) {
-        //       e.getAdjustable().setValue(e.getAdjustable().getMaximum());}});
+
         TitledBorder aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
         aScrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
         aScrollPane.setBorder(aScrollPaneBorder);
@@ -89,9 +87,9 @@ abstract public class QuestionFrame extends ParentFrame {
         savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
         JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
-        saveButton.addActionListener(e -> { saveQuestion(); this.dispose(); });
+        saveButton.addActionListener(e -> saveQuestion());
 
-        JButton cancelButton = new JButton("Отмена");
+        JButton cancelButton = new JButton("Отмена", UIManager.getIcon("FileChooser.cancelIcon"));
         cancelButton.addActionListener(e -> this.setVisible(false));
 
         savePanel.add(saveButton);
@@ -112,10 +110,33 @@ abstract public class QuestionFrame extends ParentFrame {
     }
 
     public void saveQuestion() {
-        q.setQName(nameTextArea.getText());
+        String name = nameTextArea.getText();
+        String text = qTextArea.getText();
+        List<Answer> aList = collectAnswers();
+        aList.removeIf(a -> a.getAText().isEmpty());
+
+        String warning = "";
+
+        if (name.isEmpty()) {
+            name = "";
+        }
+        if (text.isEmpty()) {
+            warning = "Поле \"Название\" должно быть заполнено";
+        }
+        if (aList.isEmpty()) {
+            warning = "Вопрос должен иметь хотя бы один вариант ответа";
+        }
+        if (!warning.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    warning,
+                    "Ошибка!",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        q.setQName(name);
         q.setQText(qTextArea.getText());
         q.setAnswers(collectAnswers());
-        q.save();
+        this.dispose();
     }
 
     abstract protected List<Answer> collectAnswers();

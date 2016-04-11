@@ -1,9 +1,13 @@
 package testeditor.question;
 
 import testeditor.Test;
-import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.question_view.QuestionFrame;
 import testeditor.saver.Saver;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 /**
@@ -18,6 +22,7 @@ abstract public class Question implements Comparable<Question> {
     public final String TYPE;
     private float defaultGrade;
     private float penalty;
+    protected QuestionFrame frame = null;
 
     /**
      * @param qText - заголовок вопроса
@@ -79,10 +84,5 @@ abstract public class Question implements Comparable<Question> {
 
     public void setAnswers(List<Answer> aList) {
         this.answers = aList;
-    }
-
-    public void save() {
-        Test.getTest().remove(this); //удаляем существующий вопрос с таким же заголовком
-        Test.getTest().add(this);
     }
 }

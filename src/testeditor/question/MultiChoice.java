@@ -1,9 +1,10 @@
 package testeditor.question;
 
-import testeditor.gui.QuestionFrames.MultiChoiceFrame;
-import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.question_view.MultiChoiceFrame;
+import testeditor.gui.question_view.QuestionFrame;
 import testeditor.saver.Saver;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,10 +13,12 @@ import java.util.List;
  */
 public class MultiChoice extends Question {
 
-    private QuestionFrame frame = null;
-
     public MultiChoice(String qName, String qText, List<Answer> answers) {
         super("Выбор", qName, qText, answers);
+    }
+
+    public MultiChoice() {
+        this("", "", Arrays.asList(new Answer("")));
     }
 
     public String getLine(Saver saver){

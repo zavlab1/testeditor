@@ -1,6 +1,8 @@
-package testeditor.gui.test_content;
+package testeditor.gui.test_view;
 
-import testeditor.gui.actions.EditAction;
+import testeditor.gui.question_view.actions.CreateQuestionAction;
+import testeditor.gui.question_view.actions.EditQuestionAction;
+import testeditor.gui.question_view.actions.RemoveQuestionAction;
 import testeditor.gui.services.EditPanelButton;
 import testeditor.gui.services.GBC;
 
@@ -17,15 +19,15 @@ public class EditPanel extends JPanel {
 
         setLayout(new GridBagLayout());
 
-        JButton editButton = new EditPanelButton(new EditAction(list));
+        JButton editButton = new EditPanelButton(new EditQuestionAction(list));
         add(editButton, new GBC(0, 0, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                          .setInsets(10, 20, 0, 20));
 
-        JButton createButton = new EditPanelButton("<html><font color='green' size=+1><b>&#10010;&nbsp;&nbsp;&nbsp;</b></font>Создать</html>");
+        JButton createButton = new EditPanelButton(new CreateQuestionAction(list));
         add(createButton,new GBC(0, 1, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                           .setInsets(10, 20, 0, 20));
 
-        JButton deleteButton = new EditPanelButton("<html><font color='red' size=+1><b>&#10006;&nbsp;&nbsp;&nbsp;</b></font>Удалить</html>");
+        JButton deleteButton = new EditPanelButton(new RemoveQuestionAction(list));
         add(deleteButton, new GBC(0, 2, 2, 1, 10, 10, 0, 0).setFill(GridBagConstraints.HORIZONTAL)
                                                            .setInsets(10, 20, 0, 20));
 
@@ -49,14 +51,14 @@ public class EditPanel extends JPanel {
         add(spinLabel, new GBC(0, 7, 1, 1, 0, 0, 0, 100).setAnchor(GridBagConstraints.PAGE_END)
                                                         .setInsets(10, 10, 20, 20));
 
-        JSpinner listSpinner = new JSpinner(new SpinnerNumberModel(1, 1, max, 1));
-        listSpinner.addChangeListener((ChangeEvent event) -> {
+        /*JSpinner listSpinner = new JSpinner(new SpinnerNumberModel(1, 1, max, 1));
+        /listSpinner.addChangeListener((ChangeEvent event) -> {
             list.setSelectedIndex(((int)listSpinner.getValue())-1);//выделяем выбранный элемент
             list.ensureIndexIsVisible(list.getSelectedIndex());//делаем выделенный элемент видимым
         });
 
         add(listSpinner, new GBC(1, 7, 1, 1, 0, 0, 0, 100).setAnchor(GridBagConstraints.PAGE_END)
                                                           .setInsets(10, 20, 20, 0)
-                                                          .setFill(GridBagConstraints.HORIZONTAL));
+                                                          .setFill(GridBagConstraints.HORIZONTAL));*/
     }
 }

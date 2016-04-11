@@ -1,7 +1,6 @@
-package testeditor.gui.QuestionFrames;
+package testeditor.gui.question_view;
 
 import testeditor.gui.services.GBC;
-import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
 import testeditor.question.Answer;
 import testeditor.question.Question;

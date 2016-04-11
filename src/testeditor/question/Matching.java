@@ -1,10 +1,11 @@
 package testeditor.question;
 
-import testeditor.gui.QuestionFrames.MatchingFrame;
-import testeditor.gui.QuestionFrames.QuestionFrame;
+import testeditor.gui.question_view.MatchingFrame;
+import testeditor.gui.question_view.QuestionFrame;
 import testeditor.saver.Saver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,15 +14,15 @@ import java.util.List;
  */
 public class Matching extends Question {
 
-    private QuestionFrame frame = null;
-
     private ArrayList<Question> subQuestions;
 
     public Matching(String qName, String qText, List<Answer> answers) {
         super("Соответствие", qName, qText, answers);
         subQuestions = new ArrayList<>();
     }
-
+    public Matching() {
+        this("", "", Arrays.asList(new Answer("")));
+    }
     public String getLine(Saver saver){
         return saver.doLineForMatching(this);
     }

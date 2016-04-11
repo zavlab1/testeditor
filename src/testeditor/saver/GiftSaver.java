@@ -58,7 +58,7 @@ public class GiftSaver extends Saver {
     public String doLineForShortAnswer(Question q){
         String answerLine = doQHeadLine(q);
         for (Answer a : q.getAnswerList()) {
-            if (a.getDegree() > Answer.MIN_DEGREE && a.getDegree() <= Answer.MAX_DEGREE) {
+            if (a.getDegree() >= Answer.MIN_DEGREE && a.getDegree() <= Answer.MAX_DEGREE) {
                 answerLine += "\t=%" + a.getDegree() + "%";
             } else {
                 System.err.println("Can't save answer \'" + a.getAText() + "\' for question " + q.getQName() +
