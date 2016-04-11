@@ -19,7 +19,7 @@ public class RemoveQuestionAction extends AbstractAction {
     public RemoveQuestionAction(JList qList) {
         list = qList;
         this.putValue (Action.NAME, "<html>" +
-                                        "<font color='green' size=+1>" +
+                                        "<font color='red' size=+1>" +
                                             "<b>&#10006;&nbsp;&nbsp;&nbsp;</b>" +
                                         "</font>" +
                                         "Удалить" +

@@ -9,10 +9,11 @@ import java.awt.*;
 public class ParentFrame extends JFrame {
     public final int INITIAL_WIDTH;
     public final int INITIAL_HEIGHT;
+    public final String APP_NAME = "Test editor";
 
     public ParentFrame() {
         setIconImage(new ImageIcon("src/testeditor/gui/img/main.png").getImage());
-        setTitle("TestEditor");
+        setTitle(APP_NAME);
         // определяем размер экрана
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();

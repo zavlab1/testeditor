@@ -29,10 +29,6 @@ public class SaveTestAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent event) {
         String path = Test.getTest().getFilePath();
-        if (path.isEmpty()) {
-            saveButton.doClick();
-            return;
-        }
         try {
             if (path.toLowerCase().endsWith(".gift")) {
                 Saver s = new GiftSaver(path);

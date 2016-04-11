@@ -1,6 +1,10 @@
 package testeditor.gui.test_view.actions;
 
 import testeditor.Test;
+import testeditor.gui.MainFrame;
+import testeditor.gui.test_view.EditPanel;
+import testeditor.gui.test_view.TestView;
+import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,24 +15,30 @@ import java.io.File;
  * Класс-слушатель для события открытия файла
  */
 public class CreateTestAction extends AbstractAction {
+    private JList<Question> qList;
+    public CreateTestAction(JList qList) {
+        this.qList = qList;
 
-    public CreateTestAction(){
         this.putValue(Action.NAME,"Создать");
         this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
         this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.fileIcon"));
     }
 
-    public void actionPerformed(ActionEvent event){
-        Test test; // Объект теста
-        JFileChooser openDialog = new JFileChooser(); // объект диалогового окна
+    public void actionPerformed(ActionEvent event) {
 
-        //------- Настраиваем диалоговое окно -------//
-        openDialog.setCurrentDirectory(new File(".")); //корневая дирректория по умолчанию
-        openDialog.setAcceptAllFileFilterUsed(false); //убираем в фильтрах "All files"
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("Все поддерживаемые форматы (*.gift, *.xml)","gift","xml"));
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("GIFT Moodle test (*.gift)","gift"));
-        openDialog.addChoosableFileFilter(new FileNameExtensionFilter("XML Moodle test (*.xml)","xml"));
+        Test.getTest().clear();
+        ((DefaultListModel) qList.getModel()).clear();
 
-        //------- Обрабатываем файл теста -------//
+        MainFrame frame = (MainFrame) SwingUtilities.getRoot(qList);
+        frame.setTitle("new test - " + frame.APP_NAME);
+
+        TestView tv = (TestView) qList.getParent().getParent().getParent();
+        if (!tv.getEditPanel().isVisible())
+            tv.getEditPanel().setVisible(true);
+
+        EditPanel ep = tv.getEditPanel();
+        ep.getButtons().stream().forEach(b -> b.setEnabled(false));
+        ep.getListSpinner().setEnabled(false);
+        ep.getCreateButton().setEnabled(true);
     }
 }
