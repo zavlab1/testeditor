@@ -21,7 +21,7 @@ import java.util.List;
 public class MultiChoiceFrame extends QuestionFrame {
     List<Answer> aList;
     JPanel answers = new JPanel();
-    int maxDegree = 100;
+    int maxDegree = 0;
     int aCount;
     int offset = 0;
 
@@ -87,11 +87,11 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(commentText, new GBC(4, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(2, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5,pos,1,1,0,0,0,0).setFill(GBC.VERTICAL));
 
-       JSpinner degreeSpinner = new JSpinner(new SpinnerNumberModel(0,0,maxDegree,1));
+       JSpinner degreeSpinner = new JSpinner(new SpinnerNumberModel(0,0,100,1));
         degreeSpinner.setValue(degree);
         degreeSpinner.addChangeListener((ChangeEvent event) -> {
-        //
-            //
+               // degreeSpinner.setModel(new SpinnerNumberModel(0,0,100 - maxDegree,1));
+
         });
         answers.add(degreeSpinner,new GBC(6, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(2, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7,pos,1,1,0,0,0,0).setFill(GBC.VERTICAL));
@@ -100,6 +100,9 @@ public class MultiChoiceFrame extends QuestionFrame {
         delButton.addActionListener((ActionEvent e) -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 10, 5, 5));
         answers.add(new JSeparator(), new GBC(0, pos + 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0,0,5,0));
+
+        if (maxDegree <= 100) maxDegree += degree;
+        System.out.println(maxDegree);
     }
 
     public void deleteAnswer (int index){
