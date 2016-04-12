@@ -9,6 +9,7 @@ import javax.sound.midi.Soundbank;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,41 +20,41 @@ import java.util.List;
  * Created by dimitry on 03.04.16.
  */
 public class MultiChoiceFrame extends QuestionFrame {
-    List<Answer> aList;
-    List<JCheckBox> checkBoxList = new ArrayList<>();
-    List<JSpinner> spinnerList = new ArrayList<>();
-    JPanel answers = new JPanel();
-    int aCount;
-    int offset = 0;
+    private List<Answer> aList;
+    private List<JCheckBox> checkBoxList = new ArrayList<>();
+    private List<JSpinner> spinnerList = new ArrayList<>();
+    private JPanel answers = new JPanel();
+    private int aCount;
+    private int offset = 0;
+
 
     public MultiChoiceFrame(Question q) {
         super(q);
-        answers.setLayout(new GridBagLayout());
+        GridBagLayout gbl = new GridBagLayout();
+        answers.setLayout(gbl);
 
         // ------ Загловки для полей ------
         JLabel trueLabel = new JLabel("<html><p><b>Верно/<br>Неверно</b></p></html>");
-        answers.add(trueLabel, new GBC(0,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
+        answers.add(trueLabel, new GBC(0, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
         JLabel answerLabel = new JLabel("<html><p><b>Вариант ответа<b></p></html>");
-        answers.add(answerLabel, new GBC(2,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(3,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
+        answers.add(answerLabel, new GBC(2, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(3, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
         JLabel commentLabel = new JLabel("<html><p><b>Комментарий</b></p></html>");
-        answers.add(commentLabel, new GBC(4,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
+        answers.add(commentLabel, new GBC(4, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
         JLabel weightLabel = new JLabel("<html><p><b>Веc, %</b></p></html>");
-        answers.add(weightLabel, new GBC(6,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
+        answers.add(weightLabel, new GBC(6, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
         JLabel delLabel = new JLabel("<html><p><b>Удалить</b></p></html>");
-        answers.add(delLabel, new GBC(8,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
+        answers.add(delLabel, new GBC(8, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
 
         aList = q.getAnswerList();
         aCount = aList.size();
 
         for(int i=0; i < aCount; i++) {
             offset++;
-            addAnswer( i + 1, aList.get(i).getAText(), aList.get(i).getAComment(),
-                    aList.get(i).getDegree());
-
+            addAnswer(i+1, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
             updateAnswers();
         }
 
@@ -97,7 +98,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(commentText, new GBC(4, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
-        SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(0,0,100,1);
+        SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(0, 0, 100, 1);
 
         JSpinner degreeSpinner = new JSpinner(spinnerNumberModel);
         degreeSpinner.setValue(degree);
@@ -112,7 +113,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         });
 
         spinnerList.add(degreeSpinner);
-        answers.add(degreeSpinner,new GBC(6, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
+        answers.add(degreeSpinner, new GBC(6, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
@@ -121,11 +122,12 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(), new GBC(0, pos + 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
     }
 
-    public void deleteAnswer (int index){
-        answers.remove(index+1);
-        for(int i=0; i<=8; i++) answers.remove(index - i);
+    public void deleteAnswer (int delButtonIndex){
+        answers.remove(delButtonIndex+1);
+        for(int i=0; i < getColsNumber(); i++) {
+            answers.remove(delButtonIndex - i);
+        }
         answers.updateUI();
-
         offset--;
     }
 
@@ -145,15 +147,46 @@ public class MultiChoiceFrame extends QuestionFrame {
 
     protected List<Answer> collectAnswers() {
         List<Answer> aList = new ArrayList<>();
-        Answer answer;
-        QTextArea tempTextArea;
+        String text ="";
+        int degree = Answer.MIN_DEGREE;
+        String comment = "";
 
-        for (int i = 1; i < answers.getComponentCount(); i+=7){
-            tempTextArea = (QTextArea)answers.getComponent(i);
-            answer = new Answer(tempTextArea.getText());
-            aList.add(answer);
+        int cols = getColsNumber() - 1;  //-1 потому что не учитываем последнюю строку (это разделитель)
+        int rows = getRowsNumber();
+
+        label: for (int i=2; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
+            int textCompCount = 0;
+            for (int j=1; j < cols; j++) {
+                Component comp = answers.getComponent((i-1)*cols + j);
+                if (comp instanceof JTextComponent) {
+                    if (textCompCount == 0) {
+                        text = ((JTextComponent) comp).getText();
+                        textCompCount++;
+                        if (text.isEmpty()) {
+                            continue label;
+                        }
+                    } else {
+                        comment = ((JTextComponent) comp).getText();
+                    }
+                } else if (comp instanceof JSpinner) {
+                    if (checkBoxList.get(i-2).isSelected()) {  //-2 т.к. первый ряд - это заголовки
+                        degree = (int)((JSpinner)comp).getValue();
+                    }
+                }
+            }
+            aList.add(new Answer(text, degree, comment));
         }
-
         return aList;
+    }
+
+    private int getColsNumber() {
+        GridBagLayout gbl = (GridBagLayout)answers.getLayout();
+        int[][] dim = gbl.getLayoutDimensions();
+        return dim[0].length;
+    }
+    private int getRowsNumber() {
+        GridBagLayout gbl = (GridBagLayout)answers.getLayout();
+        int[][] dim = gbl.getLayoutDimensions();
+        return dim[1].length;
     }
 }
