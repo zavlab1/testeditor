@@ -29,6 +29,8 @@ abstract public class QuestionFrame extends ParentFrame {
     protected JLabel hintLabel;
     private QTextArea nameTextArea;
     private QTextArea qTextArea;
+    private JButton saveButton;
+    public final String DEFAULT_MESSAGE = "<html>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа</html>";
 
     public QuestionFrame(Question q) {
         this.q = q;
@@ -89,7 +91,7 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel savePanel = new JPanel();
         savePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 10));
 
-        JButton saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
+        saveButton = new JButton("Сохранить", new ImageIcon("src/testeditor/gui/img/save.png"));
         saveButton.addActionListener(e -> saveQuestion());
 
         JButton cancelButton = new JButton("Отмена", UIManager.getIcon("FileChooser.cancelIcon"));
@@ -101,7 +103,7 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel hintPanel = new JPanel();
         hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
-        hintLabel = new JLabel("<html><p align='left'>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа</p></html>");
+        hintLabel = new JLabel();
         hintPanel.add(hintLabel);
         hintPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -147,6 +149,10 @@ abstract public class QuestionFrame extends ParentFrame {
         q.setQText(text);
         q.setAnswers(aList);
         this.dispose();
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
     }
 
     abstract protected List<Answer> collectAnswers();

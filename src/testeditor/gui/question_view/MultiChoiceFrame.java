@@ -57,8 +57,9 @@ public class MultiChoiceFrame extends QuestionFrame {
         for(int i=0; i < aCount; i++) {
             offset++;
             addAnswer(i+1, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
-            updateAnswers();
         }
+
+        updateAnswers();
 
         JButton addButton = new JButton("<html><font color='green' size=+1>&nbsp;<b>&#10010;&nbsp;</b></font>Добавить&nbsp;</html>");
 
@@ -106,12 +107,24 @@ public class MultiChoiceFrame extends QuestionFrame {
         degreeSpinner.setValue(degree);
 
         degreeSpinner.addChangeListener(event -> {
+            hintLabel.setText(DEFAULT_MESSAGE);
+            getSaveButton().setEnabled(true);
             int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
-            if (sumDegree != 100)
+            if (sumDegree != 100) {
                 hintLabel.setText("<html><p><font color='red'><b>Сумма весов правильных вариантов ответа не равна 100%! " +
-                        "Пожалуйста, проверьте вес каждого варианта!</font></b></p></html>");
-                else hintLabel.setText("<html><p>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                    "Сумма весов правильных вариантов ответа должна быть равна 100%</p></html>");
+                                  "Пожалуйста, проверьте вес каждого варианта!</font></b></p></html>");
+                getSaveButton().setEnabled(false);
+            } else {
+                hintLabel.setText("<html><p>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
+                                  "Сумма весов правильных вариантов ответа должна быть равна 100%</p></html>");
+
+            }
+            if ((int)degreeSpinner.getValue() == 0) {
+                hintLabel.setText("<html><p><font color='red'><b>" +
+                                      "Правильный ответ не может иметь вес, равный 0" +
+                                  "</font></b></p></html>");
+                getSaveButton().setEnabled(false);
+            }
         });
 
         spinnerList.add(degreeSpinner);
@@ -119,9 +132,8 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
-        delButton.addActionListener((ActionEvent e) -> deleteAnswer(answers.getComponentZOrder(delButton)));
+        delButton.addActionListener(e -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
-
     }
 
     public void deleteAnswer (int delButtonIndex){
@@ -134,17 +146,40 @@ public class MultiChoiceFrame extends QuestionFrame {
     }
 
     // Обновление панели вариантов, в зависимости от их весов
-    public void updateAnswers(){
+    public void updateAnswers() {
         int countSelected = 0;
 
-        for (JCheckBox checkBox : checkBoxList)
-            countSelected = (checkBox.isSelected()) ? countSelected + 1 : countSelected;
+        for (JCheckBox checkBox : checkBoxList) {
+            if (checkBox.isSelected()) {
+                countSelected += 1;
+            }
+        }
 
-        if (countSelected < 2)
+        getSaveButton().setEnabled(true);
+        hintLabel.setText(DEFAULT_MESSAGE);
+        if (countSelected < 2) {
             spinnerList.stream().forEach(s -> s.setEnabled(false));
-        else
-            for (int i = 0; i < spinnerList.size(); i++)
-                spinnerList.get(i).setEnabled(checkBoxList.get(i).isSelected());
+            if (countSelected == 0) {
+                getSaveButton().setEnabled(false);
+                hintLabel.setText("<html><p><font color='red'><b>" +
+                                      "Хотя бы один вариант ответа должен быть отмечен, как правильный" +
+                                  "</font></b></p></html>");
+            }
+        } else {
+            for (int i = 0; i < spinnerList.size(); i++) {
+                JCheckBox cb = checkBoxList.get(i);
+                JSpinner sp = spinnerList.get(i);
+                if (cb.isSelected()) {
+                    sp.setEnabled(true);
+                    if ((int) sp.getValue() == 0) {
+                        getSaveButton().setEnabled(false);
+                        hintLabel.setText("<html><p><font color='red'><b>" +
+                                             "Правильный ответ не может иметь вес, равный 0" +
+                                          "</font></b></p></html>");
+                    }
+                }
+            }
+        }
     }
 
     protected List<Answer> collectAnswers() {
@@ -169,7 +204,11 @@ public class MultiChoiceFrame extends QuestionFrame {
                     }
                 } else if (comp instanceof JSpinner) {
                     if (checkBoxList.get(spinnerList.indexOf(comp)).isSelected()) {
-                        degree = (int)((JSpinner)comp).getValue();
+                        if (comp.isEnabled()) {
+                            degree = (int)((JSpinner)comp).getValue();
+                        } else {
+                            degree = Answer.MAX_DEGREE;
+                        }
                     }
                 }
             }
