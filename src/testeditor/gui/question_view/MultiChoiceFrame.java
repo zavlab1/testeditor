@@ -151,7 +151,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         List<Answer> aList = new ArrayList<>();
         int cols = getColsNumber()+1;  //-1 потому что не учитываем последнюю строку (это разделитель)
         int rows = getRowsNumber();
-        label: for (int i=1; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
+        for (int i=1; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
             String text ="";
             int degree = Answer.MIN_DEGREE;
             String comment = "";
@@ -164,9 +164,6 @@ public class MultiChoiceFrame extends QuestionFrame {
                     if (textCompCount == 0) {
                         text = ((JTextComponent) comp).getText();
                         textCompCount++;
-                        if (text.isEmpty()) {
-                            continue label;
-                        }
                     } else {
                         comment = ((JTextComponent) comp).getText();
                     }
