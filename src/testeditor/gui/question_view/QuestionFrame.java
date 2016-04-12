@@ -1,8 +1,10 @@
 package testeditor.gui.question_view;
 
 import testeditor.gui.ParentFrame;
+import testeditor.gui.services.HintLabel;
 import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
+import testeditor.gui.services.exceptions.SaveQuestionException;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 
@@ -26,11 +28,11 @@ abstract public class QuestionFrame extends ParentFrame {
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
     protected Question q;
-    protected JLabel hintLabel;
+    protected HintLabel hintLabel;
     private QTextArea nameTextArea;
     private QTextArea qTextArea;
     private JButton saveButton;
-    public final String DEFAULT_MESSAGE = "<html>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа</html>";
+    public final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
 
     public QuestionFrame(Question q) {
         this.q = q;
@@ -103,7 +105,7 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel hintPanel = new JPanel();
         hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
-        hintLabel = new JLabel();
+        hintLabel = new HintLabel();
         hintPanel.add(hintLabel);
         hintPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -112,7 +114,6 @@ abstract public class QuestionFrame extends ParentFrame {
                 hintLabel.setSize(hintPanel.getWidth()-10, hintLabel.getHeight());
             }
         });
-
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.add(savePanel, BorderLayout.NORTH);
@@ -122,32 +123,31 @@ abstract public class QuestionFrame extends ParentFrame {
     }
 
     public void saveQuestion() {
-        String name = nameTextArea.getText();
-        String text = qTextArea.getText();
-        List<Answer> aList = collectAnswers();
-        aList.removeIf(a -> a.getAText().isEmpty());
+        try {
+            String name = nameTextArea.getText();
+            String text = qTextArea.getText();
+            List<Answer> aList = collectAnswers();
+            aList.removeIf(a -> a.getAText().isEmpty());
 
-        String warning = "";
-
-        if (name.isEmpty()) {
-            name = "";
-        }
-        if (text.isEmpty()) {
-            warning = "Поле \"Название\" должно быть заполнено";
-        }
-        if (aList.isEmpty()) {
-            warning = "Вопрос должен иметь хотя бы один вариант ответа";
-        }
-        if (!warning.isEmpty()) {
+            if (name.isEmpty()) {
+                name = "";
+            }
+            if (text.isEmpty()) {
+                throw new SaveQuestionException("Поле \"Название\" должно быть заполнено");
+            }
+            if (aList.isEmpty()) {
+                throw new SaveQuestionException("Вопрос должен иметь хотя бы один вариант ответа");
+            }
+            q.setQName(name);
+            q.setQText(text);
+            q.setAnswers(aList);
+        } catch (SaveQuestionException e) {
             JOptionPane.showMessageDialog(this,
-                    warning,
+                    e.getMessage(),
                     "Ошибка!",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        q.setQName(name);
-        q.setQText(text);
-        q.setAnswers(aList);
         this.dispose();
     }
 
@@ -155,5 +155,5 @@ abstract public class QuestionFrame extends ParentFrame {
         return saveButton;
     }
 
-    abstract protected List<Answer> collectAnswers();
+    abstract protected List<Answer> collectAnswers() throws SaveQuestionException;
 }

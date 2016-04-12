@@ -2,17 +2,13 @@ package testeditor.gui.question_view;
 
 import testeditor.gui.services.GBC;
 import testeditor.gui.services.QTextArea;
+import testeditor.gui.services.exceptions.SaveQuestionException;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 
-import javax.sound.midi.Soundbank;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,22 +103,20 @@ public class MultiChoiceFrame extends QuestionFrame {
         degreeSpinner.setValue(degree);
 
         degreeSpinner.addChangeListener(event -> {
-            hintLabel.setText(DEFAULT_MESSAGE);
+            hintLabel.info(DEFAULT_MESSAGE);
             getSaveButton().setEnabled(true);
+
             int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
             if (sumDegree != 100) {
-                hintLabel.setText("<html><p><font color='red'><b>Сумма весов правильных вариантов ответа не равна 100%! " +
-                                  "Пожалуйста, проверьте вес каждого варианта!</font></b></p></html>");
+                hintLabel.warning("Сумма весов правильных вариантов ответа не равна 100%! " +
+                                  "Пожалуйста, проверьте вес каждого варианта!");
                 getSaveButton().setEnabled(false);
             } else {
-                hintLabel.setText("<html><p>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                                  "Сумма весов правильных вариантов ответа должна быть равна 100%</p></html>");
-
+                hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
+                                  "Сумма весов правильных вариантов ответа должна быть равна 100%");
             }
             if ((int)degreeSpinner.getValue() == 0) {
-                hintLabel.setText("<html><p><font color='red'><b>" +
-                                      "Правильный ответ не может иметь вес, равный 0" +
-                                  "</font></b></p></html>");
+                hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
                 getSaveButton().setEnabled(false);
             }
         });
@@ -154,16 +148,13 @@ public class MultiChoiceFrame extends QuestionFrame {
                 countSelected += 1;
             }
         }
-
         getSaveButton().setEnabled(true);
-        hintLabel.setText(DEFAULT_MESSAGE);
+        hintLabel.info(DEFAULT_MESSAGE);
         if (countSelected < 2) {
             spinnerList.stream().forEach(s -> s.setEnabled(false));
             if (countSelected == 0) {
                 getSaveButton().setEnabled(false);
-                hintLabel.setText("<html><p><font color='red'><b>" +
-                                      "Хотя бы один вариант ответа должен быть отмечен, как правильный" +
-                                  "</font></b></p></html>");
+                hintLabel.warning("Хотя бы один вариант ответа должен быть отмечен, как правильный");
             }
         } else {
             for (int i = 0; i < spinnerList.size(); i++) {
@@ -173,16 +164,14 @@ public class MultiChoiceFrame extends QuestionFrame {
                     sp.setEnabled(true);
                     if ((int) sp.getValue() == 0) {
                         getSaveButton().setEnabled(false);
-                        hintLabel.setText("<html><p><font color='red'><b>" +
-                                             "Правильный ответ не может иметь вес, равный 0" +
-                                          "</font></b></p></html>");
+                        hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
                     }
                 }
             }
         }
     }
 
-    protected List<Answer> collectAnswers() {
+    protected List<Answer> collectAnswers() throws SaveQuestionException {
         List<Answer> aList = new ArrayList<>();
         int cols = getColsNumber()+1;  //-1 потому что не учитываем последнюю строку (это разделитель)
         int rows = getRowsNumber();
@@ -216,16 +205,18 @@ public class MultiChoiceFrame extends QuestionFrame {
                 aList.add(new Answer(text, degree, comment));
             }
         }
-        return aList;
+        if (aList.size() < 2)
+            throw new SaveQuestionException("Для этого типа вопроса не допустим только один вариант ответа");
+        return  aList;
     }
 
     private int getColsNumber() {
-        GridBagLayout gbl = (GridBagLayout)answers.getLayout();
+        GridBagLayout gbl = (GridBagLayout) answers.getLayout();
         int[][] dim = gbl.getLayoutDimensions();
         return dim[0].length;
     }
     private int getRowsNumber() {
-        GridBagLayout gbl = (GridBagLayout)answers.getLayout();
+        GridBagLayout gbl = (GridBagLayout) answers.getLayout();
         int[][] dim = gbl.getLayoutDimensions();
         return dim[1].length;
     }
