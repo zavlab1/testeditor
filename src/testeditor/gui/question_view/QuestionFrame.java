@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ abstract public class QuestionFrame extends ParentFrame {
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
     protected Question q;
+    protected JLabel hintLabel;
     private QTextArea nameTextArea;
     private QTextArea qTextArea;
 
@@ -98,8 +101,15 @@ abstract public class QuestionFrame extends ParentFrame {
         JPanel hintPanel = new JPanel();
         hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
-        JLabel hintLabel = new JLabel("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа");
+        hintLabel = new JLabel("<html><p align='left'>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа</p></html>");
         hintPanel.add(hintLabel);
+        hintPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                hintLabel.setSize(hintPanel.getWidth()-10, hintLabel.getHeight());
+            }
+        });
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());

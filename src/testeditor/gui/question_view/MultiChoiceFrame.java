@@ -5,6 +5,7 @@ import testeditor.gui.services.QTextArea;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 
+import javax.sound.midi.Soundbank;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -39,9 +40,11 @@ public class MultiChoiceFrame extends QuestionFrame {
         JLabel commentLabel = new JLabel("<html><p><b>Комментарий</b></p></html>");
         answers.add(commentLabel, new GBC(4,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
-        JLabel weightLabel = new JLabel("<html><p><b>Веc</b></p></html>");
+        JLabel weightLabel = new JLabel("<html><p><b>Веc, %</b></p></html>");
         answers.add(weightLabel, new GBC(6,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
+        JLabel delLabel = new JLabel("<html><p><b>Удалить</b></p></html>");
+        answers.add(delLabel, new GBC(8,0,1,1,0,0,0,0).setFill(GBC.HORIZONTAL).setInsets(0,5,0,5));
 
         aList = q.getAnswerList();
         aCount = aList.size();
@@ -80,7 +83,7 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         check.addChangeListener(event -> updateAnswers());
 
-        answers.add(check, new GBC(0, pos, 1, 1, 0, 0, 0, 0).setInsets(10, 5, 10, 10));
+        answers.add(check, new GBC(0, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea answerText = new QTextArea(text);
@@ -101,16 +104,20 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         degreeSpinner.addChangeListener(event -> {
             int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
-            System.out.println(sumDegree);
+            if (sumDegree != 100)
+                hintLabel.setText("<html><p><font color='red'><b>Сумма весов правильных вариантов ответа не равна 100%! " +
+                        "Пожалуйста, проверьте вес каждого варианта!</font></b></p></html>");
+                else hintLabel.setText("<html><p>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
+                    "Сумма весов правильных вариантов ответа должна быть равна 100%</p></html>");
         });
 
         spinnerList.add(degreeSpinner);
-        answers.add(degreeSpinner,new GBC(6, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
+        answers.add(degreeSpinner,new GBC(6, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         delButton.addActionListener((ActionEvent e) -> deleteAnswer(answers.getComponentZOrder(delButton)));
-        answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 10, 5, 5));
+        answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
         answers.add(new JSeparator(), new GBC(0, pos + 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
     }
 
