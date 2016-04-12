@@ -34,6 +34,8 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.setLayout(gbl);
 
         // ------ Загловки для полей ------
+        JLabel emptyLabel = new JLabel(); //для одинакового количества виджетов во всех рядах
+        answers.add(emptyLabel, new GBC(0, 0, 9, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
         JLabel trueLabel = new JLabel("<html><p><b>Верно/<br>Неверно</b></p></html>");
         answers.add(trueLabel, new GBC(0, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
@@ -77,7 +79,7 @@ public class MultiChoiceFrame extends QuestionFrame {
     }
 
     public void addAnswer (int pos, String text, String comment, int degree){
-
+        answers.add(new JSeparator(), new GBC(0, pos, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
         JCheckBox check = new JCheckBox();
         check.setSelected(degree > 0);
         checkBoxList.add(check);
@@ -119,7 +121,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         delButton.addActionListener((ActionEvent e) -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
-        answers.add(new JSeparator(), new GBC(0, pos + 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
+
     }
 
     public void deleteAnswer (int delButtonIndex){
@@ -147,17 +149,17 @@ public class MultiChoiceFrame extends QuestionFrame {
 
     protected List<Answer> collectAnswers() {
         List<Answer> aList = new ArrayList<>();
-        String text ="";
-        int degree = Answer.MIN_DEGREE;
-        String comment = "";
-
-        int cols = getColsNumber() - 1;  //-1 потому что не учитываем последнюю строку (это разделитель)
+        int cols = getColsNumber()+1;  //-1 потому что не учитываем последнюю строку (это разделитель)
         int rows = getRowsNumber();
-
-        label: for (int i=2; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
+        label: for (int i=1; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
+            String text ="";
+            int degree = Answer.MIN_DEGREE;
+            String comment = "";
             int textCompCount = 0;
-            for (int j=1; j < cols; j++) {
-                Component comp = answers.getComponent((i-1)*cols + j);
+            int index = (i-1)*cols-1; //индекс последнего элемента из предыдущего ряда
+
+            for (int j=1; j <= cols; j++) {
+                Component comp = answers.getComponent(index + j);
                 if (comp instanceof JTextComponent) {
                     if (textCompCount == 0) {
                         text = ((JTextComponent) comp).getText();
@@ -169,12 +171,14 @@ public class MultiChoiceFrame extends QuestionFrame {
                         comment = ((JTextComponent) comp).getText();
                     }
                 } else if (comp instanceof JSpinner) {
-                    if (checkBoxList.get(i-2).isSelected()) {  //-2 т.к. первый ряд - это заголовки
+                    if (checkBoxList.get(spinnerList.indexOf(comp)).isSelected()) {
                         degree = (int)((JSpinner)comp).getValue();
                     }
                 }
             }
-            aList.add(new Answer(text, degree, comment));
+            if (!text.isEmpty()) {
+                aList.add(new Answer(text, degree, comment));
+            }
         }
         return aList;
     }

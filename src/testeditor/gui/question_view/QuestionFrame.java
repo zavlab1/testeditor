@@ -144,8 +144,8 @@ abstract public class QuestionFrame extends ParentFrame {
             return;
         }
         q.setQName(name);
-        q.setQText(qTextArea.getText());
-        q.setAnswers(collectAnswers());
+        q.setQText(text);
+        q.setAnswers(aList);
         this.dispose();
     }
 

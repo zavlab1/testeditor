@@ -28,9 +28,4 @@ public class ShortAnswer extends Question {
     public QuestionFrame getFrame() {
         return (frame == null) ? new ShortAnswerFrame(this) : frame;
     }
-
-    protected List<Answer> collectAnswers() {
-        List<Answer> aList = new ArrayList<>();
-        return aList;
-    }
 }
