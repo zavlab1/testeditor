@@ -21,7 +21,6 @@ public class MultiChoiceFrame extends QuestionFrame {
     private List<JSpinner> spinnerList = new ArrayList<>();
     private JPanel answers = new JPanel();
     private int aCount;
-    private int offset = 0;
 
 
     public MultiChoiceFrame(Question q) {
@@ -51,31 +50,35 @@ public class MultiChoiceFrame extends QuestionFrame {
         aCount = aList.size();
 
         for(int i=0; i < aCount; i++) {
-            offset++;
             addAnswer(i+1, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
         }
 
         updateAnswers();
 
-        JButton addButton = new JButton("<html><font color='green' size=+1>&nbsp;<b>&#10010;&nbsp;</b></font>Добавить&nbsp;</html>");
-
         answerPanel.add(answers, BorderLayout.NORTH);
 
         JPanel addButtonPanel = new JPanel(new FlowLayout());
+
+        JButton addButton = new JButton("<html><font color='green' size=+1>&nbsp;<b>&#10010;&nbsp;</b></font>Добавить&nbsp;</html>");
+
         addButtonPanel.add(addButton);
         addButton.addActionListener(e -> {
                                             addAnswer(aCount+1,"","",0);
+
+                                            aScrollPane.getViewport()
+                                                                    .setViewPosition(
+                                                                     new Point(aScrollPane.getX(),
+                                                                     aScrollPane.getHeight()));
+
                                             answers.updateUI();
                                             aCount++;
-                                            aScrollPane.setViewportView(answerPanel);
-                                            offset++;
                                             updateAnswers();
                                           });
 
         answerPanel.add(addButtonPanel, BorderLayout.CENTER);
     }
 
-    public void addAnswer (int pos, String text, String comment, int degree){
+    public void addAnswer (int pos, String text, String comment, int degree) {
         answers.add(new JSeparator(), new GBC(0, pos, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
         JCheckBox check = new JCheckBox();
         check.setSelected(degree > 0);
@@ -128,15 +131,17 @@ public class MultiChoiceFrame extends QuestionFrame {
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         delButton.addActionListener(e -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
+
     }
 
-    public void deleteAnswer (int delButtonIndex){
+    public void deleteAnswer (int delButtonIndex) {
         answers.remove(delButtonIndex+1);
         for(int i=0; i < getColsNumber(); i++) {
             answers.remove(delButtonIndex - i);
         }
         answers.updateUI();
-        offset--;
+
+        aCount--;
     }
 
     // Обновление панели вариантов, в зависимости от их весов
