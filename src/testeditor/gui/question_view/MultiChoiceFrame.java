@@ -107,6 +107,7 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         JSpinner degreeSpinner = new JSpinner(spinnerNumberModel);
         degreeSpinner.setValue(degree);
+        spinnerList.add(degreeSpinner);
         degreeSpinner.setEnabled(degree > 0);
 
         degreeSpinner.addChangeListener(event -> {
@@ -118,17 +119,18 @@ public class MultiChoiceFrame extends QuestionFrame {
                 hintLabel.warning("Сумма весов правильных вариантов ответа не равна 100%! " +
                                   "Пожалуйста, проверьте вес каждого варианта!");
                 getSaveButton().setEnabled(false);
+                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
+            } else if ((int)degreeSpinner.getValue() == 0) {
+                hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
+                getSaveButton().setEnabled(false);
+                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
             } else {
                 hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
                                   "Сумма весов правильных вариантов ответа должна быть равна 100%");
-            }
-            if ((int)degreeSpinner.getValue() == 0) {
-                hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
-                getSaveButton().setEnabled(false);
+                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.BLACK));
             }
         });
 
-        spinnerList.add(degreeSpinner);
         answers.add(degreeSpinner, new GBC(6, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
@@ -188,6 +190,7 @@ public class MultiChoiceFrame extends QuestionFrame {
                     if ((int) sp.getValue() == 0) {
                         getSaveButton().setEnabled(false);
                         hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
+                        spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
                     }
                 } else {
                     sp.setEnabled(false);
