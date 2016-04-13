@@ -29,33 +29,21 @@ public class MultiChoiceFrame extends QuestionFrame {
         GridBagLayout gbl = new GridBagLayout();
         answers.setLayout(gbl);
 
-        // ------ Загловки для полей ------
-        JLabel trueLabel = new JLabel("<html><p><b>Верно/<br>Неверно</b></p></html>");
-        answers.add(trueLabel, new GBC(0, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
-        JLabel answerLabel = new JLabel("<html><p><b>Вариант ответа<b></p></html>");
-        answers.add(answerLabel, new GBC(2, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(3, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
-        JLabel commentLabel = new JLabel("<html><p><b>Комментарий</b></p></html>");
-        answers.add(commentLabel, new GBC(4, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
-        JLabel weightLabel = new JLabel("<html><p><b>Веc, %</b></p></html>");
-        answers.add(weightLabel, new GBC(6, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
-        answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
-        JLabel delLabel = new JLabel("<html><p><b>Удалить</b></p></html>");
-        answers.add(delLabel, new GBC(8, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
-        answers.add(new JSeparator(), new GBC(0, 9, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
+        String [] titles = {
+            "Верно/<br>Неверно",
+            "Вариант ответа",
+            "Комментарий",
+            "Веc, %",
+            "Удалить"
+        };
+
+        addTitles(titles);
+
+        answers.add(new JSeparator(), new GBC(0, 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
 
         aList = q.getAnswerList();
-        aCount = aList.size();
-
-        for(int i=0; i < aCount; i++) {
-            offset++;
-            addAnswer(i+2, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
-            answers.add(new JSeparator(), new GBC(0, i+3, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
-        }
-
-        updateAnswers();
+        addAnswers();
+        checkAnswers();
 
         JButton addButton = new JButton("<html><font color='green' size=+1>&nbsp;<b>&#10010;&nbsp;</b></font>Добавить&nbsp;</html>");
 
@@ -63,25 +51,45 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         JPanel addButtonPanel = new JPanel(new FlowLayout());
         addButtonPanel.add(addButton);
+
+        aCount = aList.size();
         addButton.addActionListener(e -> {
-                                            addAnswer(aCount+1,"","",0);
+                                            addAnswer(aCount*2+1, "", "", 0);
+                                            answers.add(new JSeparator(), new GBC(0, aCount*2+2, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
                                             answers.updateUI();
                                             aCount++;
                                             aScrollPane.setViewportView(answerPanel);
                                             offset++;
-                                            updateAnswers();
+                                            checkAnswers();
                                           });
 
         answerPanel.add(addButtonPanel, BorderLayout.CENTER);
     }
 
-    public void addAnswer (int pos, String text, String comment, int degree){
+    public void addTitles(String[] titles) {
+        for (int colNum=0; colNum < titles.length; colNum++) {
+            answers.add(new JLabel("<html><p><b>" + titles[colNum] + "</b></p></html>"),
+                    new GBC(colNum+colNum, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+            if (colNum+1 != titles.length) {
+                answers.add(new JSeparator(JSeparator.VERTICAL),
+                        new GBC(colNum + colNum + 1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
+            }
+        }
+    }
 
+    private void addAnswers() {
+        for(int i=0; i < aList.size(); i++, offset++) {
+            addAnswer(i+i+2, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
+            answers.add(new JSeparator(), new GBC(0, i+i+3, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
+        }
+    }
+
+    private void addAnswer (int pos, String text, String comment, int degree){
         JCheckBox check = new JCheckBox();
         check.setSelected(degree > 0);
         checkBoxList.add(check);
 
-        check.addChangeListener(event -> updateAnswers());
+        check.addChangeListener(event -> checkAnswers());
 
         answers.add(check, new GBC(0, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
@@ -101,6 +109,7 @@ public class MultiChoiceFrame extends QuestionFrame {
 
         JSpinner degreeSpinner = new JSpinner(spinnerNumberModel);
         degreeSpinner.setValue(degree);
+        degreeSpinner.setEnabled(degree > 0);
 
         degreeSpinner.addChangeListener(event -> {
             hintLabel.info(DEFAULT_MESSAGE);
@@ -112,8 +121,8 @@ public class MultiChoiceFrame extends QuestionFrame {
                                   "Пожалуйста, проверьте вес каждого варианта!");
                 getSaveButton().setEnabled(false);
             } else {
-                hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                                  "Сумма весов правильных вариантов ответа должна быть равна 100%");
+                hintLabel.info("<html>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
+                                  "Сумма весов правильных вариантов ответа должна быть равна 100%</html>");
             }
             if ((int)degreeSpinner.getValue() == 0) {
                 hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
@@ -131,18 +140,31 @@ public class MultiChoiceFrame extends QuestionFrame {
     }
 
     public void deleteAnswer (int delButtonIndex){
-        answers.remove(delButtonIndex+1);
-        for(int i=0; i < getColsNumber(); i++) {
+        for(int i=-1; i < getColsNumber(); i++) {
             answers.remove(delButtonIndex - i);
         }
+        updateCheckBoxAndSpinners();
         answers.updateUI();
         offset--;
+        checkAnswers();
+    }
+
+    private void updateCheckBoxAndSpinners() {
+        checkBoxList.clear();
+        spinnerList.clear();
+        for (int i=0; i < answers.getComponentCount(); i++) {
+            JComponent comp = (JComponent) answers.getComponent(i);
+            if (comp instanceof JCheckBox) {
+                checkBoxList.add((JCheckBox) comp);
+            } else if (comp instanceof JSpinner) {
+                spinnerList.add((JSpinner) comp);
+            }
+        }
     }
 
     // Обновление панели вариантов, в зависимости от их весов
-    public void updateAnswers() {
+    public void checkAnswers() {
         int countSelected = 0;
-
         for (JCheckBox checkBox : checkBoxList) {
             if (checkBox.isSelected()) {
                 countSelected += 1;
@@ -157,15 +179,21 @@ public class MultiChoiceFrame extends QuestionFrame {
                 hintLabel.warning("Хотя бы один вариант ответа должен быть отмечен, как правильный");
             }
         } else {
+            if (checkBoxList.stream().allMatch(JCheckBox::isSelected)) {
+                getSaveButton().setEnabled(false);
+                hintLabel.warning("Все варианты ответа не могут быть правильными");
+            }
             for (int i = 0; i < spinnerList.size(); i++) {
                 JCheckBox cb = checkBoxList.get(i);
                 JSpinner sp = spinnerList.get(i);
-                if (cb.isSelected()) {
+                if (cb.isSelected()) {System.out.println("qwe"+i);
                     sp.setEnabled(true);
                     if ((int) sp.getValue() == 0) {
                         getSaveButton().setEnabled(false);
                         hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
                     }
+                } else {
+                    sp.setEnabled(false);
                 }
             }
         }
@@ -175,9 +203,13 @@ public class MultiChoiceFrame extends QuestionFrame {
         List<Answer> aList = new ArrayList<>();
         int cols = getColsNumber();
         int rows = getRowsNumber();
+        System.out.println(rows);
         int compsNumber = 0;
-        for (int i=1; i <= rows; i++) {
-            if (answers.getComponent(compsNumber+1) instanceof JSeparator) {
+        for (int i=0; i < rows; i++) {
+            if (compsNumber == answers.getComponentCount()) {
+                break;
+            }
+            if (answers.getComponent(compsNumber) instanceof JSeparator) {
                 compsNumber++;
                 continue;
             }
@@ -186,8 +218,8 @@ public class MultiChoiceFrame extends QuestionFrame {
             String comment = "";
             int textCompCount = 0;
 
-            for (int j=1; j <= cols; j++, compsNumber++) {
-                Component comp = answers.getComponent(compsNumber + j);
+            for (int j=0; j < cols; j++, compsNumber++) {
+                Component comp = answers.getComponent(compsNumber);
                 if (comp instanceof JTextComponent) {
                     if (textCompCount == 0) {
                         text = ((JTextComponent) comp).getText();
@@ -206,11 +238,19 @@ public class MultiChoiceFrame extends QuestionFrame {
                 }
             }
             if (!text.isEmpty()) {
+                System.out.println(123+text);
                 aList.add(new Answer(text, degree, comment));
             }
         }
-        if (aList.size() < 2)
+
+        if (aList.isEmpty())
+            throw new SaveQuestionException("Нет ни одного заполненного варианта ответа");
+        if (aList.stream().noneMatch(answer -> answer.getDegree() > 0)) {
+            throw new SaveQuestionException("Среди заполненных вариантов ответа нет ни одного правильного");
+        }
+        if (aList.size() == 1)
             throw new SaveQuestionException("Для этого типа вопроса не допустим только один вариант ответа");
+
         return  aList;
     }
 
