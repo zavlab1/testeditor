@@ -78,7 +78,7 @@ public class MultiChoiceFrame extends QuestionFrame {
     }
 
     private void addAnswers() {
-        for(int i=0; i < aList.size(); i++, offset++) {
+        for(int i=0; i < aList.size(); i++) {
             addAnswer(i+i+2, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
             answers.add(new JSeparator(), new GBC(0, i+i+3, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
         }
