@@ -23,7 +23,6 @@ public class MultiChoiceFrame extends QuestionFrame {
     private int aCount;
     private int offset = 0;
 
-
     public MultiChoiceFrame(Question q) {
         super(q);
         GridBagLayout gbl = new GridBagLayout();
@@ -36,12 +35,12 @@ public class MultiChoiceFrame extends QuestionFrame {
             "Веc, %",
             "Удалить"
         };
-
         addTitles(titles);
 
         answers.add(new JSeparator(), new GBC(0, 1, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
 
         aList = q.getAnswerList();
+
         addAnswers();
         checkAnswers();
 
@@ -66,7 +65,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         answerPanel.add(addButtonPanel, BorderLayout.CENTER);
     }
 
-    public void addTitles(String[] titles) {
+    private void addTitles(String[] titles) {
         for (int colNum=0; colNum < titles.length; colNum++) {
             answers.add(new JLabel("<html><p><b>" + titles[colNum] + "</b></p></html>"),
                     new GBC(colNum+colNum, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
@@ -139,7 +138,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
     }
 
-    public void deleteAnswer (int delButtonIndex){
+    private void deleteAnswer (int delButtonIndex){
         for(int i=-1; i < getColsNumber(); i++) {
             answers.remove(delButtonIndex - i);
         }
@@ -162,8 +161,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         }
     }
 
-    // Обновление панели вариантов, в зависимости от их весов
-    public void checkAnswers() {
+    private void checkAnswers() {
         int countSelected = 0;
         for (JCheckBox checkBox : checkBoxList) {
             if (checkBox.isSelected()) {
@@ -186,7 +184,7 @@ public class MultiChoiceFrame extends QuestionFrame {
             for (int i = 0; i < spinnerList.size(); i++) {
                 JCheckBox cb = checkBoxList.get(i);
                 JSpinner sp = spinnerList.get(i);
-                if (cb.isSelected()) {System.out.println("qwe"+i);
+                if (cb.isSelected()) {
                     sp.setEnabled(true);
                     if ((int) sp.getValue() == 0) {
                         getSaveButton().setEnabled(false);
@@ -203,7 +201,6 @@ public class MultiChoiceFrame extends QuestionFrame {
         List<Answer> aList = new ArrayList<>();
         int cols = getColsNumber();
         int rows = getRowsNumber();
-        System.out.println(rows);
         int compsNumber = 0;
         for (int i=0; i < rows; i++) {
             if (compsNumber == answers.getComponentCount()) {
@@ -238,7 +235,6 @@ public class MultiChoiceFrame extends QuestionFrame {
                 }
             }
             if (!text.isEmpty()) {
-                System.out.println(123+text);
                 aList.add(new Answer(text, degree, comment));
             }
         }

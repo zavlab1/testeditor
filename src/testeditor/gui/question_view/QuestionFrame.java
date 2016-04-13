@@ -145,7 +145,7 @@ abstract public class QuestionFrame extends ParentFrame {
             JOptionPane.showMessageDialog(this,
                     e.getMessage(),
                     "Ошибка!",
-                    JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
         this.dispose();
