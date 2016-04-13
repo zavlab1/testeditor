@@ -21,7 +21,6 @@ public class MultiChoiceFrame extends QuestionFrame {
     private List<JSpinner> spinnerList = new ArrayList<>();
     private JPanel answers = new JPanel();
     private int aCount;
-    private int offset = 0;
 
     public MultiChoiceFrame(Question q) {
         super(q);
@@ -55,10 +54,12 @@ public class MultiChoiceFrame extends QuestionFrame {
         addButton.addActionListener(e -> {
                                             addAnswer(aCount*2+1, "", "", 0);
                                             answers.add(new JSeparator(), new GBC(0, aCount*2+2, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
+                                            aScrollPane.getViewport()
+                                                       .setViewPosition(
+                                                               new Point(aScrollPane.getX(),
+                                                                       aScrollPane.getHeight()));
                                             answers.updateUI();
                                             aCount++;
-                                            aScrollPane.setViewportView(answerPanel);
-                                            offset++;
                                             checkAnswers();
                                           });
 
@@ -94,13 +95,11 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea answerText = new QTextArea(text);
-        answerText.setLineWrap(true);
         fields.add(answerText);
         answers.add(answerText, new GBC(2, pos, 1, 1, 0, 0, 100, 0).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(3, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea commentText = new QTextArea(comment);
-        commentText.setLineWrap(true);
         answers.add(commentText, new GBC(4, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(5, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
@@ -120,8 +119,8 @@ public class MultiChoiceFrame extends QuestionFrame {
                                   "Пожалуйста, проверьте вес каждого варианта!");
                 getSaveButton().setEnabled(false);
             } else {
-                hintLabel.info("<html>Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                                  "Сумма весов правильных вариантов ответа должна быть равна 100%</html>");
+                hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
+                                  "Сумма весов правильных вариантов ответа должна быть равна 100%");
             }
             if ((int)degreeSpinner.getValue() == 0) {
                 hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
@@ -144,7 +143,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         }
         updateCheckBoxAndSpinners();
         answers.updateUI();
-        offset--;
+        aCount--;
         checkAnswers();
     }
 

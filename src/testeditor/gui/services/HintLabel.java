@@ -16,6 +16,6 @@ public class HintLabel extends JLabel {
         setText("<html><p><font color='red'><b>" + text + "</font></b></p></html>");
     }
     public void info(String text) {
-        setText(text);
+        setText("<html><p>" + text + "</p></html>");
     }
 }

@@ -103,17 +103,12 @@ abstract public class QuestionFrame extends ParentFrame {
         savePanel.add(cancelButton);
 
         JPanel hintPanel = new JPanel();
-        hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
+        hintPanel.setLayout(new BorderLayout());
 
         hintLabel = new HintLabel();
+        hintLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         hintPanel.add(hintLabel);
-        hintPanel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                hintLabel.setSize(hintPanel.getWidth()-10, hintLabel.getHeight());
-            }
-        });
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.add(savePanel, BorderLayout.NORTH);
