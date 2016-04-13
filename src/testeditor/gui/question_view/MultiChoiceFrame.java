@@ -30,8 +30,6 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.setLayout(gbl);
 
         // ------ Загловки для полей ------
-        JLabel emptyLabel = new JLabel(); //для одинакового количества виджетов во всех рядах
-        answers.add(emptyLabel, new GBC(0, 0, 9, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
         JLabel trueLabel = new JLabel("<html><p><b>Верно/<br>Неверно</b></p></html>");
         answers.add(trueLabel, new GBC(0, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
@@ -46,13 +44,15 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
         JLabel delLabel = new JLabel("<html><p><b>Удалить</b></p></html>");
         answers.add(delLabel, new GBC(8, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL).setInsets(0, 5, 0, 5));
+        answers.add(new JSeparator(), new GBC(0, 9, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
 
         aList = q.getAnswerList();
         aCount = aList.size();
 
         for(int i=0; i < aCount; i++) {
             offset++;
-            addAnswer(i+1, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
+            addAnswer(i+2, aList.get(i).getAText(), aList.get(i).getAComment(), aList.get(i).getDegree());
+            answers.add(new JSeparator(), new GBC(0, i+3, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
         }
 
         updateAnswers();
@@ -76,7 +76,7 @@ public class MultiChoiceFrame extends QuestionFrame {
     }
 
     public void addAnswer (int pos, String text, String comment, int degree){
-        answers.add(new JSeparator(), new GBC(0, pos, 9, 1, 0, 0, 0, 0).setFill(GBC.BOTH).setInsets(0, 0, 5, 0));
+
         JCheckBox check = new JCheckBox();
         check.setSelected(degree > 0);
         checkBoxList.add(check);
@@ -173,17 +173,21 @@ public class MultiChoiceFrame extends QuestionFrame {
 
     protected List<Answer> collectAnswers() throws SaveQuestionException {
         List<Answer> aList = new ArrayList<>();
-        int cols = getColsNumber()+1;  //-1 потому что не учитываем последнюю строку (это разделитель)
+        int cols = getColsNumber();
         int rows = getRowsNumber();
-        for (int i=1; i <= rows; i++) {  //начинаем со второго ряда, т.к. первый - заголовки
+        int compsNumber = 0;
+        for (int i=1; i <= rows; i++) {
+            if (answers.getComponent(compsNumber+1) instanceof JSeparator) {
+                compsNumber++;
+                continue;
+            }
             String text ="";
             int degree = Answer.MIN_DEGREE;
             String comment = "";
             int textCompCount = 0;
-            int index = (i-1)*cols-1; //индекс последнего элемента из предыдущего ряда
 
-            for (int j=1; j <= cols; j++) {
-                Component comp = answers.getComponent(index + j);
+            for (int j=1; j <= cols; j++, compsNumber++) {
+                Component comp = answers.getComponent(compsNumber + j);
                 if (comp instanceof JTextComponent) {
                     if (textCompCount == 0) {
                         text = ((JTextComponent) comp).getText();
