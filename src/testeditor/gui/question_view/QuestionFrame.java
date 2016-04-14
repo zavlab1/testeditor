@@ -36,8 +36,10 @@ abstract public class QuestionFrame extends ParentFrame {
 
     public QuestionFrame(Question q) {
         this.q = q;
+        setMinimumSize(new Dimension((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT));
         setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+
         setVisible(true);
         setLayout(new BorderLayout(30, 30));
 
