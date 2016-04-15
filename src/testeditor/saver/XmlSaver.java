@@ -1,6 +1,5 @@
 package testeditor.saver;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import testeditor.question.Answer;
 import testeditor.question.Question;
 import testeditor.Test;
@@ -143,7 +142,7 @@ public class XmlSaver extends Saver {
 
     @Override
     public String doLineForNumerical(Question q){
-        throw new NotImplementedException();
+        throw new NullPointerException();
     }
 
     String xmlToString(Element questionElement) {
