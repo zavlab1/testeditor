@@ -24,6 +24,7 @@ public class MultiChoiceFrame extends QuestionFrame {
 
     public MultiChoiceFrame(Question q) {
         super(q);
+
         GridBagLayout gbl = new GridBagLayout();
         answers.setLayout(gbl);
 

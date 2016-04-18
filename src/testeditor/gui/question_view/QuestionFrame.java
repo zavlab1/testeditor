@@ -1,6 +1,6 @@
 package testeditor.gui.question_view;
 
-import testeditor.gui.ParentFrame;
+import testeditor.gui.BaseMainFrame;
 import testeditor.gui.services.HintLabel;
 import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
@@ -12,8 +12,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +21,27 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 /**
  * Created by dimitry on 03.04.16.
  */
-abstract public class QuestionFrame extends ParentFrame {
+abstract public class QuestionFrame extends BaseMainFrame {
+
+    protected final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
+    protected final int WIDTH = 900;
+
     protected JPanel answerPanel  = new JPanel();
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
     protected Question q;
     protected HintLabel hintLabel;
+
     private QTextArea nameTextArea;
     private QTextArea qTextArea;
     private JButton saveButton;
-    public final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
 
     public QuestionFrame(Question q) {
         this.q = q;
-        setMinimumSize(new Dimension((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT));
-        setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
+
+        setMaximumSize(new Dimension(WIDTH, SCREEN_HEIGHT));
+        setMinimumSize(new Dimension(WIDTH, HEIGHT_MIN));
+
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         setVisible(true);
@@ -142,7 +146,8 @@ abstract public class QuestionFrame extends ParentFrame {
             JOptionPane.showMessageDialog(this,
                     e.getMessage(),
                     "Ошибка!",
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE,
+                    new ImageIcon("src/testeditor/gui/img/main.png"));
             return;
         }
         this.dispose();

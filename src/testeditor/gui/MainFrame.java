@@ -15,16 +15,15 @@ import testeditor.question.Question;
 /**
  * Главное окно
  */
-public class MainFrame extends ParentFrame {
+public class MainFrame extends BaseMainFrame {
+
     private TestView testView;  // панель управления тестом
 
     public MainFrame() {
-
         //------- Создаем и настраиваем компоненты GUI -------//
-        setLayout(new GridBagLayout());
 
         testView = new TestView();
-        add(testView, new GBC(0, 0, 1, 1, 0, 0, 100, 100).setFill(GBC.BOTH));
+        add(testView);
 
         //------- Создаем главное меню -------//
         JMenuBar menuBar = new JMenuBar();
