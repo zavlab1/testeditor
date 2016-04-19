@@ -9,6 +9,7 @@ import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -54,7 +55,7 @@ abstract public class QuestionFrame extends BaseMainFrame {
         northLayout.setAutoCreateGaps(true);
         TitledBorder northBorder = BorderFactory.createTitledBorder("Тип вопроса: " + q.TYPE);
         northBorder.setTitleJustification(TitledBorder.CENTER);
-        north.setBorder(northBorder);
+        north.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 5, 5, 5), northBorder));
 
         QLabel labelName = new QLabel("<html><b>Название:</b></html>");
         QLabel labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
@@ -93,7 +94,7 @@ abstract public class QuestionFrame extends BaseMainFrame {
 
         TitledBorder aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
         aScrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
-        aScrollPane.setBorder(aScrollPaneBorder);
+        aScrollPane.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(5, 5, 5, 5), aScrollPaneBorder));
         add(aScrollPane);
 
         JPanel savePanel = new JPanel();
