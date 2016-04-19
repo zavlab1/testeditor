@@ -53,7 +53,7 @@ abstract public class QuestionFrame extends BaseMainFrame {
         north.setLayout(northLayout);
         northLayout.setAutoCreateContainerGaps(true);
         northLayout.setAutoCreateGaps(true);
-        TitledBorder northBorder = BorderFactory.createTitledBorder("Тип вопроса: " + q.TYPE);
+        TitledBorder northBorder = BorderFactory.createTitledBorder("<html><I>Тип вопроса: </I>" + q.TYPE + "</html>");
         northBorder.setTitleJustification(TitledBorder.CENTER);
         north.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 5, 5, 5), northBorder));
 
@@ -66,22 +66,22 @@ abstract public class QuestionFrame extends BaseMainFrame {
 
         northLayout.setHorizontalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(LEADING)
-                        .addComponent(labelName)
-                        .addComponent(labelQuestion))
+                        .addComponent(labelName, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelQuestion, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(northLayout.createParallelGroup(LEADING)
-                        .addComponent(nameTextArea)
-                        .addComponent(qTextArea))
+                        .addComponent(nameTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         northLayout.linkSize(SwingConstants.HORIZONTAL, labelName, labelQuestion);
 
         northLayout.setVerticalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(BASELINE)
-                        .addComponent(labelName)
-                        .addComponent(nameTextArea))
+                        .addComponent(labelName, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nameTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(northLayout.createParallelGroup(BASELINE)
-                        .addComponent(labelQuestion)
-                        .addComponent(qTextArea))
+                        .addComponent(labelQuestion, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(north, BorderLayout.NORTH);
