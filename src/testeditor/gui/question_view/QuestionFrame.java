@@ -144,11 +144,12 @@ abstract public class QuestionFrame extends BaseMainFrame {
             q.setQText(text);
             q.setAnswers(aList);
         } catch (SaveQuestionException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Ошибка!",
-                    JOptionPane.ERROR_MESSAGE,
-                    new ImageIcon("src/testeditor/gui/img/main.png"));
+            JOptionPane.showMessageDialog(  this
+                                          , e.getMessage()
+                                          , "Ошибка!"
+                                          , JOptionPane.ERROR_MESSAGE
+                                          //,new ImageIcon("src/testeditor/gui/img/main.png")
+            );
             return;
         }
         this.dispose();

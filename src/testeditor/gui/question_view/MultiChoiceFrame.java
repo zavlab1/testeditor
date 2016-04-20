@@ -117,17 +117,19 @@ public class MultiChoiceFrame extends QuestionFrame {
 
             int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
             if (sumDegree != 100) {
-                hintLabel.warning("Сумма весов правильных вариантов ответа не равна 100%! " +
-                                  "Пожалуйста, проверьте вес каждого варианта!");
-                getSaveButton().setEnabled(false);
+                hintLabel.error(b -> b.setEnabled(false),
+                                getSaveButton(),
+                                "Сумма весов правильных вариантов ответа не равна 100%! " +
+                                "Пожалуйста, проверьте вес каждого варианта!");
                 spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
             } else if ((int)degreeSpinner.getValue() == 0) {
-                hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
-                getSaveButton().setEnabled(false);
+                hintLabel.error(b -> b.setEnabled(false),
+                                getSaveButton(),
+                                "Правильный ответ не может иметь вес, равный 0");
                 spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
             } else {
                 hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                                  "Сумма весов правильных вариантов ответа должна быть равна 100%");
+                               "Сумма весов правильных вариантов ответа должна быть равна 100%");
                 spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.BLACK));
             }
         });
@@ -175,13 +177,15 @@ public class MultiChoiceFrame extends QuestionFrame {
         if (countSelected < 2) {
             spinnerList.stream().forEach(s -> s.setEnabled(false));
             if (countSelected == 0) {
-                getSaveButton().setEnabled(false);
-                hintLabel.warning("Хотя бы один вариант ответа должен быть отмечен, как правильный");
+                hintLabel.error(b -> b.setEnabled(false),
+                                getSaveButton(),
+                                "Хотя бы один вариант ответа должен быть отмечен, как правильный");
             }
         } else {
             if (checkBoxList.stream().allMatch(JCheckBox::isSelected)) {
-                getSaveButton().setEnabled(false);
-                hintLabel.warning("Все варианты ответа не могут быть правильными");
+                hintLabel.error(b -> b.setEnabled(false),
+                                getSaveButton(),
+                                "Все варианты ответа не могут быть правильными");
                 return;
             }
             for (int i = 0; i < spinnerList.size(); i++) {
@@ -190,8 +194,9 @@ public class MultiChoiceFrame extends QuestionFrame {
                 if (cb.isSelected()) {
                     sp.setEnabled(true);
                     if ((int) sp.getValue() == 0) {
-                        getSaveButton().setEnabled(false);
-                        hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
+                        hintLabel.error(b -> b.setEnabled(false),
+                                        getSaveButton(),
+                                        "Правильный ответ не может иметь вес, равный 0");
                         spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
                     }
                 } else {
@@ -240,17 +245,18 @@ public class MultiChoiceFrame extends QuestionFrame {
             }
             if (!text.isEmpty()) {
                 aList.add(new Answer(text, degree, comment));
+            } else if (degree != 0) {
+                throw new SaveQuestionException("Вы оставили пустым правильный вариант ответа");
             }
         }
 
         if (aList.isEmpty())
             throw new SaveQuestionException("Нет ни одного заполненного варианта ответа");
-        if (aList.stream().noneMatch(answer -> answer.getDegree() > 0)) {
+        if (aList.stream().noneMatch(answer -> answer.getDegree() != 0)) {
             throw new SaveQuestionException("Среди заполненных вариантов ответа нет ни одного правильного");
         }
         if (aList.size() == 1)
             throw new SaveQuestionException("Для этого типа вопроса не допустим только один вариант ответа");
-
         return  aList;
     }
 
