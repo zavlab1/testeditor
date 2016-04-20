@@ -10,9 +10,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Created by dimitry on 03.04.16.
@@ -94,7 +92,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         check.setSelected(degree > 0);
         checkBoxList.add(check);
 
-        check.addChangeListener(event -> checkBoxChecking());
+        check.addChangeListener(event -> checkAnswers());
 
         answers.add(check, new GBC(0, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
@@ -149,7 +147,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         }
     }
 
-    private void checkBoxChecking() {
+    private void checkAnswers() {
         int countSelected = 0;
         checkBoxErrorMessage = "";
 
@@ -179,11 +177,24 @@ public class MultiChoiceFrame extends QuestionFrame {
                     JSpinner sp = spinnerList.get(i);
                     if (cb.isSelected()) {
                         sp.setEnabled(true);
+                        if ((int)sp.getValue() == 0) {
+                            checkBoxErrorMessage = "Правильный ответ не может иметь вес, равный 0";
+                            spinnerList.stream().forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
+                        }
                     } else {
                         sp.setEnabled(false);
                     }
                 }
             }
+        }
+        if (checkBoxErrorMessage.isEmpty()) {
+            if (spinnerErrorMessage.isEmpty()) {
+                getSaveButton().setEnabled(true);
+            }
+        } else {
+            hintLabel.error(b -> b.setEnabled(false),
+                            getSaveButton(),
+                            checkBoxErrorMessage);
         }
     }
 
@@ -191,7 +202,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         hintLabel.info(DEFAULT_MESSAGE);
 
         spinnerErrorMessage = "";
-        int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 100).sum();
+        int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
 
         if (sumDegree != 100) {
             spinnerErrorMessage = "Сумма весов правильных вариантов ответа не равна 100%! " +
@@ -213,11 +224,6 @@ public class MultiChoiceFrame extends QuestionFrame {
                             spinnerErrorMessage);
         }
         spinnerList.stream().forEach(s -> s.getEditor().getComponent(0).setForeground(color));
-    }
-
-    private void checkAnswers() {
-        checkBoxChecking();
-        spinnerChecking();
     }
 
     protected List<Answer> collectAnswers() throws SaveQuestionException {

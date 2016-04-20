@@ -1,6 +1,6 @@
 package testeditor.gui.question_view;
 
-import javafx.scene.control.CheckBox;
+import javax.swing.JCheckBox;
 import testeditor.gui.services.GBC;
 import testeditor.gui.services.QTextArea;
 import testeditor.question.Answer;
