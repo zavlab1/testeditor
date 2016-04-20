@@ -77,6 +77,7 @@ public class CreateQuestionAction extends AbstractAction {
                 }
             });
             qFrame.setVisible(true);
+            list.setSelectedIndex(0);
         }
     }
 }

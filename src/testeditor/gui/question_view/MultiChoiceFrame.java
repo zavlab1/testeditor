@@ -10,7 +10,9 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by dimitry on 03.04.16.
@@ -21,9 +23,12 @@ public class MultiChoiceFrame extends QuestionFrame {
     private List<JSpinner> spinnerList = new ArrayList<>();
     private JPanel answers = new JPanel();
     private int aCount;
+    private String checkBoxErrorMessage = "";
+    private String spinnerErrorMessage = "";
 
     public MultiChoiceFrame(Question q) {
         super(q);
+
         GridBagLayout gbl = new GridBagLayout();
         answers.setLayout(gbl);
 
@@ -89,7 +94,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         check.setSelected(degree > 0);
         checkBoxList.add(check);
 
-        check.addChangeListener(event -> checkAnswers());
+        check.addChangeListener(event -> checkBoxChecking());
 
         answers.add(check, new GBC(0, pos, 1, 1, 0, 0, 0, 0).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
@@ -110,27 +115,9 @@ public class MultiChoiceFrame extends QuestionFrame {
         spinnerList.add(degreeSpinner);
         degreeSpinner.setEnabled(degree > 0);
 
-        degreeSpinner.addChangeListener(event -> {
-            hintLabel.info(DEFAULT_MESSAGE);
-            getSaveButton().setEnabled(true);
+        degreeSpinner.addChangeListener(event -> spinnerChecking());
 
-            int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
-            if (sumDegree != 100) {
-                hintLabel.warning("Сумма весов правильных вариантов ответа не равна 100%! " +
-                                  "Пожалуйста, проверьте вес каждого варианта!");
-                getSaveButton().setEnabled(false);
-                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
-            } else if ((int)degreeSpinner.getValue() == 0) {
-                hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
-                getSaveButton().setEnabled(false);
-                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
-            } else {
-                hintLabel.info("Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа.<br>" +
-                                  "Сумма весов правильных вариантов ответа должна быть равна 100%");
-                spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.BLACK));
-            }
-        });
-
+        getSaveButton().setEnabled(false);
         answers.add(degreeSpinner, new GBC(6, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setFill(GBC.HORIZONTAL).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(7, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
@@ -162,41 +149,75 @@ public class MultiChoiceFrame extends QuestionFrame {
         }
     }
 
-    private void checkAnswers() {
+    private void checkBoxChecking() {
         int countSelected = 0;
+        checkBoxErrorMessage = "";
+
         for (JCheckBox checkBox : checkBoxList) {
             if (checkBox.isSelected()) {
                 countSelected += 1;
             }
         }
-        getSaveButton().setEnabled(true);
+
+        if (spinnerErrorMessage.isEmpty()) {
+            getSaveButton().setEnabled(true);
+        }
+
         hintLabel.info(DEFAULT_MESSAGE);
+
         if (countSelected < 2) {
             spinnerList.stream().forEach(s -> s.setEnabled(false));
             if (countSelected == 0) {
-                getSaveButton().setEnabled(false);
-                hintLabel.warning("Хотя бы один вариант ответа должен быть отмечен, как правильный");
+                checkBoxErrorMessage = "Хотя бы один вариант ответа должен быть отмечен, как правильный";
             }
         } else {
             if (checkBoxList.stream().allMatch(JCheckBox::isSelected)) {
-                getSaveButton().setEnabled(false);
-                hintLabel.warning("Все варианты ответа не могут быть правильными");
-            }
-            for (int i = 0; i < spinnerList.size(); i++) {
-                JCheckBox cb = checkBoxList.get(i);
-                JSpinner sp = spinnerList.get(i);
-                if (cb.isSelected()) {
-                    sp.setEnabled(true);
-                    if ((int) sp.getValue() == 0) {
-                        getSaveButton().setEnabled(false);
-                        hintLabel.warning("Правильный ответ не может иметь вес, равный 0");
-                        spinnerList.stream().filter(s -> isEnabled()).forEach(s -> s.getEditor().getComponent(0).setForeground(Color.RED));
+                checkBoxErrorMessage = "Все варианты ответа не могут быть правильными";
+            } else {
+                for (int i = 0; i < spinnerList.size(); i++) {
+                    JCheckBox cb = checkBoxList.get(i);
+                    JSpinner sp = spinnerList.get(i);
+                    if (cb.isSelected()) {
+                        sp.setEnabled(true);
+                    } else {
+                        sp.setEnabled(false);
                     }
-                } else {
-                    sp.setEnabled(false);
                 }
             }
         }
+    }
+
+    private void spinnerChecking() {
+        hintLabel.info(DEFAULT_MESSAGE);
+
+        spinnerErrorMessage = "";
+        int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 100).sum();
+
+        if (sumDegree != 100) {
+            spinnerErrorMessage = "Сумма весов правильных вариантов ответа не равна 100%! " +
+                                  "Пожалуйста, проверьте вес каждого варианта!";
+        } else if (spinnerList.stream().filter(s -> isEnabled()).anyMatch(s -> (int)s.getValue() == 0)) {
+            spinnerErrorMessage = "Правильный ответ не может иметь вес, равный 0";
+        }
+
+        Color color;
+        if (spinnerErrorMessage.isEmpty()) {
+            color = Color.BLACK;
+            if (checkBoxErrorMessage.isEmpty()) {
+                getSaveButton().setEnabled(true);
+            }
+        } else {
+            color = Color.RED;
+            hintLabel.error(b -> b.setEnabled(false),
+                            getSaveButton(),
+                            spinnerErrorMessage);
+        }
+        spinnerList.stream().forEach(s -> s.getEditor().getComponent(0).setForeground(color));
+    }
+
+    private void checkAnswers() {
+        checkBoxChecking();
+        spinnerChecking();
     }
 
     protected List<Answer> collectAnswers() throws SaveQuestionException {
@@ -238,17 +259,18 @@ public class MultiChoiceFrame extends QuestionFrame {
             }
             if (!text.isEmpty()) {
                 aList.add(new Answer(text, degree, comment));
+            } else if (degree != 0) {
+                throw new SaveQuestionException("Вы оставили пустым правильный вариант ответа");
             }
         }
 
         if (aList.isEmpty())
             throw new SaveQuestionException("Нет ни одного заполненного варианта ответа");
-        if (aList.stream().noneMatch(answer -> answer.getDegree() > 0)) {
+        if (aList.stream().noneMatch(answer -> answer.getDegree() != 0)) {
             throw new SaveQuestionException("Среди заполненных вариантов ответа нет ни одного правильного");
         }
         if (aList.size() == 1)
             throw new SaveQuestionException("Для этого типа вопроса не допустим только один вариант ответа");
-
         return  aList;
     }
 

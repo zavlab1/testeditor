@@ -202,13 +202,13 @@ public class XMLParser extends Parser {
         Node textElement = fieldElement.getElementsByTagName("text").item(0);
         if(textElement == null) return "";
 
-        return textElement.getTextContent();
+        return textElement.getTextContent().replaceAll("<[a-zA-Z\\s/+>]", "");
     }
 
     private String getField(String elementName, Element questionElement) {
         Element fieldElement = (Element)questionElement.getElementsByTagName(elementName).item(0);
         if(fieldElement == null) return "";
 
-        return  fieldElement.getTextContent();
+        return fieldElement.getTextContent().replaceAll("<[a-zA-Z\\s/+>]", "");
     }
 }

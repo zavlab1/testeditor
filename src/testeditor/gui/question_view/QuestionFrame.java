@@ -1,6 +1,6 @@
 package testeditor.gui.question_view;
 
-import testeditor.gui.ParentFrame;
+import testeditor.gui.BaseMainFrame;
 import testeditor.gui.services.HintLabel;
 import testeditor.gui.services.QLabel;
 import testeditor.gui.services.QTextArea;
@@ -9,11 +9,10 @@ import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +22,27 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 /**
  * Created by dimitry on 03.04.16.
  */
-abstract public class QuestionFrame extends ParentFrame {
+abstract public class QuestionFrame extends BaseMainFrame {
+
+    protected final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
+    protected final int WIDTH = 900;
+
     protected JPanel answerPanel  = new JPanel();
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
     protected JScrollPane aScrollPane;
     protected Question q;
     protected HintLabel hintLabel;
+
     private QTextArea nameTextArea;
     private QTextArea qTextArea;
     private JButton saveButton;
-    public final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
 
     public QuestionFrame(Question q) {
         this.q = q;
-        setMinimumSize(new Dimension((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT));
-        setSize((int)(INITIAL_WIDTH / 1.5), INITIAL_HEIGHT);
+
+        setMaximumSize(new Dimension(WIDTH, SCREEN_HEIGHT));
+        setMinimumSize(new Dimension(WIDTH, HEIGHT_MIN));
+
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         setVisible(true);
@@ -48,9 +53,9 @@ abstract public class QuestionFrame extends ParentFrame {
         north.setLayout(northLayout);
         northLayout.setAutoCreateContainerGaps(true);
         northLayout.setAutoCreateGaps(true);
-        TitledBorder northBorder = BorderFactory.createTitledBorder("Тип вопроса: " + q.TYPE);
+        TitledBorder northBorder = BorderFactory.createTitledBorder("<html><I>Тип вопроса: </I>" + q.TYPE + "</html>");
         northBorder.setTitleJustification(TitledBorder.CENTER);
-        north.setBorder(northBorder);
+        north.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 5, 5, 5), northBorder));
 
         QLabel labelName = new QLabel("<html><b>Название:</b></html>");
         QLabel labelQuestion = new QLabel("<html><b>Вопрос:</b></html>");
@@ -61,22 +66,22 @@ abstract public class QuestionFrame extends ParentFrame {
 
         northLayout.setHorizontalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(LEADING)
-                        .addComponent(labelName)
-                        .addComponent(labelQuestion))
+                        .addComponent(labelName, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelQuestion, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(northLayout.createParallelGroup(LEADING)
-                        .addComponent(nameTextArea)
-                        .addComponent(qTextArea))
+                        .addComponent(nameTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         northLayout.linkSize(SwingConstants.HORIZONTAL, labelName, labelQuestion);
 
         northLayout.setVerticalGroup(northLayout.createSequentialGroup()
                 .addGroup(northLayout.createParallelGroup(BASELINE)
-                        .addComponent(labelName)
-                        .addComponent(nameTextArea))
+                        .addComponent(labelName, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nameTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(northLayout.createParallelGroup(BASELINE)
-                        .addComponent(labelQuestion)
-                        .addComponent(qTextArea))
+                        .addComponent(labelQuestion, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTextArea, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(north, BorderLayout.NORTH);
@@ -89,7 +94,7 @@ abstract public class QuestionFrame extends ParentFrame {
 
         TitledBorder aScrollPaneBorder = BorderFactory.createTitledBorder("Варианты ответа");
         aScrollPaneBorder.setTitleJustification(TitledBorder.CENTER);
-        aScrollPane.setBorder(aScrollPaneBorder);
+        aScrollPane.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(5, 5, 5, 5), aScrollPaneBorder));
         add(aScrollPane);
 
         JPanel savePanel = new JPanel();
@@ -139,10 +144,12 @@ abstract public class QuestionFrame extends ParentFrame {
             q.setQText(text);
             q.setAnswers(aList);
         } catch (SaveQuestionException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Ошибка!",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(  this
+                                          , e.getMessage()
+                                          , "Ошибка!"
+                                          , JOptionPane.ERROR_MESSAGE
+                                          //,new ImageIcon("src/testeditor/gui/img/main.png")
+            );
             return;
         }
         this.dispose();
