@@ -182,6 +182,7 @@ public class MultiChoiceFrame extends QuestionFrame {
             if (checkBoxList.stream().allMatch(JCheckBox::isSelected)) {
                 getSaveButton().setEnabled(false);
                 hintLabel.warning("Все варианты ответа не могут быть правильными");
+                return;
             }
             for (int i = 0; i < spinnerList.size(); i++) {
                 JCheckBox cb = checkBoxList.get(i);
