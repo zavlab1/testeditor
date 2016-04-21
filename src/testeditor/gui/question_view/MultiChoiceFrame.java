@@ -196,18 +196,25 @@ public class MultiChoiceFrame extends QuestionFrame {
                             getSaveButton(),
                             checkBoxErrorMessage);
         }
+        if (checkBoxErrorMessage.isEmpty()) {
+            spinnerChecking();
+        }
     }
 
     private void spinnerChecking() {
         hintLabel.info(DEFAULT_MESSAGE);
 
+        if (spinnerList.stream().noneMatch(x -> x.isEnabled())) {
+            return;
+        }
         spinnerErrorMessage = "";
         int sumDegree = spinnerList.stream().mapToInt(x -> x.isEnabled() ? (int)x.getValue() : 0).sum();
 
         if (sumDegree != 100) {
             spinnerErrorMessage = "Сумма весов правильных вариантов ответа не равна 100%! " +
                                   "Пожалуйста, проверьте вес каждого варианта!";
-        } else if (spinnerList.stream().filter(s -> isEnabled()).anyMatch(s -> (int)s.getValue() == 0)) {
+        } else if (spinnerList.stream().filter(s -> s.isEnabled()).anyMatch(s -> (int)s.getValue() == 0)) {
+            System.out.println(123);
             spinnerErrorMessage = "Правильный ответ не может иметь вес, равный 0";
         }
 
