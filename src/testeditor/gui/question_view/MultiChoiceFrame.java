@@ -98,8 +98,10 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea answerText = new QTextArea(text);
+        answerText.setPreferredSize(new Dimension (0, 70));
+
         fields.add(answerText);
-        answers.add(answerText, new GBC(2, pos, 1, 1, 0, 0, 100, 0).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
+        answers.add(answerText, new GBC(2, pos, 1, 1, 0, 0, 100, 100).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(3, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea commentText = new QTextArea(comment);
@@ -122,6 +124,7 @@ public class MultiChoiceFrame extends QuestionFrame {
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         delButton.addActionListener(e -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
+
     }
 
     private void deleteAnswer (int delButtonIndex){
