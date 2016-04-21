@@ -214,7 +214,6 @@ public class MultiChoiceFrame extends QuestionFrame {
             spinnerErrorMessage = "Сумма весов правильных вариантов ответа не равна 100%! " +
                                   "Пожалуйста, проверьте вес каждого варианта!";
         } else if (spinnerList.stream().filter(s -> s.isEnabled()).anyMatch(s -> (int)s.getValue() == 0)) {
-            System.out.println(123);
             spinnerErrorMessage = "Правильный ответ не может иметь вес, равный 0";
         }
 
