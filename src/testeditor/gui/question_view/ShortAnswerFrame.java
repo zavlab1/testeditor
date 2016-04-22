@@ -23,9 +23,7 @@ public class ShortAnswerFrame extends QuestionFrame {
     public ShortAnswerFrame(Question q) {
         super(q);
 
-        setSize(this.INITIAL_WIDTH, (int)(this.INITIAL_HEIGHT / 1.5));
-        setLocation((SCREEN_WIDTH - this.getWidth()) / 2,
-                (SCREEN_HEIGHT - this.getHeight()) / 2);
+        setSize((int)(this.initialHeight / 1.5), (int)(this.initialHeight / 1.5));
 
         answerList = q.getAnswerList();
 

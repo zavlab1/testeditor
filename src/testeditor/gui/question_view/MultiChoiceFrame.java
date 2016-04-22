@@ -124,7 +124,6 @@ public class MultiChoiceFrame extends QuestionFrame {
         JButton delButton = new JButton("<html><font color='red'><b>&nbsp;&#10006;&nbsp;</b></font></html>");
         delButton.addActionListener(e -> deleteAnswer(answers.getComponentZOrder(delButton)));
         answers.add(delButton, new GBC(8, pos, 1, 1, 0, 0, 0, 0).setAnchor(GBC.BASELINE).setInsets(5, 10, 5, 5));
-
     }
 
     private void deleteAnswer (int delButtonIndex){

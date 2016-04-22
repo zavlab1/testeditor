@@ -25,7 +25,7 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 abstract public class QuestionFrame extends BaseMainFrame {
 
     protected final String DEFAULT_MESSAGE = "Вы можете добавлять новые, изменять или удалять имеющиеся варианты ответа";
-    protected final int WIDTH = 900;
+    protected final int WIDTH = 500;
 
     protected JPanel answerPanel  = new JPanel();
     protected ArrayList<JTextComponent> fields = new ArrayList<>();
@@ -113,7 +113,7 @@ abstract public class QuestionFrame extends BaseMainFrame {
         hintPanel.setLayout(new BorderLayout());
 
         hintLabel = new HintLabel();
-        hintLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        hintLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         hintPanel.add(hintLabel);
 
         JPanel bottomPanel = new JPanel();
