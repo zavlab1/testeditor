@@ -3,6 +3,7 @@ package testeditor.gui.services;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 
 /**
@@ -18,5 +19,15 @@ public class QTextArea extends JTextArea {
 
         setLineWrap(true);
         setWrapStyleWord(true);
+    }
+
+    public void changeSize(){
+        try {
+            Rectangle rect = this.modelToView( this.getDocument().getLength() );
+            this.setPreferredSize(new Dimension( 0, rect.y + rect.height + 5) );
+        }
+        catch (BadLocationException ex){
+            ex.getMessage();
+        }
     }
 }

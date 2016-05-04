@@ -7,8 +7,11 @@ import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +101,21 @@ public class MultiChoiceFrame extends QuestionFrame {
         answers.add(new JSeparator(JSeparator.VERTICAL), new GBC(1, pos, 1, 1, 0, 0, 0, 0).setFill(GBC.VERTICAL));
 
         QTextArea answerText = new QTextArea(text);
-        answerText.setPreferredSize(new Dimension (0, 70));
+
+        answerText.addCaretListener(e -> answerText.changeSize());
+        answerText.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                answerText.changeSize();
+            }
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                answerText.changeSize();
+            }
+        });
 
         fields.add(answerText);
         answers.add(answerText, new GBC(2, pos, 1, 1, 0, 0, 100, 100).setFill(GBC.BOTH).setInsets(5, 5, 5, 5));
