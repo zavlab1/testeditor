@@ -9,6 +9,8 @@ import testeditor.gui.services.GBC;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -75,7 +77,17 @@ public class EditPanel extends JPanel {
         add(listSpinner, new GBC(1, 7, 1, 1, 0, 0, 0, 100).setAnchor(GridBagConstraints.PAGE_END)
                                                           .setInsets(10, 20, 20, 0)
                                                           .setFill(GridBagConstraints.HORIZONTAL));
+
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() == 2) editButton.doClick();
+            }
+        });
+
     }
+
     public JButton getCreateButton() {
         return createButton;
     }

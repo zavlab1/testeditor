@@ -108,12 +108,14 @@ public class MultiChoiceFrame extends QuestionFrame {
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 answerText.changeSize();
+                answers.updateUI();
             }
 
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 answerText.changeSize();
+                answers.updateUI();
             }
         });
 
