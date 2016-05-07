@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
@@ -16,8 +18,8 @@ import java.awt.*;
 public class TestView extends JPanel {
     private DefaultListModel<Question> listModel;
     private JList<Question> questionList;
-    private ControlPanel controlPanel; //управление файлом теста
-    private EditPanel editPanel; // управление элементами теста
+    private ControlPanel controlPanel;  // управление файлом теста
+    private EditPanel    editPanel;     // управление элементами теста
 
     public TestView() {
         listModel = new QListModel<>(); // Модель для компонета JList со списком вопросов
@@ -36,10 +38,10 @@ public class TestView extends JPanel {
             public void intervalRemoved(ListDataEvent listDataEvent) {
                 if (TestView.this.listModel.isEmpty()) {
                     controlPanel.getSaveAsButton().setEnabled(false);
-                    controlPanel.getSaveButton().setEnabled(false);
+                    controlPanel.getSaveButton()  .setEnabled(false);
                     editPanel.getButtons().stream().forEach(b -> b.setEnabled(false));
-                    editPanel.getListSpinner().setEnabled(false);
-                    editPanel.getCreateButton().setEnabled(true);
+                    editPanel.getListSpinner() .setEnabled(false);
+                    editPanel.getCreateButton().setEnabled(true );
                 }
             }
             @Override
@@ -48,24 +50,32 @@ public class TestView extends JPanel {
 
         //------- Создаем и настраиваем компоненты GUI -------//
         setLayout(new BorderLayout());
-        this.add(new JPanel(), BorderLayout.WEST);
-        this.add(new JPanel(), BorderLayout.SOUTH);
 
         questionList = new JList<>(this.listModel);
         questionList.setBackground(Color.GRAY);
         questionList.setCellRenderer(new ListRenderer());
         questionList.setFixedCellWidth(questionList.getWidth());
 
+        questionList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() == 2) editPanel.getEditButton().doClick();
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        this.add(scrollPane);
 
         controlPanel = new ControlPanel(questionList);
-        this.add(controlPanel, BorderLayout.NORTH);// Панель с кнопками "Открыть","Создать","Save as"
-
-        editPanel = new EditPanel(questionList);
+        editPanel    = new EditPanel   (questionList);
         editPanel.setVisible(false);
-        this.add(editPanel, BorderLayout.EAST);
+
+        this.add(new JPanel(), BorderLayout.WEST );
+        this.add(new JPanel(), BorderLayout.SOUTH);
+        this.add(scrollPane);
+        this.add(controlPanel, BorderLayout.NORTH);
+        this.add(editPanel   , BorderLayout.EAST );
     }
 
     public JList<Question> getQuestionList() {

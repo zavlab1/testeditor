@@ -9,20 +9,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Панель управления элементами списка
  */
 public class EditPanel extends JPanel {
-    private JButton editButton, createButton , deleteButton, // Кнопки управления
-    beginButton, endButton, upButton, downButton;
+    private JButton editButton   ,
+                    createButton ,
+                    deleteButton ,
+                    beginButton  ,
+                    endButton    ,
+                    upButton     ,
+                    downButton   ;
 
-    private JList list;          // ссылка на список вопросов
+    private JList    list;
     private JSpinner listSpinner;
 
     private int max; // макс. кол-во элементов в списке
@@ -36,7 +38,7 @@ public class EditPanel extends JPanel {
 
         // Экземпляры групп кнопок для редактирования и перемещения
         EditingGroup editingGroup = new EditingGroup();
-        MovingGroup movingGroup = new MovingGroup();
+        MovingGroup  movingGroup  = new MovingGroup();
 
         GroupLayout editPanelLayout = new GroupLayout(this); // Групповой компоновщик для EditPanel
 
@@ -45,31 +47,27 @@ public class EditPanel extends JPanel {
         editPanelLayout.setAutoCreateGaps(true);
 
         editPanelLayout.setHorizontalGroup(editPanelLayout.createParallelGroup()
-                .addComponent(editingGroup)
-                .addComponent(movingGroup)
+                                                          .addComponent(editingGroup)
+                                                          .addComponent(movingGroup)
         );
 
         editPanelLayout.setVerticalGroup(editPanelLayout.createSequentialGroup()
-                .addComponent(editingGroup, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addComponent(movingGroup, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(editingGroup,
+                                                                      GroupLayout.PREFERRED_SIZE,
+                                                                      GroupLayout.PREFERRED_SIZE,
+                                                                      GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(movingGroup,
+                                                                      GroupLayout.PREFERRED_SIZE,
+                                                                      GroupLayout.PREFERRED_SIZE,
+                                                                      GroupLayout.PREFERRED_SIZE)
         );
-
-
-        /* Редактировать вопрос по двойному клику по элементу списка.
-           Размещен здесь, потому что одновременно есть доступ к списку вопросов и
-           кнопке "Редактировать",клик на которую имитируется в слушателе.
-         */
-        list.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (e.getClickCount() == 2) editButton.doClick();
-            }
-        });
     }
 
     public JButton getCreateButton() {
         return createButton;
+    }
+    public JButton getEditButton() {
+        return editButton;
     }
     public JSpinner getListSpinner() {
         return listSpinner;
@@ -83,36 +81,34 @@ public class EditPanel extends JPanel {
      */
     public class EditingGroup extends JPanel {
         EditingGroup(){
-            setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10,10,10,10),
-                    new TitledBorder("Редактировать: ")));
+            setBorder(BorderFactory.createCompoundBorder(new EmptyBorder (10, 10, 10, 10),
+                                                         new TitledBorder("Редактировать: ")));
 
             GroupLayout editingPanelLayout = new GroupLayout(this);
-
             setLayout(editingPanelLayout);
+
             editingPanelLayout.setAutoCreateContainerGaps(true);
             editingPanelLayout.setAutoCreateGaps(true);
 
-            buttons = new ArrayList<>();
-
-            editButton = new EditPanelButton(new EditQuestionAction(list));
-            buttons.add(editButton);
-
+            editButton   = new EditPanelButton(new EditQuestionAction  (list));
             createButton = new EditPanelButton(new CreateQuestionAction(list));
-            buttons.add(createButton);
-
             deleteButton = new EditPanelButton(new RemoveQuestionAction(list));
+
+            buttons = new ArrayList<>();
+            buttons.add(editButton);
+            buttons.add(createButton);
             buttons.add(deleteButton);
 
             editingPanelLayout.setHorizontalGroup(editingPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                    .addComponent(editButton)
-                    .addComponent(createButton)
-                    .addComponent(deleteButton)
+                                                                    .addComponent(editButton)
+                                                                    .addComponent(createButton)
+                                                                    .addComponent(deleteButton)
             );
 
             editingPanelLayout.setVerticalGroup(editingPanelLayout.createSequentialGroup()
-                    .addComponent(editButton)
-                    .addComponent(createButton)
-                    .addComponent(deleteButton)
+                                                                  .addComponent(editButton)
+                                                                  .addComponent(createButton)
+                                                                  .addComponent(deleteButton)
             );
         }
     }
@@ -122,8 +118,8 @@ public class EditPanel extends JPanel {
      */
     public class MovingGroup extends JPanel {
         MovingGroup(){
-            setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10,10,10,10),
-                    new TitledBorder("Переместить: ")));
+            setBorder(BorderFactory.createCompoundBorder(new EmptyBorder (10, 10, 10, 10),
+                                                         new TitledBorder("Переместить: ")));
 
             GroupLayout movingGroupLayout = new GroupLayout(this);
 
@@ -132,15 +128,13 @@ public class EditPanel extends JPanel {
             movingGroupLayout.setAutoCreateGaps(true);
 
             beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало</html>");
+            upButton    = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8657;&nbsp;&nbsp;&nbsp;</b></font>Вверх</html>");
+            downButton  = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8659;&nbsp;&nbsp;&nbsp;</b></font>Вниз</html>");
+            endButton   = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец</html>");
+
             buttons.add(beginButton);
-
-            upButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8657;&nbsp;&nbsp;&nbsp;</b></font>Вверх</html>");
             buttons.add(upButton);
-
-            downButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8659;&nbsp;&nbsp;&nbsp;</b></font>Вниз</html>");
             buttons.add(downButton);
-
-            endButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец</html>");
             buttons.add(endButton);
 
             JLabel spinLabel = new JLabel("<html>Переместить<br>на позицию №:</html>");
@@ -152,27 +146,30 @@ public class EditPanel extends JPanel {
                 list.ensureIndexIsVisible(list.getSelectedIndex());//делаем выделенный элемент видимым
             });
 
-            movingGroupLayout.setHorizontalGroup(movingGroupLayout.createSequentialGroup()
-                    .addGroup(movingGroupLayout.createParallelGroup()
-                            .addComponent(beginButton)
-                            .addComponent(upButton)
-                            .addComponent(downButton)
-                            .addComponent(endButton)
-                            .addGroup(movingGroupLayout.createSequentialGroup()
-                                    .addComponent(spinLabel)
-                                    .addComponent(listSpinner))
+            movingGroupLayout.setHorizontalGroup(
+                    movingGroupLayout.createSequentialGroup()
+                                     .addGroup(movingGroupLayout.createParallelGroup()
+                                                                .addComponent(beginButton)
+                                                                .addComponent(upButton)
+                                                                .addComponent(downButton)
+                                                                .addComponent(endButton)
+                                                                .addGroup(movingGroupLayout.createSequentialGroup()
+                                                                                           .addComponent(spinLabel)
+                                                                                           .addComponent(listSpinner))
                     )
             );
 
-            movingGroupLayout.setVerticalGroup(movingGroupLayout.createSequentialGroup()
-                    .addComponent(beginButton)
-                    .addComponent(upButton)
-                    .addComponent(downButton)
-                    .addComponent(endButton)
-                    .addGroup(movingGroupLayout.createParallelGroup()
-                            .addComponent(spinLabel)
-                            .addComponent(listSpinner)
-                    ));
+            movingGroupLayout.setVerticalGroup(
+                    movingGroupLayout.createSequentialGroup()
+                                     .addComponent(beginButton)
+                                     .addComponent(upButton)
+                                     .addComponent(downButton)
+                                     .addComponent(endButton)
+                                     .addGroup(movingGroupLayout.createParallelGroup()
+                                                                .addComponent(spinLabel)
+                                                                .addComponent(listSpinner)
+                                     )
+            );
         }
     }
 
