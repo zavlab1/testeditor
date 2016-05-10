@@ -5,8 +5,7 @@ import testeditor.question.Answer;
 import testeditor.question.Question;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,6 @@ public class ShortAnswerFrame extends QuestionFrame {
         setSize((int)(this.initialHeight / 1.5),
                 (int)(this.initialHeight / 1.5));
 
-        JLabel labelComment = new JLabel("Комментарий:");
-
         answerList = q.getAnswerList();
 
         answerText  = new QTextArea(answerList.get(0).getAText());
@@ -35,27 +32,55 @@ public class ShortAnswerFrame extends QuestionFrame {
         fields.add(answerText);
         fields.add(commentText);
 
+
+        JPanel rightAnswerPanel = new JPanel(new BorderLayout());
+
+        rightAnswerPanel.setBorder(BorderFactory.createCompoundBorder (
+                                            BorderFactory.createTitledBorder("Правильный ответ:"),
+                                            BorderFactory.createEmptyBorder(10 , 10 , 10 , 10)
+                                    ));
+
+        rightAnswerPanel.add(answerText);
+
+
+        JPanel commentPanel = new JPanel(new BorderLayout());
+
+        commentPanel.setBorder(BorderFactory.createCompoundBorder (
+                                            BorderFactory.createTitledBorder("Комментарий:"),
+                                            BorderFactory.createEmptyBorder(10 , 10 , 10 , 10)
+                                ));
+
+        commentPanel.add(commentText);
+
         GroupLayout answerLayout = new GroupLayout(answerPanel);
         answerLayout.setAutoCreateContainerGaps(true);
         answerLayout.setAutoCreateGaps(true);
 
-        answerLayout.setHorizontalGroup(
-                answerLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                            .addComponent(answerText  , 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelComment, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(commentText , 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        answerLayout.setHorizontalGroup (
+                answerLayout.createParallelGroup()
+                            .addComponent ( rightAnswerPanel,
+                                            0,
+                                            GroupLayout.DEFAULT_SIZE,
+                                            Short.MAX_VALUE)
+                            .addComponent ( commentPanel,
+                                            0,
+                                            GroupLayout.DEFAULT_SIZE,
+                                            Short.MAX_VALUE)
+                                         );
 
-        answerLayout.setVerticalGroup(
+        answerLayout.setVerticalGroup (
                 answerLayout.createSequentialGroup()
-                            .addComponent(answerText  , 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelComment, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(commentText , 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+                            .addComponent ( rightAnswerPanel  ,
+                                            GroupLayout.PREFERRED_SIZE,
+                                            GroupLayout.PREFERRED_SIZE,
+                                            GroupLayout.PREFERRED_SIZE )
+                            .addComponent ( commentPanel ,
+                                            GroupLayout.PREFERRED_SIZE,
+                                            GroupLayout.PREFERRED_SIZE,
+                                            GroupLayout.PREFERRED_SIZE )
+                                        );
 
         answerPanel.setLayout(answerLayout);
-        answerPanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder (5, 5, 5, 5),
-                                                                 new TitledBorder("Правильный ответ: ")));
 
         add(answerPanel);
     }
