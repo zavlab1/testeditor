@@ -1,14 +1,11 @@
 package testeditor.gui.question_view.actions;
 
-import testeditor.Test;
 import testeditor.question.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 /**
  * Класс-слушатель для события открытия файла
@@ -31,7 +28,7 @@ public class CreateQuestionAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent event) {
-        Test test = Test.getTest();
+
         Object[] types = {
                               "Выбор",
                               "Короткий ответ",
@@ -67,7 +64,6 @@ public class CreateQuestionAction extends AbstractAction {
                     q = new Numerical();
                     break;
             }
-            test.add(q);
             JFrame qFrame = q.getFrame();
             qFrame.addWindowListener(new WindowAdapter() {
                 @Override

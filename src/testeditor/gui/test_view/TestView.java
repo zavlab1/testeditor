@@ -11,6 +11,7 @@ import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 
 /**
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
@@ -26,6 +27,8 @@ public class TestView extends JPanel {
         listModel.addListDataListener(new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent listDataEvent) {
+                Test.getTest().update(Collections.list(listModel.elements()));
+
                 if (!controlPanel.getSaveAsButton().isEnabled()) {
                     controlPanel.getSaveAsButton().setEnabled(true);
                     editPanel.getButtons().stream().forEach(b -> b.setEnabled(true));
@@ -36,7 +39,8 @@ public class TestView extends JPanel {
             }
             @Override
             public void intervalRemoved(ListDataEvent listDataEvent) {
-                if (TestView.this.listModel.isEmpty()) {
+                Test.getTest().update(Collections.list(listModel.elements()));
+                if (listModel.isEmpty()) {
                     controlPanel.getSaveAsButton().setEnabled(false);
                     controlPanel.getSaveButton()  .setEnabled(false);
                     editPanel.getButtons().stream().forEach(b -> b.setEnabled(false));
@@ -45,7 +49,9 @@ public class TestView extends JPanel {
                 }
             }
             @Override
-            public void contentsChanged(ListDataEvent listDataEvent) { }
+            public void contentsChanged(ListDataEvent listDataEvent) {
+                Test.getTest().update(Collections.list(listModel.elements()));
+            }
         });
 
         //------- Создаем и настраиваем компоненты GUI -------//

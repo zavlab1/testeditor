@@ -14,7 +14,6 @@ import java.awt.event.WindowEvent;
 public class RemoveQuestionAction extends AbstractAction {
 
     private JList list;
-    private Question q = null;
 
     public RemoveQuestionAction(JList qList) {
         list = qList;
@@ -30,10 +29,8 @@ public class RemoveQuestionAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent event) {
         int index = list.getSelectedIndex();
-        Question q = (Question) Test.getTest().toArray()[index];
-        Test.getTest().remove(q);
         DefaultListModel<Question> listModel = (DefaultListModel<Question>) list.getModel();
-        listModel.removeElement(q);
+        listModel.remove(index);
         if (!listModel.isEmpty()) {
             list.setSelectedIndex(0);
         }

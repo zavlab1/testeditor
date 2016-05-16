@@ -5,6 +5,7 @@ import testeditor.question.Question;
 
 import javax.swing.event.ChangeListener;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -40,5 +41,10 @@ public class Test extends LinkedHashSet<Question> {
 
     public String getFilePath() {
         return filePath;
+    }
+
+    public void update(List list) {
+        this.clear();
+        this.addAll(list);
     }
 }

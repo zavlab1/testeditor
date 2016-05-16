@@ -2,6 +2,7 @@ package testeditor.gui.test_view;
 
 import testeditor.gui.question_view.actions.CreateQuestionAction;
 import testeditor.gui.question_view.actions.EditQuestionAction;
+import testeditor.gui.question_view.actions.MoveQuestionAction;
 import testeditor.gui.question_view.actions.RemoveQuestionAction;
 import testeditor.gui.services.EditPanelButton;
 
@@ -99,16 +100,18 @@ public class EditPanel extends JPanel {
             buttons.add(createButton);
             buttons.add(deleteButton);
 
-            editingPanelLayout.setHorizontalGroup(editingPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                    .addComponent(editButton)
-                                                                    .addComponent(createButton)
-                                                                    .addComponent(deleteButton)
+            editingPanelLayout.setHorizontalGroup(
+                    editingPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                      .addComponent(editButton)
+                                      .addComponent(createButton)
+                                      .addComponent(deleteButton)
             );
 
-            editingPanelLayout.setVerticalGroup(editingPanelLayout.createSequentialGroup()
-                                                                  .addComponent(editButton)
-                                                                  .addComponent(createButton)
-                                                                  .addComponent(deleteButton)
+            editingPanelLayout.setVerticalGroup(
+                    editingPanelLayout.createSequentialGroup()
+                                      .addComponent(editButton)
+                                      .addComponent(createButton)
+                                      .addComponent(deleteButton)
             );
         }
     }
@@ -128,9 +131,9 @@ public class EditPanel extends JPanel {
             movingGroupLayout.setAutoCreateGaps(true);
 
             beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало</html>");
-            upButton    = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8657;&nbsp;&nbsp;&nbsp;</b></font>Вверх</html>");
-            downButton  = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#8659;&nbsp;&nbsp;&nbsp;</b></font>Вниз</html>");
-            endButton   = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец</html>");
+            upButton    = new EditPanelButton(new MoveQuestionAction(list, -1));
+            downButton  = new EditPanelButton(new MoveQuestionAction(list, 1));
+            endButton   = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец </html>");
 
             buttons.add(beginButton);
             buttons.add(upButton);

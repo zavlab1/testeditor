@@ -45,7 +45,7 @@ public class SaveAsTestAction extends AbstractAction {
         saveAsDialog.setDialogTitle("Сохранить как...");
         saveAsDialog.setApproveButtonToolTipText("Сохранить тест");
 
-        UIManager.put("FileChooser.cancelButtonText", "Отмена");
+        UIManager.put("FileChooser.cancelButtonText"       , "Отмена");
         UIManager.put("FileChooser.cancelButtonToolTipText", "Отмена");
         SwingUtilities.updateComponentTreeUI(saveAsDialog);
 
@@ -70,7 +70,7 @@ public class SaveAsTestAction extends AbstractAction {
             }
 
             Test.getTestFromFile(path);
-            ((QListModel) qList.getModel()).update();
+            ((QListModel) qList.getModel()).update(qList);
             qList.setSelectedIndex(0);
 
             parentFrame.setTitle(saveAsDialog.getSelectedFile().getName() + " - " + parentFrame.APP_NAME);
