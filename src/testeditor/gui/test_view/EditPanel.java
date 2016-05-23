@@ -1,9 +1,6 @@
 package testeditor.gui.test_view;
 
-import testeditor.gui.question_view.actions.CreateQuestionAction;
-import testeditor.gui.question_view.actions.EditQuestionAction;
-import testeditor.gui.question_view.actions.MoveQuestionAction;
-import testeditor.gui.question_view.actions.RemoveQuestionAction;
+import testeditor.gui.question_view.actions.*;
 import testeditor.gui.services.EditPanelButton;
 
 import javax.swing.*;
@@ -130,10 +127,10 @@ public class EditPanel extends JPanel {
             movingGroupLayout.setAutoCreateContainerGaps(true);
             movingGroupLayout.setAutoCreateGaps(true);
 
-            beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало</html>");
+            beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало </html>");
             upButton    = new EditPanelButton(new MoveQuestionAction(list, -1));
             downButton  = new EditPanelButton(new MoveQuestionAction(list, 1));
-            endButton   = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9660;&nbsp;&nbsp;&nbsp;</b></font>В конец </html>");
+            endButton   = new EditPanelButton(new MoveToEndAction(list, "В конец", "&#9660;"));
 
             buttons.add(beginButton);
             buttons.add(upButton);
