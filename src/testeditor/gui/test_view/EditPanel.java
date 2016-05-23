@@ -2,6 +2,7 @@ package testeditor.gui.test_view;
 
 import testeditor.gui.question_view.actions.*;
 import testeditor.gui.services.EditPanelButton;
+import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,14 +23,14 @@ public class EditPanel extends JPanel {
                     upButton     ,
                     downButton   ;
 
-    private JList    list;
+    private JList<Question> list;
     private JSpinner listSpinner;
 
     private int max; // макс. кол-во элементов в списке
 
     private ArrayList<JButton> buttons;
 
-    public EditPanel(JList list) {
+    public EditPanel(JList<Question> list) {
         this.list = list;
 
         max = ((DefaultListModel)list.getModel()).isEmpty() ? 1 : list.getModel().getSize();
@@ -128,9 +129,9 @@ public class EditPanel extends JPanel {
             movingGroupLayout.setAutoCreateGaps(true);
 
             beginButton = new EditPanelButton(new MoveToBeginAction(list, "В начало", "&#9650;"));
-            upButton    = new EditPanelButton(new MoveQuestionAction(list, -1));
-            downButton  = new EditPanelButton(new MoveQuestionAction(list, 1));
-            endButton   = new EditPanelButton(new MoveToEndAction(list, "В конец", "&#9660;"));
+            endButton   = new EditPanelButton(new MoveToEndAction  (list, "В конец" , "&#9660;"));
+            upButton    = new EditPanelButton(new MoveUpAction  (list, "Выше", "&#8657;"));
+            downButton  = new EditPanelButton(new MoveDownAction(list, "Ниже", "&#8659;"));
 
             buttons.add(beginButton);
             buttons.add(upButton);
