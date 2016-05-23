@@ -127,7 +127,7 @@ public class EditPanel extends JPanel {
             movingGroupLayout.setAutoCreateContainerGaps(true);
             movingGroupLayout.setAutoCreateGaps(true);
 
-            beginButton = new EditPanelButton("<html><font color='#4682B4' size=+1><b>&#9650;&nbsp;&nbsp;&nbsp;</b></font>В начало </html>");
+            beginButton = new EditPanelButton(new MoveToBeginAction(list, "В начало", "&#9650;"));
             upButton    = new EditPanelButton(new MoveQuestionAction(list, -1));
             downButton  = new EditPanelButton(new MoveQuestionAction(list, 1));
             endButton   = new EditPanelButton(new MoveToEndAction(list, "В конец", "&#9660;"));
