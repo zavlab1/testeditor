@@ -29,7 +29,7 @@ public class SaveAsTestAction extends AbstractAction {
 
         this.putValue(Action.NAME,"Сохранить как...");
         this.putValue(Action.SHORT_DESCRIPTION,"Сохранить тест как...");
-        URL imageURL = getClass().getResource("/testeditor/gui/img/save.png");
+        URL imageURL = getClass().getResource("/testeditor/gui/img/save_as.png");
         this.putValue(Action.SMALL_ICON, new ImageIcon(imageURL));
     }
 
