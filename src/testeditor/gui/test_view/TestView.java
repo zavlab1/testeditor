@@ -17,10 +17,10 @@ import java.util.Collections;
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
  */
 public class TestView extends JPanel {
-    private DefaultListModel<Question> listModel;
-    private JList<Question> questionList;
-    private ControlPanel controlPanel;  // управление файлом теста
-    private EditPanel    editPanel;     // управление элементами теста
+    private QListModel<Question> listModel   ;
+    private JList<Question>      questionList;
+    private ControlPanel         controlPanel;  // управление файлом теста
+    private EditPanel            editPanel   ;  // управление элементами теста
 
     public TestView() {
         listModel = new QListModel<>(); // Модель для компонета JList со списком вопросов
@@ -31,8 +31,8 @@ public class TestView extends JPanel {
 
                 if (!controlPanel.getSaveAsButton().isEnabled()) {
                     controlPanel.getSaveAsButton().setEnabled(true);
-                    editPanel.getButtons().stream().forEach(b -> b.setEnabled(true));
-                    editPanel.getListSpinner().setEnabled(true);
+                    editPanel   .getButtons()     .stream().forEach(b -> b.setEnabled(true));
+                    editPanel   .getListSpinner() .setEnabled(true);
                     if (!Test.getTest().isEmpty())
                         controlPanel.getSaveButton().setEnabled(true);
                 }
@@ -43,9 +43,9 @@ public class TestView extends JPanel {
                 if (listModel.isEmpty()) {
                     controlPanel.getSaveAsButton().setEnabled(false);
                     controlPanel.getSaveButton()  .setEnabled(false);
-                    editPanel.getButtons().stream().forEach(b -> b.setEnabled(false));
-                    editPanel.getListSpinner() .setEnabled(false);
-                    editPanel.getCreateButton().setEnabled(true );
+                    editPanel   .getButtons()     .stream().forEach(b -> b.setEnabled(false));
+                    editPanel   .getListSpinner() .setEnabled(false);
+                    editPanel   .getCreateButton().setEnabled(true );
                 }
             }
             @Override
@@ -57,9 +57,9 @@ public class TestView extends JPanel {
         //------- Создаем и настраиваем компоненты GUI -------//
         setLayout(new BorderLayout());
 
-        questionList = new JList<>(this.listModel);
-        questionList.setBackground(Color.GRAY);
-        questionList.setCellRenderer(new ListRenderer());
+        questionList = new JList<Question>(this.listModel);
+        questionList.setBackground    (Color.GRAY);
+        questionList.setCellRenderer  (new ListRenderer());
         questionList.setFixedCellWidth(questionList.getWidth());
 
         questionList.addMouseListener(new MouseAdapter() {
@@ -69,6 +69,10 @@ public class TestView extends JPanel {
                 if (e.getClickCount() == 2) editPanel.getEditButton().doClick();
             }
         });
+
+        //scroll to selection if selected item is not visible
+        questionList.addListSelectionListener(e ->
+                questionList.ensureIndexIsVisible(questionList.getSelectedIndex()));
 
         JScrollPane scrollPane = new JScrollPane(questionList); // полоса прокрутки для списка
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -87,10 +91,8 @@ public class TestView extends JPanel {
     public JList<Question> getQuestionList() {
         return questionList;
     }
-    public EditPanel getEditPanel() {
-        return editPanel;
-    }
-    public ControlPanel getControlPanel() {
+    public EditPanel       getEditPanel()    { return editPanel   ; }
+    public ControlPanel    getControlPanel() {
         return controlPanel;
     }
 }
