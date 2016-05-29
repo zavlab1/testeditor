@@ -30,9 +30,11 @@ public class TestView extends JPanel {
                 Test.getTest().update(Collections.list(listModel.elements()));
 
                 if (!controlPanel.getSaveAsButton().isEnabled()) {
+
                     controlPanel.getSaveAsButton().setEnabled(true);
                     editPanel   .getButtons()     .stream().forEach(b -> b.setEnabled(true));
                     editPanel   .getListSpinner() .setEnabled(true);
+
                     if (!Test.getTest().isEmpty())
                         controlPanel.getSaveButton().setEnabled(true);
                 }
@@ -57,7 +59,7 @@ public class TestView extends JPanel {
         //------- Создаем и настраиваем компоненты GUI -------//
         setLayout(new BorderLayout());
 
-        questionList = new JList<Question>(this.listModel);
+        questionList = new JList<>(this.listModel);
         questionList.setBackground    (Color.GRAY);
         questionList.setCellRenderer  (new ListRenderer());
         questionList.setFixedCellWidth(questionList.getWidth());
