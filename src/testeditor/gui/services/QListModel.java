@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Created by dimitry on 10.04.16.
  */
-public class QListModel <T> extends DefaultListModel {
+public class QListModel<Question> extends DefaultListModel {
 
     public void update(JList<Question> list) {
 

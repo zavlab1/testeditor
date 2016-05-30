@@ -16,11 +16,11 @@ import java.io.File;
  */
 public class CreateTestAction extends AbstractAction {
     private JList<Question> qList;
-    public CreateTestAction(JList qList) {
+    public CreateTestAction(JList<Question> qList) {
         this.qList = qList;
 
-        this.putValue(Action.NAME,"Создать");
-        this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
+        this.putValue(Action.NAME, "Создать");
+        this.putValue(Action.SHORT_DESCRIPTION, "Создать новый тест");
         this.putValue(Action.SMALL_ICON, UIManager.getIcon("FileView.fileIcon"));
     }
 
@@ -38,7 +38,6 @@ public class CreateTestAction extends AbstractAction {
 
         EditPanel ep = tv.getEditPanel();
         ep.getButtons().stream().forEach(b -> b.setEnabled(false));
-        ep.getListSpinner().setEnabled(false);
         ep.getCreateButton().setEnabled(true);
     }
 }

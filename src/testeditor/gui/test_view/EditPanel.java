@@ -24,16 +24,11 @@ public class EditPanel extends JPanel {
                     downButton   ;
 
     private JList<Question> list;
-    private JSpinner listSpinner;
-
-    private int max; // макс. кол-во элементов в списке
 
     private ArrayList<JButton> buttons;
 
     public EditPanel(JList<Question> list) {
         this.list = list;
-
-        max = ((DefaultListModel)list.getModel()).isEmpty() ? 1 : list.getModel().getSize();
 
         // Экземпляры групп кнопок для редактирования и перемещения
         EditingGroup editingGroup = new EditingGroup();
@@ -62,18 +57,9 @@ public class EditPanel extends JPanel {
         );
     }
 
-    public JButton getCreateButton() {
-        return createButton;
-    }
-    public JButton getEditButton() {
-        return editButton;
-    }
-    public JSpinner getListSpinner() {
-        return listSpinner;
-    }
-    public List<JButton> getButtons() {
-        return buttons;
-    }
+    public JButton       getCreateButton() { return createButton; }
+    public JButton       getEditButton()   { return editButton;   }
+    public List<JButton> getButtons()      { return buttons;      }
 
     /**
      * Внутренний класс - Группа с кнопками редактирования, создания и удаления вопроса
@@ -130,22 +116,13 @@ public class EditPanel extends JPanel {
 
             beginButton = new EditPanelButton(new MoveToBeginAction(list, "В начало", "&#9650;"));
             endButton   = new EditPanelButton(new MoveToEndAction  (list, "В конец" , "&#9660;"));
-            upButton    = new EditPanelButton(new MoveUpAction  (list, "Выше", "&#8657;"));
-            downButton  = new EditPanelButton(new MoveDownAction(list, "Ниже", "&#8659;"));
+            upButton    = new EditPanelButton(new MoveUpAction     (list, "Выше"    , "&#8657;"));
+            downButton  = new EditPanelButton(new MoveDownAction   (list, "Ниже"    , "&#8659;"));
 
             buttons.add(beginButton);
-            buttons.add(upButton);
-            buttons.add(downButton);
-            buttons.add(endButton);
-
-            JLabel spinLabel = new JLabel("<html>Переместить<br>на позицию №:</html>");
-
-            listSpinner = new JSpinner(new SpinnerNumberModel(1, 1, max, 1));
-
-            listSpinner.addChangeListener((ChangeEvent event) -> {
-                list.setSelectedIndex(((int)listSpinner.getValue())-1);//выделяем выбранный элемент
-                list.ensureIndexIsVisible(list.getSelectedIndex());//делаем выделенный элемент видимым
-            });
+            buttons.add(upButton   );
+            buttons.add(downButton );
+            buttons.add(endButton  );
 
             movingGroupLayout.setHorizontalGroup(
                     movingGroupLayout.createSequentialGroup()
@@ -154,9 +131,6 @@ public class EditPanel extends JPanel {
                                                                 .addComponent(upButton)
                                                                 .addComponent(downButton)
                                                                 .addComponent(endButton)
-                                                                .addGroup(movingGroupLayout.createSequentialGroup()
-                                                                                           .addComponent(spinLabel)
-                                                                                           .addComponent(listSpinner))
                     )
             );
 
@@ -166,12 +140,7 @@ public class EditPanel extends JPanel {
                                      .addComponent(upButton)
                                      .addComponent(downButton)
                                      .addComponent(endButton)
-                                     .addGroup(movingGroupLayout.createParallelGroup()
-                                                                .addComponent(spinLabel)
-                                                                .addComponent(listSpinner)
-                                     )
             );
         }
     }
-
 }

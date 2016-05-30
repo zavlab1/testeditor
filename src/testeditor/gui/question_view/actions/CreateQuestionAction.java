@@ -1,5 +1,6 @@
 package testeditor.gui.question_view.actions;
 
+import testeditor.gui.services.QListModel;
 import testeditor.question.*;
 
 import javax.swing.*;
@@ -12,10 +13,10 @@ import java.awt.event.WindowEvent;
  */
 public class CreateQuestionAction extends AbstractAction {
 
-    private JList list;
+    private JList<Question> list;
     private Question q = null;
 
-    public CreateQuestionAction(JList qList) {
+    public CreateQuestionAction(JList<Question> qList) {
         list = qList;
         this.putValue (Action.NAME, "<html>" +
                                         "<font color='green' size=+1>" +
@@ -24,7 +25,7 @@ public class CreateQuestionAction extends AbstractAction {
                                         "Создать" +
                                     "</html>"
                        );
-        this.putValue(Action.SHORT_DESCRIPTION,"Создать новый тест");
+        this.putValue(Action.SHORT_DESCRIPTION, "Создать новый тест");
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -64,16 +65,17 @@ public class CreateQuestionAction extends AbstractAction {
                     q = new Numerical();
                     break;
             }
+
             JFrame qFrame = q.getFrame();
+
             qFrame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent event) {
-                    DefaultListModel<Question> listModel = (DefaultListModel<Question>) list.getModel();
+                    QListModel<Question> listModel = (QListModel<Question>) list.getModel();
                     listModel.addElement(CreateQuestionAction.this.q);
+                    list.setSelectedIndex(listModel.getSize()-1);
                 }
             });
-            qFrame.setVisible(true);
-            list.setSelectedIndex(0);
         }
     }
 }

@@ -33,7 +33,6 @@ public class TestView extends JPanel {
 
                     controlPanel.getSaveAsButton().setEnabled(true);
                     editPanel   .getButtons()     .stream().forEach(b -> b.setEnabled(true));
-                    editPanel   .getListSpinner() .setEnabled(true);
 
                     if (!Test.getTest().isEmpty())
                         controlPanel.getSaveButton().setEnabled(true);
@@ -42,11 +41,11 @@ public class TestView extends JPanel {
             @Override
             public void intervalRemoved(ListDataEvent listDataEvent) {
                 Test.getTest().update(Collections.list(listModel.elements()));
+
                 if (listModel.isEmpty()) {
                     controlPanel.getSaveAsButton().setEnabled(false);
                     controlPanel.getSaveButton()  .setEnabled(false);
                     editPanel   .getButtons()     .stream().forEach(b -> b.setEnabled(false));
-                    editPanel   .getListSpinner() .setEnabled(false);
                     editPanel   .getCreateButton().setEnabled(true );
                 }
             }

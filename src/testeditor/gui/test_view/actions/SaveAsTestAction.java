@@ -22,9 +22,9 @@ import java.net.URL;
  * Класс-слушатель для события открытия файла
  */
 public class SaveAsTestAction extends AbstractAction {
-    JList qList;
+    JList<Question> qList;
 
-    public SaveAsTestAction(JList qList) {
+    public SaveAsTestAction(JList<Question> qList) {
         this.qList = qList;
 
         this.putValue(Action.NAME,"Сохранить как...");
@@ -70,7 +70,7 @@ public class SaveAsTestAction extends AbstractAction {
             }
 
             Test.getTestFromFile(path);
-            ((QListModel) qList.getModel()).update(qList);
+            ((QListModel<Question>) qList.getModel()).update(qList);
             qList.setSelectedIndex(0);
 
             parentFrame.setTitle(saveAsDialog.getSelectedFile().getName() + " - " + parentFrame.APP_NAME);

@@ -43,7 +43,7 @@ public class Test extends LinkedHashSet<Question> {
         return filePath;
     }
 
-    public void update(List list) {
+    public void update(List<Question> list) {
         this.clear();
         this.addAll(list);
     }
