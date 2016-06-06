@@ -2,6 +2,7 @@ package testeditor.gui.services;
 
 import javax.swing.*;
 
+import testeditor.gui.test_view.TestView;
 import testeditor.question.*;
 
 import java.awt.*;
@@ -10,6 +11,8 @@ import java.awt.*;
  * Created by SERGEY on 23.03.2016.
  */
 public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
+    private String findText;
+
     @Override
     public Component getListCellRendererComponent(JList<? extends Question> list, Question value, int index, boolean isSelected, boolean cellHasFocus) {
         setLayout(new GridBagLayout());
@@ -52,5 +55,10 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
         add(lineSeparator, new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
 
         return this;
+
+    }
+
+    public void setFindText(String findText) {
+        this.findText = findText;
     }
 }

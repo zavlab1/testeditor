@@ -1,14 +1,22 @@
 package testeditor.gui.test_view;
 
+import testeditor.Test;
 import testeditor.gui.question_view.actions.*;
 import testeditor.gui.services.EditPanelButton;
+import testeditor.gui.services.ListRenderer;
 import testeditor.question.Question;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListDataListener;
+import java.awt.*;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -33,6 +41,7 @@ public class EditPanel extends JPanel {
         // Экземпляры групп кнопок для редактирования и перемещения
         EditingGroup editingGroup = new EditingGroup();
         MovingGroup  movingGroup  = new MovingGroup();
+        FindField findField = new FindField();
 
         GroupLayout editPanelLayout = new GroupLayout(this); // Групповой компоновщик для EditPanel
 
@@ -43,23 +52,28 @@ public class EditPanel extends JPanel {
         editPanelLayout.setHorizontalGroup(editPanelLayout.createParallelGroup()
                                                           .addComponent(editingGroup)
                                                           .addComponent(movingGroup)
+                                                          .addComponent(findField)
         );
 
         editPanelLayout.setVerticalGroup(editPanelLayout.createSequentialGroup()
-                                                        .addComponent(editingGroup,
-                                                                      GroupLayout.PREFERRED_SIZE,
-                                                                      GroupLayout.PREFERRED_SIZE,
-                                                                      GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(movingGroup,
-                                                                      GroupLayout.PREFERRED_SIZE,
-                                                                      GroupLayout.PREFERRED_SIZE,
-                                                                      GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(editingGroup
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(movingGroup
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(findField
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE
+                                                                    ,GroupLayout.PREFERRED_SIZE)
         );
     }
 
-    public JButton       getCreateButton() { return createButton; }
-    public JButton       getEditButton()   { return editButton;   }
-    public List<JButton> getButtons()      { return buttons;      }
+    public JButton       getCreateButton() { return createButton;       }
+    public JButton       getEditButton()   { return editButton;         }
+    public List<JButton> getButtons()      { return buttons;            }
 
     /**
      * Внутренний класс - Группа с кнопками редактирования, создания и удаления вопроса
@@ -142,5 +156,54 @@ public class EditPanel extends JPanel {
                                      .addComponent(endButton)
             );
         }
+    }
+
+	/**
+	 * Внутренний класс - поле для поиска
+     */
+    public class FindField extends JPanel{
+        JTextField findText = new JTextField();
+
+        LinkedHashSet<Question> backup = new LinkedHashSet<>();
+
+        FindField(){
+            setLayout(new BorderLayout());
+
+            setBorder(BorderFactory.createCompoundBorder (
+                    BorderFactory.createTitledBorder("Поиск: "),
+                    BorderFactory.createEmptyBorder(5,5,5,5)
+            ));
+
+            add(findText);
+
+            //TODO лисеренер для строки поиска
+            findText.addInputMethodListener(new InputMethodListener() {
+                @Override
+                public void inputMethodTextChanged(InputMethodEvent event) {
+                    DefaultListModel listModel = (DefaultListModel)list.getModel();
+                    ListDataListener[] listeners = listModel.getListDataListeners();
+                    Arrays.stream(listeners).forEach(listModel::removeListDataListener);
+
+                    if (backup.isEmpty()) {
+                        backup = Test.getTest();
+                    }
+
+                    ListRenderer renderer = (ListRenderer) list.getCellRenderer();
+                    renderer.setFindText(findText.getText());
+                    list.updateUI();
+                    //
+                    Arrays.stream(listeners).forEach(listModel::addListDataListener);
+                    //генерируем событие добавления и обновляем UI вручную, т.к. во время обновления списка
+                    //list.updateUI();
+                }
+
+                @Override
+                public void caretPositionChanged(InputMethodEvent event) {
+                    //
+                }
+            });
+        }
+
+
     }
 }
