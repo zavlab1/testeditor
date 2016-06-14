@@ -4,6 +4,7 @@ import testeditor.Test;
 import testeditor.gui.question_view.actions.*;
 import testeditor.gui.services.EditPanelButton;
 import testeditor.gui.services.ListRenderer;
+import testeditor.gui.services.QListModel;
 import testeditor.question.Question;
 
 import javax.swing.*;
@@ -171,37 +172,12 @@ public class EditPanel extends JPanel {
 
             setBorder(BorderFactory.createCompoundBorder (
                     BorderFactory.createTitledBorder("Поиск: "),
-                    BorderFactory.createEmptyBorder(5,5,5,5)
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5)
             ));
 
             add(findText);
 
-            //TODO лисеренер для строки поиска
-            findText.addInputMethodListener(new InputMethodListener() {
-                @Override
-                public void inputMethodTextChanged(InputMethodEvent event) {
-                    DefaultListModel listModel = (DefaultListModel)list.getModel();
-                    ListDataListener[] listeners = listModel.getListDataListeners();
-                    Arrays.stream(listeners).forEach(listModel::removeListDataListener);
-
-                    if (backup.isEmpty()) {
-                        backup = Test.getTest();
-                    }
-
-                    ListRenderer renderer = (ListRenderer) list.getCellRenderer();
-                    renderer.setFindText(findText.getText());
-                    list.updateUI();
-                    //
-                    Arrays.stream(listeners).forEach(listModel::addListDataListener);
-                    //генерируем событие добавления и обновляем UI вручную, т.к. во время обновления списка
-                    //list.updateUI();
-                }
-
-                @Override
-                public void caretPositionChanged(InputMethodEvent event) {
-                    //
-                }
-            });
+            findText.getDocument().addDocumentListener((QListModel)list.getModel());
         }
 
 

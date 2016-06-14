@@ -70,7 +70,7 @@ public class SaveAsTestAction extends AbstractAction {
             }
 
             Test.getTestFromFile(path);
-            ((QListModel<Question>) qList.getModel()).update(qList);
+            ((QListModel) qList.getModel()).update(qList);
             qList.setSelectedIndex(0);
 
             parentFrame.setTitle(saveAsDialog.getSelectedFile().getName() + " - " + parentFrame.APP_NAME);

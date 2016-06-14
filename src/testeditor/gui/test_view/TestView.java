@@ -17,13 +17,13 @@ import java.util.Collections;
  * Панель, отображающая общий вид теста и кнопки управления его содержимым
  */
 public class TestView extends JPanel {
-    private QListModel<Question> listModel   ;
+    private QListModel           listModel   ;
     private JList<Question>      questionList;
     private ControlPanel         controlPanel;  // управление файлом теста
     private EditPanel            editPanel   ;  // управление элементами теста
 
     public TestView() {
-        listModel = new QListModel<>(); // Модель для компонета JList со списком вопросов
+        listModel = new QListModel(); // Модель для компонета JList со списком вопросов
         listModel.addListDataListener(new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent listDataEvent) {

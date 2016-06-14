@@ -71,7 +71,7 @@ public class CreateQuestionAction extends AbstractAction {
             qFrame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent event) {
-                    QListModel<Question> listModel = (QListModel<Question>) list.getModel();
+                    QListModel listModel = (QListModel) list.getModel();
                     listModel.addElement(CreateQuestionAction.this.q);
                     list.setSelectedIndex(listModel.getSize()-1);
                 }
