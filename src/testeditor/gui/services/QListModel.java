@@ -17,18 +17,18 @@ import java.util.*;
  */
 public class QListModel extends AbstractListModel<Question> implements DocumentListener {
 
-    private List<Question> defaultList;
+    private Vector<Question> fullList;
     private List<Question> filteredList;
 
     private String lastFilter = "";
 
     public QListModel(){
-        defaultList  = new ArrayList<>();
+        fullList  = new Vector<>();
         filteredList = new ArrayList<>();
     }
 
     public void addElement (Question question){
-        defaultList.add(question);
+        fullList.addElement(question);
         filter(lastFilter);
         //fireIntervalAdded(this, defaultList.size(), defaultList.size());
     }
@@ -48,21 +48,21 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
     }
 
     public void clear (){
-        defaultList.clear();
+        fullList.clear();
         filteredList.clear();
     }
 
     public boolean isEmpty(){
-       return defaultList.isEmpty();
+       return fullList.isEmpty();
     }
 
     public Enumeration<Question> elements() {
-        //return defaultList;
+        return fullList.elements();
     }
     public void filter (String search){
         filteredList.clear();
 
-        for (Question question: defaultList){
+        for (Question question: fullList){
             if (question.getQHead().toLowerCase().indexOf(search.toLowerCase(), 0) != -1)
                 filteredList.add(question);
         }

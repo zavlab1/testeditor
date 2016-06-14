@@ -2,6 +2,7 @@ package testeditor.gui.test_view.actions;
 
 import testeditor.Test;
 import testeditor.gui.MainFrame;
+import testeditor.gui.services.QListModel;
 import testeditor.gui.test_view.EditPanel;
 import testeditor.gui.test_view.TestView;
 import testeditor.question.Question;
@@ -27,7 +28,7 @@ public class CreateTestAction extends AbstractAction {
     public void actionPerformed(ActionEvent event) {
 
         Test.getTest().clear();
-        ((DefaultListModel) qList.getModel()).clear();
+        ((QListModel) qList.getModel()).clear();
 
         MainFrame frame = (MainFrame) SwingUtilities.getRoot(qList);
         frame.setTitle("new test - " + frame.APP_NAME);
