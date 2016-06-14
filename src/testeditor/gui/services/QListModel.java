@@ -9,36 +9,62 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
  * Created by dimitry on 10.04.16.
  */
-public class QListModel extends DefaultListModel<Question> implements DocumentListener {
+public class QListModel extends AbstractListModel<Question> implements DocumentListener {
 
-    private Vector<Question> defaultList;
+    private List<Question> defaultList;
+    private List<Question> filteredList;
 
     private String lastFilter = "";
 
     public QListModel(){
-        defaultList  = new Vector<>();
+        defaultList  = new ArrayList<>();
+        filteredList = new ArrayList<>();
     }
 
     public void addElement (Question question){
         defaultList.add(question);
         filter(lastFilter);
-        fireIntervalAdded(this, defaultList.size(), defaultList.size());
+        //fireIntervalAdded(this, defaultList.size(), defaultList.size());
     }
 
+    public int getSize(){
+        return filteredList.size();
+    }
+
+    public Question getElementAt (int index){
+        Question returnValue;
+        if (index < filteredList.size()) {
+            returnValue = filteredList.get(index);
+        } else {
+            returnValue = null;
+        }
+        return returnValue;
+    }
+
+    public void clear (){
+        defaultList.clear();
+        filteredList.clear();
+    }
+
+    public boolean isEmpty(){
+       return defaultList.isEmpty();
+    }
+
+    public Enumeration<Question> elements() {
+        //return defaultList;
+    }
     public void filter (String search){
-        super.clear();
+        filteredList.clear();
 
         for (Question question: defaultList){
             if (question.getQHead().toLowerCase().indexOf(search.toLowerCase(), 0) != -1)
-                super.addElement(question);
+                filteredList.add(question);
         }
         fireContentsChanged(this, 0, getSize());
     }
