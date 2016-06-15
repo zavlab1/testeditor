@@ -30,7 +30,18 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
     public void addElement (Question question){
         fullList.addElement(question);
         filter(lastFilter);
-        //fireIntervalAdded(this, defaultList.size(), defaultList.size());
+        fireIntervalAdded(this, fullList.size(), fullList.size());
+    }
+
+    public void remove (int index){
+        Question removed = filteredList.get(index);
+        if (removed != null){
+            for ( int i = 0; i < fullList.size(); i++ )
+                if (removed.equals(fullList.elementAt(i)))
+                    fullList.remove(i);
+            filteredList.remove(index);
+            fireIntervalRemoved(this, index, index);
+        }
     }
 
     public int getSize(){
@@ -114,4 +125,8 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
             ex.printStackTrace();
         }
     }
+    public String getLastFilter(){
+        return lastFilter;
+    }
 }
+

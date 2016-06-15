@@ -2,7 +2,6 @@ package testeditor.gui.services;
 
 import javax.swing.*;
 
-import testeditor.gui.test_view.TestView;
 import testeditor.question.*;
 
 import java.awt.*;
@@ -11,10 +10,12 @@ import java.awt.*;
  * Created by SERGEY on 23.03.2016.
  */
 public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
-    private String findText;
+
+    private JLabel labelQuestion;
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Question> list, Question value, int index, boolean isSelected, boolean cellHasFocus) {
+
         setLayout(new GridBagLayout());
 
         setBackground(isSelected ? new Color(252, 252, 252): new Color(230, 230, 230));
@@ -29,7 +30,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 
         add(new JSeparator(JSeparator.VERTICAL), new GBC(1,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
 
-        JLabel labelQuestion = new JLabel("<html><p>" +
+        labelQuestion = new JLabel("<html><p>" +
                                               "<b>" + value.getQName() + "</b>" +
                                               "<br>" + value.getQText() +
                                           "</p><br></html>");
@@ -54,11 +55,32 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
         lineSeparator.setBorder(BorderFactory.createEmptyBorder());
         add(lineSeparator, new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
 
+        //colorSelection(list);
+
         return this;
 
     }
 
-    public void setFindText(String findText) {
-        this.findText = findText;
+	/**
+     * Выделение искомого текста цветом в имени и тексте вопроса
+     * @param jList - фильтруемый список
+     * TODO доделать функцию выделения цветом
+     */
+    private void colorSelection (JList jList){
+
+        QListModel qListModel = (QListModel)jList.getModel();
+        String lastfilter = qListModel.getLastFilter();
+
+        if (lastfilter != ""){
+            int indexOf = labelQuestion.getText().toLowerCase().indexOf(lastfilter.toLowerCase());
+            if (indexOf != -1){
+                labelQuestion.setText(
+                        new StringBuffer(labelQuestion.getText()).insert(
+                                indexOf, "<span style='background-color: yellow'>").toString()
+                );
+            }
+        }
+
     }
+
 }

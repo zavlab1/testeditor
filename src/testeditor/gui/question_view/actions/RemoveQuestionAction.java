@@ -1,6 +1,7 @@
 package testeditor.gui.question_view.actions;
 
 import testeditor.Test;
+import testeditor.gui.services.QListModel;
 import testeditor.question.*;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ public class RemoveQuestionAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent event) {
         int index = list.getSelectedIndex();
-        DefaultListModel<Question> listModel = (DefaultListModel<Question>) list.getModel();
+        QListModel listModel = (QListModel) list.getModel();
         listModel.remove(index);
         if (!listModel.isEmpty()) {
             list.setSelectedIndex(0);
