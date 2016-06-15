@@ -55,7 +55,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
         lineSeparator.setBorder(BorderFactory.createEmptyBorder());
         add(lineSeparator, new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
 
-        //colorSelection(list);
+        colorSelection(list);
 
         return this;
 
@@ -64,23 +64,35 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 	/**
      * Выделение искомого текста цветом в имени и тексте вопроса
      * @param jList - фильтруемый список
-     * TODO доделать функцию выделения цветом
      */
     private void colorSelection (JList jList){
 
-        QListModel qListModel = (QListModel)jList.getModel();
-        String lastfilter = qListModel.getLastFilter();
+        QListModel qListModel = (QListModel) jList.getModel();
+        String filter = qListModel.getFilter();
 
-        if (lastfilter != ""){
-            int indexOf = labelQuestion.getText().toLowerCase().indexOf(lastfilter.toLowerCase());
-            if (indexOf != -1){
-                labelQuestion.setText(
-                        new StringBuffer(labelQuestion.getText()).insert(
-                                indexOf, "<span style='background-color: yellow'>").toString()
-                );
+        if ( ! filter.isEmpty() ){
+            int fromIndex = 0;
+            int index = labelQuestion.getText().toLowerCase().indexOf(filter.toLowerCase(), fromIndex);
+
+            String selectionOpened = "<span style='background-color: yellow'>";
+            String selectionClosed = "</span>";
+
+            StringBuffer withSelection = new StringBuffer(labelQuestion.getText());
+
+            while (index > -1) {
+                withSelection.insert(index + filter.length(), selectionClosed);
+                withSelection.insert(index, selectionOpened);
+
+                fromIndex = index
+                            + selectionOpened.length()
+                            + filter.length()
+                            + selectionClosed.length();
+
+                index = withSelection.indexOf( filter.toLowerCase(), fromIndex );
             }
-        }
 
+            labelQuestion.setText( withSelection.toString() );
+        }
     }
 
 }

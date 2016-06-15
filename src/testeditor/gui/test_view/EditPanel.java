@@ -171,8 +171,11 @@ public class EditPanel extends JPanel {
             setLayout(new BorderLayout());
 
             setBorder(BorderFactory.createCompoundBorder (
-                    BorderFactory.createTitledBorder("Поиск: "),
-                    BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                            BorderFactory.createEmptyBorder(5, 10, 5, 10),
+                            BorderFactory.createCompoundBorder(
+                                        BorderFactory.createTitledBorder("Поиск: "),
+                                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                    )
             ));
 
             add(findText);
