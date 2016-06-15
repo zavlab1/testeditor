@@ -118,8 +118,8 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
             Arrays.stream(listeners).forEach(this::addListDataListener);
 
             //генерируем событие добавления и обновляем UI вручную, т.к. во время обновления списка
-            //эти события были погашены вместе с остальными
-            fireIntervalAdded(list, 0, Test.getTest().size()-1); // Here the event is fired
+            //обработчики этих событий были погашены вместе с остальными
+            fireIntervalAdded(list, 0, Test.getTest().size()-1);
             list.updateUI();
         } catch (Exception ex) {
             ex.printStackTrace();
