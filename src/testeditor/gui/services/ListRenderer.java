@@ -62,7 +62,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
     private String colorSelection (JList jList, String qText){
 
         QListModel qListModel = (QListModel)jList.getModel();
-        String lastfilter = qListModel.getLastFilter();
+        String lastfilter = qListModel.getFilter();
 
         if (!lastfilter.isEmpty()) {
             int indexOf = qText.toLowerCase().indexOf(lastfilter.toLowerCase());
