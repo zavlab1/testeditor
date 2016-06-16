@@ -20,7 +20,7 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
     private Vector<Question> fullList;
     private List<Question> filteredList;
 
-    private String lastFilter = "";
+    private String filter = "";
 
     public QListModel(){
         fullList  = new Vector<>();
@@ -29,7 +29,7 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
 
     public void addElement (Question question){
         fullList.addElement(question);
-        filter(lastFilter);
+        filter(filter);
         fireIntervalAdded(this, fullList.size(), fullList.size());
     }
 
@@ -84,8 +84,8 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
     public void insertUpdate (DocumentEvent event){
         Document document = event.getDocument();
         try{
-            lastFilter = document.getText(0, document.getLength());
-            filter(lastFilter);
+            filter = document.getText(0, document.getLength());
+            filter(filter);
         }
         catch (BadLocationException ble){
             ble.printStackTrace();
@@ -95,8 +95,8 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
     public void removeUpdate (DocumentEvent event){
         Document document = event.getDocument();
         try{
-            lastFilter = document.getText(0, document.getLength());
-            filter(lastFilter);
+            filter = document.getText(0, document.getLength());
+            filter(filter);
         }
         catch (BadLocationException ble){
             ble.printStackTrace();
@@ -125,8 +125,8 @@ public class QListModel extends AbstractListModel<Question> implements DocumentL
             ex.printStackTrace();
         }
     }
-    public String getLastFilter(){
-        return lastFilter;
+    public String getFilter(){
+        return filter;
     }
 }
 
