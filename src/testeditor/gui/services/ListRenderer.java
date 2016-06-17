@@ -11,8 +11,6 @@ import java.awt.*;
  */
 public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 
-    private JLabel labelQuestion;
-
     @Override
     public Component getListCellRendererComponent(JList<? extends Question> list, Question value, int index, boolean isSelected, boolean cellHasFocus) {
 
@@ -22,77 +20,60 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
 
         removeAll();
 
-        JLabel labelNumber = new JLabel("Вопрос №" + Integer.toString(index + 1));
+        String qNumber = "Вопрос №" + Integer.toString(index + 1);
+        String qText   = colorSelection(list, "<html><p><b>" + value.getQName() + "</b><br>" + value.getQText() + "</p><br></html>");
+        String qType   = "<html><p align='right'><b>Тип вопроса:</b><br>" + value.TYPE + "</p><br></html>";
 
-        labelNumber.setFont(new Font("Sans-Serif",Font.BOLD,12));
-        add(labelNumber, new GBC(0, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.HORIZONTAL)
-                                                        .setInsets(10, 10, 10, 10));
+        JLabel labelNumber   = new JLabel(qNumber);
+        JLabel labelQuestion = new JLabel(qText  );
+        JLabel labelType     = new JLabel(qType  );
 
-        add(new JSeparator(JSeparator.VERTICAL), new GBC(1,0,1,1,0,0,0,0).setFill(GBC.VERTICAL));
-
-        labelQuestion = new JLabel("<html><p>" +
-                                              "<b>" + value.getQName() + "</b>" +
-                                              "<br>" + value.getQText() +
-                                          "</p><br></html>");
-
+        labelNumber  .setFont(new Font("Sans-Serif", Font.BOLD , 12));
         labelQuestion.setFont(new Font("Sans-Serif", Font.PLAIN, 12));
-        add(labelQuestion, new GBC(2, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.BOTH)
-                                                             .setInsets(10, 5, 10, 10));
+        labelType    .setFont(new Font("Sans-Serif", Font.PLAIN, 12));
 
-        JLabel labelType = new JLabel("<html>" +
-                                          "<p align='right'>" +
-                                                "<b>Тип вопроса:</b>" +
-                                                "<br>" + value.TYPE +
-                                          "</p>" +
-                                      "<br></html>" );
+        add(labelNumber,
+            new GBC(0, 0, 1, 1, 0, 0,   0, 0).setFill(GBC.HORIZONTAL)
+                                             .setInsets(10, 10, 10, 10));
 
-        labelType.setFont(new Font("Sans-Serif", Font.PLAIN, 12));
+        add(new JSeparator(JSeparator.VERTICAL),
+            new GBC(1, 0, 1, 1, 0, 0,   0, 0).setFill(GBC.VERTICAL));
 
-        add(labelType, new GBC(3, 0, 1, 1, 0, 0, 0, 0).setFill(GBC.BOTH)
-                                                      .setInsets(10, 20, 10, 5));
+        add(labelQuestion,
+            new GBC(2, 0, 1, 1, 0, 0, 100, 0).setFill(GBC.BOTH)
+                                             .setInsets(10, 5, 10, 10));
+
+        add(labelType,
+            new GBC(3, 0, 1, 1, 0, 0,   0, 0).setFill(GBC.BOTH)
+                                             .setInsets(10, 20, 10, 5));
 
         JSeparator lineSeparator = new JSeparator();
         lineSeparator.setBorder(BorderFactory.createEmptyBorder());
-        add(lineSeparator, new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
-
-        colorSelection(list);
+        add(lineSeparator,
+            new GBC(0, 1, 5, 1, 0, 0, 100, 0).setFill(GBC.HORIZONTAL));
 
         return this;
-
     }
 
-	/**
+    /**
      * Выделение искомого текста цветом в имени и тексте вопроса
      * @param jList - фильтруемый список
+     * @param qText - заголовок вопроса
      */
-    private void colorSelection (JList jList){
+    private String colorSelection (JList jList, String qText){
 
-        QListModel qListModel = (QListModel) jList.getModel();
-        String filter = qListModel.getFilter();
+        QListModel qListModel = (QListModel)jList.getModel();
+        String lastFilter = qListModel.getFilter();
 
-        if ( ! filter.isEmpty() ){
-            int fromIndex = 0;
-            int index = labelQuestion.getText().toLowerCase().indexOf(filter.toLowerCase(), fromIndex);
-
-            String selectionOpened = "<span style='background-color: yellow'>";
-            String selectionClosed = "</span>";
-
-            StringBuffer withSelection = new StringBuffer(labelQuestion.getText());
-
-            while (index > -1) {
-                withSelection.insert(index + filter.length(), selectionClosed);
-                withSelection.insert(index, selectionOpened);
-
-                fromIndex = index
-                            + selectionOpened.length()
-                            + filter.length()
-                            + selectionClosed.length();
-
-                index = withSelection.indexOf( filter.toLowerCase(), fromIndex );
+        if (!lastFilter.isEmpty()) {
+            int indexOf = qText.toLowerCase().indexOf(lastFilter.toLowerCase());
+            if (indexOf != -1) {
+                qText = qText.replaceAll(lastFilter,
+                                          "<span style='background-color: yellow'>"
+                                                  + lastFilter
+                                                  +"</span>");
             }
-
-            labelQuestion.setText( withSelection.toString() );
         }
+        return qText;
     }
-
 }
