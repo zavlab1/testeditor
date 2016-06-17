@@ -60,13 +60,38 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
      * @param jList - фильтруемый список
      * @param qText - заголовок вопроса
      */
-    private String colorSelection (JList jList, String qText){
-
+    private String colorSelection (JList jList, String qText) {
+        // replaceAll не подходит, т.к. не учитывается, что менять надо на тот же регистр, в котором вхождение
         QListModel qListModel = (QListModel)jList.getModel();
         String filter = qListModel.getFilter();
-        return filter.isEmpty() ? qText : qText.replaceAll(filter,
-                                                           "<span style='background-color: yellow'>"
-                                                               + filter +
-                                                           "</span>");
+        if ( ! filter.isEmpty() ) {
+
+            String selectionOpened = "<span style='background-color: yellow'>";
+            String selectionClosed = "</span>";
+
+            int insertLength = (selectionOpened + filter + selectionClosed).length();
+            int filterLength = filter.length();
+            String filterLowCase = filter.toLowerCase();
+
+            StringBuffer withSelection = new StringBuffer(qText);
+
+            int index = qText.toLowerCase().indexOf(filterLowCase);
+
+            while (index > -1) {
+                withSelection.insert(index + filterLength, selectionClosed);
+                withSelection.insert(index, selectionOpened);
+
+                index = withSelection.toString().toLowerCase()
+                        .indexOf(filterLowCase,
+                                 index + insertLength);
+            }
+
+            return withSelection.toString();
+
+        } else {
+
+            return qText;
+
+        }
     }
 }
