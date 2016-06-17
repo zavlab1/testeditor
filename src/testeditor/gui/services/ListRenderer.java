@@ -58,19 +58,20 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
     /**
      * Выделение искомого текста цветом в имени и тексте вопроса
      * @param jList - фильтруемый список
+     * @param qText - заголовок вопроса
      */
     private String colorSelection (JList jList, String qText){
 
         QListModel qListModel = (QListModel)jList.getModel();
-        String lastfilter = qListModel.getFilter();
+        String lastFilter = qListModel.getFilter();
 
-        if (!lastfilter.isEmpty()) {
-            int indexOf = qText.toLowerCase().indexOf(lastfilter.toLowerCase());
+        if (!lastFilter.isEmpty()) {
+            int indexOf = qText.toLowerCase().indexOf(lastFilter.toLowerCase());
             if (indexOf != -1) {
-                qText = new StringBuffer(qText)
-                            .insert(indexOf + lastfilter.length(), "</span>")
-                            .insert(indexOf, "<span style='background-color: yellow'>")
-                        .toString();
+                qText = qText.replaceAll(lastFilter,
+                                          "<span style='background-color: yellow'>"
+                                                  + lastFilter
+                                                  +"</span>");
             }
         }
         return qText;
