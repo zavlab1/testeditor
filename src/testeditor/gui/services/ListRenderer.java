@@ -63,17 +63,10 @@ public class ListRenderer extends JPanel implements ListCellRenderer<Question> {
     private String colorSelection (JList jList, String qText){
 
         QListModel qListModel = (QListModel)jList.getModel();
-        String lastFilter = qListModel.getFilter();
-
-        if (!lastFilter.isEmpty()) {
-            int indexOf = qText.toLowerCase().indexOf(lastFilter.toLowerCase());
-            if (indexOf != -1) {
-                qText = qText.replaceAll(lastFilter,
-                                          "<span style='background-color: yellow'>"
-                                                  + lastFilter
-                                                  +"</span>");
-            }
-        }
-        return qText;
+        String filter = qListModel.getFilter();
+        return filter.isEmpty() ? qText : qText.replaceAll(filter,
+                                                           "<span style='background-color: yellow'>"
+                                                               + filter +
+                                                           "</span>");
     }
 }
